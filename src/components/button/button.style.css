@@ -1,15 +1,22 @@
 .gray {
-  @apply bg-gray;
+  @apply bg-[#ececf4];
 }
 
 .gray:hover {
-  @apply bg-hover-gray;
+  @apply bg-[#f1f0ff];
 }
 
 .purple {
-  @apply bg-purple;
+  @apply bg-[#6965db];
 }
 
 .purple:hover {
-  @apply bg-hover-purple;
+  @apply bg-[#5b57d1];
 }
+
+/* :root {
+  --color-gray: #ececf4;
+  --color-hover-gray: #f1f0ff;
+  --color-purple: #6965db;
+  --color-purple: #5b57d1;
+} */
