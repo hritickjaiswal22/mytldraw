@@ -1,0 +1,15 @@
+/* In your CSS */
+:root {
+  --color-gray: #ececf4;
+  --color-hover-gray: #f1f0ff;
+  --color-purple: #6965db;
+  --color-purple: #5b57d1;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

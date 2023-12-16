@@ -1,0 +1,15 @@
+.gray {
+  @apply bg-gray;
+}
+
+.gray:hover {
+  @apply bg-hover-gray;
+}
+
+.purple {
+  @apply bg-purple;
+}
+
+.purple:hover {
+  @apply bg-hover-purple;
+}
