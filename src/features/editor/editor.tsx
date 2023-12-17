@@ -1,10 +1,10 @@
 import useWindowResize from "@/hooks/useWindowResize";
 import NonInteractiveHeader from "@/layouts/Header";
-import { ObjectBaseOptions } from "@/utils/baseObjectOptions";
-import { socket } from "@/socket";
+import RadioGroup from "@/components/styled-radio-group";
 
 import { fabric } from "fabric";
 import { useEffect, useRef, useState } from "react";
+import { Circle } from "react-feather";
 
 function Editor() {
   const [fabricInst, setFabricInst] = useState<fabric.Canvas | null>(null);
@@ -25,48 +25,29 @@ function Editor() {
     fabricInst?.setHeight(windowHeight);
   }, [windowHeight, windowWidth]);
 
-  useEffect(() => {
-    if (fabricInst) {
-      const rect = new fabric.Rect({
-        ...ObjectBaseOptions,
-        top: 0,
-        left: 0,
-        width: 100,
-        height: 100,
-      });
-
-      fabricInst.add(rect);
-    }
-  }, [fabricInst]);
-
-  useEffect(() => {
-    if (fabricInst) {
-      fabricInst?.on("object:moving", (e) => {
-        socket.emit("moving", {
-          left: e.target?.left,
-          top: e.target?.top,
-        });
-      });
-    }
-  }, [fabricInst]);
-
-  useEffect(() => {
-    if (fabricInst) {
-      socket.on("moving", (val) => {
-        fabricInst._objects[0].set({
-          left: val.left,
-          top: val.top,
-        });
-        fabricInst._objects[0].setCoords();
-
-        fabricInst.renderAll();
-      });
-    }
-  }, [fabricInst]);
-
   return (
     <>
-      <NonInteractiveHeader>{null}</NonInteractiveHeader>
+      <NonInteractiveHeader>
+        <RadioGroup
+          options={[
+            {
+              id: "1",
+              content: <Circle width={10} height={10} />,
+              value: "1",
+            },
+            {
+              id: "2",
+              content: <Circle width={10} height={10} />,
+              value: "2",
+            },
+            {
+              id: "3",
+              content: <Circle width={10} height={10} />,
+              value: "3",
+            },
+          ]}
+        />
+      </NonInteractiveHeader>
       <main>
         <canvas ref={canvasRef}></canvas>
       </main>

@@ -6,7 +6,7 @@ interface HeaderPropTypes {
 
 function Header({ children }: HeaderPropTypes) {
   return (
-    <header className="fixed w-full p-4 flex items-center gap-4 pointer-events-none">
+    <header className="fixed z-50 top-0 w-full p-4 flex items-center gap-4 pointer-events-none">
       {children}
     </header>
   );
