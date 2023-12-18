@@ -15,40 +15,56 @@ function Drawer({ drawOption, fabricInst, children }: DrawerPropTypes) {
   const left = useRef(0);
   const isMouseDown = useRef(false);
 
-  function initializeRect({ e }: fabric.IEvent<MouseEvent>) {
+  // Initialize
+  function initializeObject({ e }: fabric.IEvent<MouseEvent>) {
     top.current = e.y;
     left.current = e.x;
+    let obj = null;
 
-    const rect = new fabric.Rect({
-      ...ObjectBaseOptions,
-      left: e.x,
-      top: e.y,
-      width: 0,
-      height: 0,
-    });
+    switch (drawOption) {
+      case DrawOptions.RECTANGLE:
+        obj = new fabric.Rect({
+          ...ObjectBaseOptions,
+          left: e.x,
+          top: e.y,
+          width: 0,
+          height: 0,
+        });
+        break;
 
-    fabricInst?.add(rect);
-    fabricInst?.setActiveObject(rect);
-    fabricInst?.renderAll();
+      case DrawOptions.TRIANGLE:
+        obj = new fabric.Triangle({
+          ...ObjectBaseOptions,
+          left: e.x,
+          top: e.y,
+          width: 0,
+          height: 0,
+        });
+        break;
+
+      case DrawOptions.CIRCLE:
+        obj = new fabric.Circle({
+          ...ObjectBaseOptions,
+          left: e.x,
+          top: e.y,
+          radius: 0,
+          originX: "center",
+          originY: "center",
+        });
+        break;
+
+      default:
+        break;
+    }
+
+    if (obj) {
+      fabricInst?.add(obj);
+      fabricInst?.setActiveObject(obj);
+      fabricInst?.renderAll();
+    }
   }
 
-  function initializeTriangle({ e }: fabric.IEvent<MouseEvent>) {
-    top.current = e.y;
-    left.current = e.x;
-
-    const triangle = new fabric.Triangle({
-      ...ObjectBaseOptions,
-      left: e.x,
-      top: e.y,
-      width: 0,
-      height: 0,
-    });
-
-    fabricInst?.add(triangle);
-    fabricInst?.setActiveObject(triangle);
-    fabricInst?.renderAll();
-  }
-
+  // Resize
   function resizeRect({ e }: fabric.IEvent<MouseEvent>) {
     const rect = fabricInst?.getActiveObject();
 
@@ -80,6 +96,22 @@ function Drawer({ drawOption, fabricInst, children }: DrawerPropTypes) {
     }
   }
 
+  function resizeCircle({ e }: fabric.IEvent<MouseEvent>) {
+    const circle = fabricInst?.getActiveObject();
+
+    if (circle) {
+      const a = Math.abs(left.current - e.x);
+      const b = Math.abs(top.current - e.y);
+
+      (circle as fabric.Circle).set({
+        radius: Math.sqrt(a * a + b * b) / 2,
+      });
+
+      circle.setCoords();
+      fabricInst?.renderAll();
+    }
+  }
+
   useEffect(() => {
     if (fabricInst && drawOption !== DrawOptions.NONE) {
       // MouseDown Event Handler
@@ -90,18 +122,7 @@ function Drawer({ drawOption, fabricInst, children }: DrawerPropTypes) {
 
         isMouseDown.current = true;
 
-        switch (drawOption) {
-          case DrawOptions.RECTANGLE:
-            initializeRect(e);
-            break;
-
-          case DrawOptions.TRIANGLE:
-            initializeTriangle(e);
-            break;
-
-          default:
-            break;
-        }
+        initializeObject(e);
       });
 
       // MouseMove Event Handler
@@ -116,6 +137,10 @@ function Drawer({ drawOption, fabricInst, children }: DrawerPropTypes) {
               resizeTriangle(e);
               break;
 
+            case DrawOptions.CIRCLE:
+              resizeCircle(e);
+              break;
+
             default:
               break;
           }
@@ -124,7 +149,9 @@ function Drawer({ drawOption, fabricInst, children }: DrawerPropTypes) {
 
       // MouseUp Event Handler
       fabricInst.on("mouse:up", () => {
-        isMouseDown.current = false;
+        if (isMouseDown.current) {
+          isMouseDown.current = false;
+        }
       });
     }
 

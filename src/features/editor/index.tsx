@@ -60,10 +60,16 @@ function Editor() {
               content: <Circle width={10} height={10} />,
               value: "3",
             },
+            {
+              id: "4",
+              content: <Circle width={10} height={10} />,
+              value: "4",
+            },
           ]}
         />
       </NonInteractiveHeader>
       <main>
+        {/* FOR CIRCLE originX AND originY IS "CENTER" */}
         <Drawer drawOption={testOption} fabricInst={fabricInst}>
           <canvas ref={canvasRef}></canvas>
         </Drawer>
