@@ -121,6 +121,7 @@ function Drawer({ drawOption, fabricInst, children }: DrawerPropTypes) {
         }
 
         isMouseDown.current = true;
+        fabricInst.selection = false;
 
         initializeObject(e);
       });
@@ -150,7 +151,21 @@ function Drawer({ drawOption, fabricInst, children }: DrawerPropTypes) {
       // MouseUp Event Handler
       fabricInst.on("mouse:up", () => {
         if (isMouseDown.current) {
+          if (drawOption === DrawOptions.CIRCLE) {
+            const circle = fabricInst.getActiveObject();
+            const left = (circle as any)?.left - (circle as any).radius;
+            const top = (circle as any)?.top - (circle as any).radius;
+
+            circle?.set({
+              originX: "left",
+              originY: "top",
+              left,
+              top,
+            });
+          }
+
           isMouseDown.current = false;
+          fabricInst.selection = true;
         }
       });
     }

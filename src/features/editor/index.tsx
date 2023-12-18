@@ -69,7 +69,6 @@ function Editor() {
         />
       </NonInteractiveHeader>
       <main>
-        {/* FOR CIRCLE originX AND originY IS "CENTER" */}
         <Drawer drawOption={testOption} fabricInst={fabricInst}>
           <canvas ref={canvasRef}></canvas>
         </Drawer>
