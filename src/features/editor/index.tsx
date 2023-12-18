@@ -17,9 +17,13 @@ function Editor() {
       width: window.innerWidth,
       height: window.innerHeight,
     });
-    // For REFRENCE
-    // fabric.Object.prototype.transparentCorners = false;
-    // fabric.Object.prototype.cornerColor = "white";
+    fabric.Object.prototype.cornerStyle = "circle";
+    fabric.Object.prototype.cornerSize = 8;
+    fabric.Object.prototype.cornerStrokeColor = "#5b57d1";
+    fabric.Object.prototype.cornerColor = "white";
+    fabric.Object.prototype.transparentCorners = false;
+    fabric.Object.prototype.borderColor = "#5b57d1";
+    fabric.Object.prototype.padding = 4;
 
     setFabricInst(temp);
   }, []);
