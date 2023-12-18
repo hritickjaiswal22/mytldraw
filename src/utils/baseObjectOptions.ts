@@ -8,8 +8,10 @@ const ObjectBaseOptions: fabric.IObjectOptions = {
   cornerStyle: "circle",
   cornerSize: 8,
   cornerStrokeColor: "#5b57d1",
-  // cornerColor: "orange",
+  cornerColor: "white",
+  transparentCorners: false,
   borderColor: "#5b57d1",
+  angle: 0,
 };
 
 export { ObjectBaseOptions };

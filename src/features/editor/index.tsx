@@ -1,6 +1,7 @@
 import useWindowResize from "@/hooks/useWindowResize";
-import NonInteractiveHeader from "@/layouts/Header";
-import RadioGroup from "@/components/styled-radio-group";
+import NonInteractiveHeader from "@/layouts/header";
+import RadioGroup from "@/components/styledRadioGroup";
+import Drawer from "@/features/drawer";
 
 import { fabric } from "fabric";
 import { useEffect, useRef, useState } from "react";
@@ -16,6 +17,9 @@ function Editor() {
       width: window.innerWidth,
       height: window.innerHeight,
     });
+    // For REFRENCE
+    // fabric.Object.prototype.transparentCorners = false;
+    // fabric.Object.prototype.cornerColor = "white";
 
     setFabricInst(temp);
   }, []);
@@ -49,7 +53,9 @@ function Editor() {
         />
       </NonInteractiveHeader>
       <main>
-        <canvas ref={canvasRef}></canvas>
+        <Drawer drawOption={1} fabricInst={fabricInst}>
+          <canvas ref={canvasRef}></canvas>
+        </Drawer>
       </main>
     </>
   );
