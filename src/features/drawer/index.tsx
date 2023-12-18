@@ -201,15 +201,12 @@ function Drawer({ drawOption, fabricInst, children }: DrawerPropTypes) {
     const group = new fabric.Group(
       [fabricInst?.getActiveObject(), arrowTriangle.current],
       {
-        borderColor: "black",
-        cornerColor: "green",
         lockScalingFlip: true,
-        name: "my_ArrowGroup",
-        type: "arrow",
       }
     );
     fabricInst?.remove(fabricInst?.getActiveObject(), arrowTriangle.current); // removing old object
     fabricInst?.add(group);
+    fabricInst?.setActiveObject(group);
     arrowDeltaX.current = 0;
     arrowDeltaY.current = 0;
     arrowTriangle.current = null;
