@@ -96,8 +96,6 @@ function Drawer({ drawOption, fabricInst, children }: DrawerPropTypes) {
     const points = [e.x, e.y, e.x, e.y];
     const line = new fabric.Line(points, {
       ...ObjectBaseOptions,
-      fill: "red",
-      stroke: "red",
       originX: "center",
       originY: "center",
       id: "arrow_line",
@@ -120,7 +118,6 @@ function Drawer({ drawOption, fabricInst, children }: DrawerPropTypes) {
       angle: -45,
       width: 20,
       height: 20,
-      fill: "red",
       id: "arrow_triangle",
       uuid: line.uuid,
     });
