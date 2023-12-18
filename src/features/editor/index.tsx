@@ -65,6 +65,11 @@ function Editor() {
               content: <Circle width={10} height={10} />,
               value: "4",
             },
+            {
+              id: "5",
+              content: <Circle width={10} height={10} />,
+              value: "5",
+            },
           ]}
         />
       </NonInteractiveHeader>
