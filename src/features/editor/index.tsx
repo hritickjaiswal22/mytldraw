@@ -12,6 +12,8 @@ function Editor() {
   const canvasRef = useRef(null);
   const { windowHeight, windowWidth } = useWindowResize();
 
+  const [testOption, setTestOption] = useState(0);
+
   useEffect(() => {
     const temp = new fabric.Canvas(canvasRef.current, {
       width: window.innerWidth,
@@ -33,10 +35,15 @@ function Editor() {
     fabricInst?.setHeight(windowHeight);
   }, [windowHeight, windowWidth]);
 
+  function testHandler(arg) {
+    setTestOption(arg);
+  }
+
   return (
     <>
       <NonInteractiveHeader>
         <RadioGroup
+          onClickHandler={testHandler}
           options={[
             {
               id: "1",
@@ -57,7 +64,7 @@ function Editor() {
         />
       </NonInteractiveHeader>
       <main>
-        <Drawer drawOption={1} fabricInst={fabricInst}>
+        <Drawer drawOption={testOption} fabricInst={fabricInst}>
           <canvas ref={canvasRef}></canvas>
         </Drawer>
       </main>

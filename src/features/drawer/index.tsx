@@ -32,6 +32,23 @@ function Drawer({ drawOption, fabricInst, children }: DrawerPropTypes) {
     fabricInst?.renderAll();
   }
 
+  function initializeTriangle({ e }: fabric.IEvent<MouseEvent>) {
+    top.current = e.y;
+    left.current = e.x;
+
+    const triangle = new fabric.Triangle({
+      ...ObjectBaseOptions,
+      left: e.x,
+      top: e.y,
+      width: 0,
+      height: 0,
+    });
+
+    fabricInst?.add(triangle);
+    fabricInst?.setActiveObject(triangle);
+    fabricInst?.renderAll();
+  }
+
   function resizeRect({ e }: fabric.IEvent<MouseEvent>) {
     const rect = fabricInst?.getActiveObject();
 
@@ -51,6 +68,18 @@ function Drawer({ drawOption, fabricInst, children }: DrawerPropTypes) {
     }
   }
 
+  function resizeTriangle({ e }: fabric.IEvent<MouseEvent>) {
+    const triangle = fabricInst?.getActiveObject();
+
+    if (triangle) {
+      triangle.set({ width: Math.abs(left.current - e.x) });
+      triangle.set({ height: Math.abs(top.current - e.y) });
+
+      triangle.setCoords();
+      fabricInst?.renderAll();
+    }
+  }
+
   useEffect(() => {
     if (fabricInst && drawOption !== DrawOptions.NONE) {
       // MouseDown Event Handler
@@ -66,6 +95,10 @@ function Drawer({ drawOption, fabricInst, children }: DrawerPropTypes) {
             initializeRect(e);
             break;
 
+          case DrawOptions.TRIANGLE:
+            initializeTriangle(e);
+            break;
+
           default:
             break;
         }
@@ -79,6 +112,10 @@ function Drawer({ drawOption, fabricInst, children }: DrawerPropTypes) {
               resizeRect(e);
               break;
 
+            case DrawOptions.TRIANGLE:
+              resizeTriangle(e);
+              break;
+
             default:
               break;
           }
@@ -90,6 +127,10 @@ function Drawer({ drawOption, fabricInst, children }: DrawerPropTypes) {
         isMouseDown.current = false;
       });
     }
+
+    return () => {
+      fabricInst?.off();
+    };
   }, [fabricInst, drawOption]);
 
   return <>{children}</>;
