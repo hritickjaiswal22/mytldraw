@@ -2,6 +2,7 @@ import useWindowResize from "@/hooks/useWindowResize";
 import NonInteractiveHeader from "@/layouts/header";
 import RadioGroup from "@/components/styledRadioGroup";
 import Drawer from "@/features/drawer";
+import { socket } from "@/socket";
 
 import { fabric } from "fabric";
 import { useEffect, useRef, useState } from "react";
@@ -13,6 +14,12 @@ function Editor() {
   const { windowHeight, windowWidth } = useWindowResize();
 
   const [testOption, setTestOption] = useState(0);
+
+  function objectAddHandler() {
+    // const obj = fabricInst?.getActiveObject();
+
+    socket.emit("objet:added", JSON.stringify(fabricInst?.toDatalessJSON()));
+  }
 
   useEffect(() => {
     const temp = new fabric.Canvas(canvasRef.current, {
@@ -35,11 +42,15 @@ function Editor() {
     fabricInst?.setHeight(windowHeight);
   }, [windowHeight, windowWidth]);
 
-  function objectAddHandler() {
-    const obj = fabricInst?.getActiveObject();
-
-    console.log(obj?.toJSON(["id"]));
-  }
+  useEffect(() => {
+    if (fabricInst) {
+      socket.on("objet:added", (str) => {
+        fabricInst.loadFromJSON(str, () => {
+          fabricInst.renderAll();
+        });
+      });
+    }
+  }, [fabricInst]);
 
   function testHandler(arg) {
     setTestOption(arg);
