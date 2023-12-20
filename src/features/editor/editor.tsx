@@ -18,7 +18,10 @@ function Editor() {
   function objectAddHandler() {
     // const obj = fabricInst?.getActiveObject();
 
-    socket.emit("objet:added", JSON.stringify(fabricInst?.toDatalessJSON()));
+    socket.emit(
+      "objet:added",
+      JSON.stringify(fabricInst?.toDatalessJSON(["id"]))
+    );
   }
 
   useEffect(() => {
@@ -48,6 +51,35 @@ function Editor() {
         fabricInst.loadFromJSON(str, () => {
           fabricInst.renderAll();
         });
+      });
+    }
+  }, [fabricInst]);
+
+  useEffect(() => {
+    if (fabricInst) {
+      fabricInst.on("object:moving", (e: fabric.IEvent<MouseEvent>) => {
+        const json = e.target?.toJSON(["id"]);
+
+        socket.emit("moving", json);
+      });
+    }
+  }, [fabricInst]);
+
+  useEffect(() => {
+    if (fabricInst) {
+      socket.on("moving", (json) => {
+        const id = json.id;
+        const object = fabricInst._objects.find((obj) => obj.id === id);
+
+        if (object) {
+          object.set({
+            left: json.left,
+            top: json.top,
+          });
+
+          object.setCoords();
+          fabricInst.renderAll();
+        }
       });
     }
   }, [fabricInst]);

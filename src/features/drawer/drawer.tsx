@@ -287,7 +287,10 @@ function Drawer({
     }
 
     return () => {
-      fabricInst?.off();
+      // fabricInst?.off();
+      fabricInst?.off("mouse:down");
+      fabricInst?.off("mouse:move");
+      fabricInst?.off("mouse:up");
     };
   }, [fabricInst, drawOption]);
 
