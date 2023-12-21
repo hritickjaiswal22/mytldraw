@@ -90,6 +90,13 @@ function Drawer({
         Object.assign(obj, { id: `${generateUUID()}-circle` });
         break;
 
+      case DrawOptions.LINE:
+        obj = new fabric.Line([e.x, e.y, e.x, e.y], {
+          ...ObjectBaseOptions,
+        });
+        Object.assign(obj, { id: `${generateUUID()}-line` });
+        break;
+
       default:
         break;
     }
@@ -220,6 +227,20 @@ function Drawer({
     arrowTriangle.current = null;
   }
 
+  function resizeLine({ e }: fabric.IEvent<MouseEvent>) {
+    const line: fabric.Line = fabricInst?.getActiveObject();
+
+    if (line) {
+      line.set({
+        x2: e.x,
+        y2: e.y,
+      });
+
+      line.setCoords();
+      fabricInst?.renderAll();
+    }
+  }
+
   useEffect(() => {
     if (fabricInst && drawOption !== DrawOptions.NONE) {
       // MouseDown Event Handler
@@ -253,6 +274,10 @@ function Drawer({
 
             case DrawOptions.ARROW:
               resizeArrow(e);
+              break;
+
+            case DrawOptions.LINE:
+              resizeLine(e);
               break;
 
             default:
