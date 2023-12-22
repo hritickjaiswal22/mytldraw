@@ -7,13 +7,16 @@ import { socket } from "@/socket";
 import { fabric } from "fabric";
 import { useEffect, useRef, useState } from "react";
 import { Circle } from "react-feather";
+import { DrawOptions } from "@/utils/drawOptions";
+
+const PRIMARYPURPLE = "#5b57d1";
 
 function Editor() {
   const [fabricInst, setFabricInst] = useState<fabric.Canvas | null>(null);
   const canvasRef = useRef(null);
   const { windowHeight, windowWidth } = useWindowResize();
 
-  const [testOption, setTestOption] = useState(0);
+  const [drawOption, setDrawOption] = useState(0);
 
   function objectAddHandler() {
     // const obj = fabricInst?.getActiveObject();
@@ -31,11 +34,14 @@ function Editor() {
     });
     fabric.Object.prototype.cornerStyle = "circle";
     fabric.Object.prototype.cornerSize = 8;
-    fabric.Object.prototype.cornerStrokeColor = "#5b57d1";
+    fabric.Object.prototype.cornerStrokeColor = PRIMARYPURPLE;
     fabric.Object.prototype.cornerColor = "white";
     fabric.Object.prototype.transparentCorners = false;
-    fabric.Object.prototype.borderColor = "#5b57d1";
+    fabric.Object.prototype.borderColor = PRIMARYPURPLE;
     fabric.Object.prototype.padding = 4;
+
+    temp.freeDrawingBrush.width = 5;
+    temp.freeDrawingBrush.color = PRIMARYPURPLE;
 
     setFabricInst(temp);
   }, []);
@@ -84,8 +90,15 @@ function Editor() {
     }
   }, [fabricInst]);
 
+  useEffect(() => {
+    if (fabricInst) {
+      if (drawOption === DrawOptions.FREEHAND) fabricInst.isDrawingMode = true;
+      else fabricInst.isDrawingMode = false;
+    }
+  }, [fabricInst, drawOption]);
+
   function testHandler(arg) {
-    setTestOption(arg);
+    setDrawOption(arg);
   }
 
   return (
@@ -124,13 +137,18 @@ function Editor() {
               content: <Circle width={10} height={10} />,
               value: "6",
             },
+            {
+              id: "7",
+              content: <Circle width={10} height={10} />,
+              value: "7",
+            },
           ]}
         />
       </NonInteractiveHeader>
       <main>
         <Drawer
           objectAddHandler={objectAddHandler}
-          drawOption={testOption}
+          drawOption={drawOption}
           fabricInst={fabricInst}
         >
           <canvas ref={canvasRef}></canvas>

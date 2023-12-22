@@ -302,6 +302,12 @@ function Drawer({
             });
           } else if (drawOption === DrawOptions.ARROW) {
             arrowMouseUpHandler();
+          } else if (drawOption === DrawOptions.FREEHAND) {
+            const pathObj = fabricInst._objects[fabricInst._objects.length - 1];
+
+            if (pathObj) {
+              Object.assign(pathObj, { id: `${generateUUID()}-freehand` });
+            }
           }
 
           isMouseDown.current = false;
