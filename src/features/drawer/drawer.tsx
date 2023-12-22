@@ -1,5 +1,5 @@
 import { DrawOptions } from "@/utils/drawOptions";
-import { ObjectBaseOptions } from "@/utils/baseObjectOptions";
+import { ObjectBaseOptions, BaseTextOptions } from "@/utils/baseObjectOptions";
 import { generateUUID } from "@/utils/generateUUID";
 
 import { fabric } from "fabric";
@@ -95,6 +95,16 @@ function Drawer({
           ...ObjectBaseOptions,
         });
         Object.assign(obj, { id: `${generateUUID()}-line` });
+        break;
+
+      case DrawOptions.TEXT:
+        fabricInst?.add(
+          new fabric.Text("Hello World", {
+            ...BaseTextOptions,
+          })
+        );
+        console.log(fabricInst?._objects);
+
         break;
 
       default:

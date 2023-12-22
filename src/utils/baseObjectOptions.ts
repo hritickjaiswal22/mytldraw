@@ -7,4 +7,8 @@ const ObjectBaseOptions: fabric.IObjectOptions = {
   angle: 0,
 };
 
-export { ObjectBaseOptions };
+const BaseTextOptions: fabric.ITextOptions = {
+  fontFamily: "Virgil",
+};
+
+export { ObjectBaseOptions, BaseTextOptions };

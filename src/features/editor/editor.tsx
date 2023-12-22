@@ -3,11 +3,12 @@ import NonInteractiveHeader from "@/layouts/header";
 import RadioGroup from "@/components/styledRadioGroup";
 import Drawer from "@/features/drawer";
 import { socket } from "@/socket";
+import { DrawOptions } from "@/utils/drawOptions";
+import { BaseTextOptions } from "@/utils/baseObjectOptions";
 
 import { fabric } from "fabric";
 import { useEffect, useRef, useState } from "react";
 import { Circle } from "react-feather";
-import { DrawOptions } from "@/utils/drawOptions";
 
 const PRIMARYPURPLE = "#5b57d1";
 
@@ -41,7 +42,16 @@ function Editor() {
     fabric.Object.prototype.padding = 4;
 
     temp.freeDrawingBrush.width = 5;
-    temp.freeDrawingBrush.color = PRIMARYPURPLE;
+    temp.freeDrawingBrush.color = "#000";
+
+    // To load "Virgil" font without installing fontFaceObserver
+    const dummyText = new fabric.Text("", {
+      ...BaseTextOptions,
+      fontSize: 0,
+    });
+    temp.add(dummyText);
+    temp.renderAll();
+    temp.remove(dummyText);
 
     setFabricInst(temp);
   }, []);
@@ -141,6 +151,11 @@ function Editor() {
               id: "7",
               content: <Circle width={10} height={10} />,
               value: "7",
+            },
+            {
+              id: "8",
+              content: <Circle width={10} height={10} />,
+              value: "8",
             },
           ]}
         />
