@@ -28,6 +28,7 @@ function Editor() {
   }
 
   async function onImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    setImageBase64Url(null);
     const imageFile = (e as any).target.files[0];
     const options = {
       maxSizeMB: 0.1,
@@ -37,16 +38,19 @@ function Editor() {
 
     if (fabricInst) {
       try {
+        fabricInst.defaultCursor = "wait";
         const compressedFile = await imageCompression(imageFile, options);
         const reader = new FileReader();
 
         reader.onload = function (event) {
           setImageBase64Url((event as any).target.result);
           setDrawOption(DrawOptions.IMAGE);
+          fabricInst.defaultCursor = "default";
         };
 
         reader.readAsDataURL(compressedFile);
       } catch (error) {
+        fabricInst.defaultCursor = "default";
         console.log(error);
       }
     }
