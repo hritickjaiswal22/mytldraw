@@ -9,6 +9,7 @@ import { BaseTextOptions } from "@/utils/baseObjectOptions";
 import { fabric } from "fabric";
 import { useEffect, useRef, useState } from "react";
 import { Circle } from "react-feather";
+import imageCompression from "browser-image-compression";
 
 const PRIMARYPURPLE = "#5b57d1";
 
@@ -29,17 +30,28 @@ function Editor() {
     );
   }
 
-  function onImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+  async function onImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const imageFile = (e as any).target.files[0];
+    const options = {
+      maxSizeMB: 0.1,
+      maxWidthOrHeight: 720,
+      useWebWorker: true,
+    };
+
     if (fabricInst) {
-      const reader = new FileReader();
+      try {
+        const compressedFile = await imageCompression(imageFile, options);
+        const reader = new FileReader();
 
-      reader.onload = function (event) {
-        setImageBase64Url((event as any).target.result);
-        setDrawOption(DrawOptions.IMAGE);
-      };
+        reader.onload = function (event) {
+          setImageBase64Url((event as any).target.result);
+          setDrawOption(DrawOptions.IMAGE);
+        };
 
-      if (e && e.target && e.target.files)
-        reader.readAsDataURL(e.target.files[0]);
+        reader.readAsDataURL(compressedFile);
+      } catch (error) {
+        console.log(error);
+      }
     }
   }
 
