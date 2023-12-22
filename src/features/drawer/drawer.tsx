@@ -98,13 +98,12 @@ function Drawer({
         break;
 
       case DrawOptions.TEXT:
-        fabricInst?.add(
-          new fabric.Text("Hello World", {
-            ...BaseTextOptions,
-          })
-        );
-        console.log(fabricInst?._objects);
-
+        obj = new fabric.Text("Edit Text", {
+          ...BaseTextOptions,
+          left: e.x,
+          top: e.y,
+        });
+        Object.assign(obj, { id: `${generateUUID()}-text` });
         break;
 
       default:
