@@ -22,12 +22,9 @@ function Editor() {
   const [imageBase64Url, setImageBase64Url] = useState<string | null>(null);
 
   function objectAddHandler() {
-    // const obj = fabricInst?.getActiveObject();
+    const obj = fabricInst?.getActiveObject();
 
-    socket.emit(
-      "objet:added",
-      JSON.stringify(fabricInst?.toDatalessJSON(["id"]))
-    );
+    socket.emit("objet:added", obj?.toJSON(["id"]));
   }
 
   async function onImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -91,9 +88,16 @@ function Editor() {
   useEffect(() => {
     if (fabricInst) {
       socket.on("objet:added", (str) => {
-        fabricInst.loadFromJSON(str, () => {
-          fabricInst.renderAll();
-        });
+        fabric.util.enlivenObjects(
+          [str],
+          (objs: any) => {
+            objs.forEach((item: fabric.Object) => {
+              fabricInst.add(item);
+            });
+            fabricInst.renderAll();
+          },
+          ""
+        );
       });
     }
   }, [fabricInst]);

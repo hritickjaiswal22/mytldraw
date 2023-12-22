@@ -168,6 +168,7 @@ function Drawer({
           left: e.x,
           top: e.y,
         });
+        Object.assign(image, { id: `${generateUUID()}-image` });
 
         fabricInst?.add(image);
         fabricInst?.setActiveObject(image);
@@ -340,6 +341,7 @@ function Drawer({
 
             if (pathObj) {
               Object.assign(pathObj, { id: `${generateUUID()}-freehand` });
+              fabricInst.setActiveObject(pathObj);
             }
           }
 
