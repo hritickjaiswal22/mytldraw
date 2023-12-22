@@ -18,6 +18,7 @@ function Editor() {
   const { windowHeight, windowWidth } = useWindowResize();
 
   const [drawOption, setDrawOption] = useState(0);
+  const [imageBase64Url, setImageBase64Url] = useState<string | null>(null);
 
   function objectAddHandler() {
     // const obj = fabricInst?.getActiveObject();
@@ -26,6 +27,20 @@ function Editor() {
       "objet:added",
       JSON.stringify(fabricInst?.toDatalessJSON(["id"]))
     );
+  }
+
+  function onImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    if (fabricInst) {
+      const reader = new FileReader();
+
+      reader.onload = function (event) {
+        setImageBase64Url((event as any).target.result);
+        setDrawOption(DrawOptions.IMAGE);
+      };
+
+      if (e && e.target && e.target.files)
+        reader.readAsDataURL(e.target.files[0]);
+    }
   }
 
   useEffect(() => {
@@ -85,7 +100,9 @@ function Editor() {
     if (fabricInst) {
       socket.on("moving", (json) => {
         const id = json.id;
-        const object = fabricInst._objects.find((obj) => obj.id === id);
+        const object = fabricInst._objects.find(
+          (obj) => (obj as any).id === id
+        );
 
         if (object) {
           object.set({
@@ -159,12 +176,20 @@ function Editor() {
             },
           ]}
         />
+        <input
+          className="pointer-events-auto"
+          onChange={onImageUpload}
+          type="file"
+          accept="image/png, image/gif, image/jpeg"
+        />
       </NonInteractiveHeader>
       <main>
         <Drawer
           objectAddHandler={objectAddHandler}
           drawOption={drawOption}
           fabricInst={fabricInst}
+          imageBase64Url={imageBase64Url}
+          setImageBase64Url={setImageBase64Url}
         >
           <canvas ref={canvasRef}></canvas>
         </Drawer>

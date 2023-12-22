@@ -10,6 +10,8 @@ interface DrawerPropTypes {
   drawOption: DrawOptions;
   children: ReactNode;
   objectAddHandler: () => void;
+  imageBase64Url: string | null;
+  setImageBase64Url: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const _FabricCalcArrowAngle = function (
@@ -41,6 +43,8 @@ function Drawer({
   fabricInst,
   children,
   objectAddHandler,
+  imageBase64Url,
+  setImageBase64Url,
 }: DrawerPropTypes) {
   const top = useRef(0);
   const left = useRef(0);
@@ -154,6 +158,25 @@ function Drawer({
     fabricInst?.renderAll();
   }
 
+  const dropImage = ({ e }: fabric.IEvent<MouseEvent>) => {
+    if (imageBase64Url) {
+      const imgObj = new Image();
+      imgObj.src = imageBase64Url;
+      imgObj.onload = () => {
+        const image = new fabric.Image(imgObj, {
+          angle: 0,
+          left: e.x,
+          top: e.y,
+        });
+
+        fabricInst?.add(image);
+        fabricInst?.setActiveObject(image);
+        fabricInst?.renderAll();
+        setImageBase64Url(null);
+      };
+    }
+  };
+
   // Resize
   function resizeRect({ e }: fabric.IEvent<MouseEvent>) {
     const rect = fabricInst?.getActiveObject();
@@ -262,6 +285,7 @@ function Drawer({
         fabricInst.selection = false;
 
         if (drawOption === DrawOptions.ARROW) initializeArrow(e);
+        else if (drawOption === DrawOptions.IMAGE) dropImage(e);
         else initializeObject(e);
       });
 
@@ -332,7 +356,7 @@ function Drawer({
       fabricInst?.off("mouse:move");
       fabricInst?.off("mouse:up");
     };
-  }, [fabricInst, drawOption]);
+  }, [fabricInst, drawOption, imageBase64Url]);
 
   return <>{children}</>;
 }
