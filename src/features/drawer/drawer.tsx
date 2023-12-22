@@ -98,7 +98,7 @@ function Drawer({
         break;
 
       case DrawOptions.TEXT:
-        obj = new fabric.Text("Edit Text", {
+        obj = new fabric.IText("Edit Text", {
           ...BaseTextOptions,
           left: e.x,
           top: e.y,
