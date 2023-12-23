@@ -49,7 +49,7 @@ function Drawer({
   const top = useRef(0);
   const left = useRef(0);
   const isMouseDown = useRef(false);
-  const arrowTriangle = useRef(null);
+  const arrowTriangle = useRef<null | fabric.Triangle>(null);
   const arrowDeltaX = useRef(0);
   const arrowDeltaY = useRef(0);
 
@@ -123,7 +123,7 @@ function Drawer({
 
   function initializeArrow({ e }: fabric.IEvent<MouseEvent>) {
     const points = [e.x, e.y, e.x, e.y];
-    const line = new fabric.Line(points, {
+    const line: any = new fabric.Line(points, {
       ...ObjectBaseOptions,
       originX: "center",
       originY: "center",
@@ -227,14 +227,14 @@ function Drawer({
   }
 
   function resizeArrow({ e }: fabric.IEvent<MouseEvent>) {
-    const line = fabricInst?.getActiveObject();
+    const line: any = fabricInst?.getActiveObject();
 
     if (line) {
       line.set({
         x2: e.x,
         y2: e.y,
       });
-      arrowTriangle.current.set({
+      arrowTriangle?.current?.set({
         left: e.x + arrowDeltaX.current,
         top: e.y + arrowDeltaY.current,
         angle: _FabricCalcArrowAngle(line.x1, line.y1, line.x2, line.y2),
