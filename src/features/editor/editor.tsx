@@ -2,7 +2,6 @@ import useWindowResize from "@/hooks/useWindowResize";
 import NonInteractiveHeader from "@/layouts/header";
 import RadioGroup from "@/components/styledRadioGroup";
 import Drawer from "@/features/drawer";
-import { socket } from "@/socket";
 import { DrawOptions } from "@/utils/drawOptions";
 import { BaseTextOptions } from "@/utils/baseObjectOptions";
 import { Button } from "@/components/ui/button";
@@ -13,6 +12,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import Dispatcher from "@/features/dispatcher";
+import Receiver from "@/features/receiver";
 
 import { fabric } from "fabric";
 import { useEffect, useRef, useState } from "react";
@@ -41,12 +42,6 @@ function Editor() {
 
   const [drawOption, setDrawOption] = useState(0);
   const [imageBase64Url, setImageBase64Url] = useState<string | null>(null);
-
-  function objectAddHandler() {
-    const obj = fabricInst?.getActiveObject();
-
-    socket.emit("objet:added", obj?.toJSON(["id"]));
-  }
 
   async function onImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     setImageBase64Url(null);
@@ -109,131 +104,6 @@ function Editor() {
     fabricInst?.setWidth(windowWidth);
     fabricInst?.setHeight(windowHeight);
   }, [windowHeight, windowWidth]);
-
-  useEffect(() => {
-    if (fabricInst) {
-      socket.on("objet:added", (str) => {
-        fabric.util.enlivenObjects(
-          [str],
-          (objs: any) => {
-            objs.forEach((item: fabric.Object) => {
-              fabricInst.add(item);
-            });
-            fabricInst.renderAll();
-          },
-          ""
-        );
-      });
-    }
-  }, [fabricInst]);
-
-  useEffect(() => {
-    if (fabricInst) {
-      fabricInst.on("object:moving", (e: fabric.IEvent<MouseEvent>) => {
-        const json = e.target?.toJSON(["id"]);
-
-        socket.emit("moving", json);
-      });
-    }
-
-    return () => {
-      fabricInst?.off("object:moving");
-    };
-  }, [fabricInst]);
-
-  useEffect(() => {
-    if (fabricInst) {
-      fabricInst.on("object:scaling", (e: fabric.IEvent<MouseEvent>) => {
-        const json = e.target?.toJSON(["id"]);
-
-        socket.emit("scaling", json);
-      });
-    }
-
-    return () => {
-      fabricInst?.off("object:scaling");
-    };
-  }, [fabricInst]);
-
-  useEffect(() => {
-    if (fabricInst) {
-      fabricInst.on("object:rotating", (e: fabric.IEvent<MouseEvent>) => {
-        const json = e.target?.toJSON(["id"]);
-
-        socket.emit("rotating", json);
-      });
-    }
-
-    return () => {
-      fabricInst?.off("object:rotating");
-    };
-  }, [fabricInst]);
-
-  useEffect(() => {
-    if (fabricInst) {
-      socket.on("moving", (json) => {
-        const id = json.id;
-        const object = fabricInst._objects.find(
-          (obj) => (obj as any).id === id
-        );
-
-        if (object) {
-          object.set({
-            left: json.left,
-            top: json.top,
-          });
-
-          object.setCoords();
-          fabricInst.renderAll();
-        }
-      });
-    }
-  }, [fabricInst]);
-
-  useEffect(() => {
-    if (fabricInst) {
-      socket.on("scaling", (json) => {
-        const id = json.id;
-        const object = fabricInst._objects.find(
-          (obj) => (obj as any).id === id
-        );
-
-        if (object) {
-          object.set({
-            left: json.left,
-            top: json.top,
-            scaleX: json.scaleX,
-            scaleY: json.scaleY,
-          });
-
-          object.setCoords();
-          fabricInst.renderAll();
-        }
-      });
-    }
-  }, [fabricInst]);
-
-  useEffect(() => {
-    if (fabricInst) {
-      socket.on("rotating", (json) => {
-        const id = json.id;
-        const object = fabricInst._objects.find(
-          (obj) => (obj as any).id === id
-        );
-
-        if (object) {
-          object.set({
-            angle: json.angle,
-            left: json.left,
-            top: json.top,
-          });
-
-          object.setCoords();
-          fabricInst.renderAll();
-        }
-      });
-    }
-  }, [fabricInst]);
 
   useEffect(() => {
     if (fabricInst) {
@@ -341,15 +211,20 @@ function Editor() {
         <div></div>
       </NonInteractiveHeader>
       <main>
-        <Drawer
-          objectAddHandler={objectAddHandler}
-          drawOption={drawOption}
-          fabricInst={fabricInst}
-          imageBase64Url={imageBase64Url}
-          setImageBase64Url={setImageBase64Url}
-        >
-          <canvas ref={canvasRef}></canvas>
-        </Drawer>
+        <Receiver fabricInst={fabricInst}>
+          {/* Dispatcher must be the direct parent of Drawer as it is passing down
+          objectAddHandler as props to Drawer */}
+          <Dispatcher fabricInst={fabricInst}>
+            <Drawer
+              drawOption={drawOption}
+              fabricInst={fabricInst}
+              imageBase64Url={imageBase64Url}
+              setImageBase64Url={setImageBase64Url}
+            >
+              <canvas ref={canvasRef}></canvas>
+            </Drawer>
+          </Dispatcher>
+        </Receiver>
       </main>
     </>
   );
