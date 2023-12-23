@@ -5,10 +5,18 @@ import Drawer from "@/features/drawer";
 import { socket } from "@/socket";
 import { DrawOptions } from "@/utils/drawOptions";
 import { BaseTextOptions } from "@/utils/baseObjectOptions";
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 import { fabric } from "fabric";
 import { useEffect, useRef, useState } from "react";
-import { Circle } from "react-feather";
+import { Circle, Menu, Image, Trash2 } from "react-feather";
 import imageCompression from "browser-image-compression";
 
 const PRIMARYPURPLE = "#5b57d1";
@@ -151,6 +159,29 @@ function Editor() {
   return (
     <>
       <NonInteractiveHeader>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              className="pointer-events-auto w-[36px] h-[36px] rounded-[10px] p-[10px] flex justify-center items-center bg-[#ececf4] hover:bg-[#f1f0ff]"
+              variant="outline"
+            >
+              <Menu width={16} height={16} />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56 translate-x-4 border-0 shadow-none border-none">
+            <DropdownMenuGroup>
+              <DropdownMenuItem className="flex gap-3 font-normal cursor-pointer hover:bg-[#f1f0ff] text-xs">
+                <Image width={16} height={16} />
+                Export image
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex gap-3 font-normal cursor-pointer hover:bg-[#f1f0ff] text-xs">
+                <Trash2 width={16} height={16} />
+                Reset the canvas
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
         <RadioGroup
           onClickHandler={testHandler}
           options={[
