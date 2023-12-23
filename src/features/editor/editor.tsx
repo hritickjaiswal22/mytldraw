@@ -44,6 +44,14 @@ const STATIC_STROKE_COLORS = [
   "#f08c00",
 ];
 
+const STATIC_BACKGROUND_COLORS = [
+  "transparent",
+  "#ffc9c9",
+  "#b2f2bb",
+  "#a5d8ff",
+  "#ffec99",
+];
+
 function Editor() {
   const [fabricInst, setFabricInst] = useState<fabric.Canvas | null>(null);
   const canvasRef = useRef(null);
@@ -127,6 +135,7 @@ function Editor() {
 
   return (
     <>
+      {/* Header */}
       <NonInteractiveHeader>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -219,6 +228,8 @@ function Editor() {
 
         <div></div>
       </NonInteractiveHeader>
+
+      {/* Main Canvas */}
       <main>
         <Receiver fabricInst={fabricInst}>
           {/* Dispatcher must be the direct parent of Drawer as it is passing down
@@ -235,28 +246,59 @@ function Editor() {
           </Dispatcher>
         </Receiver>
       </main>
+
+      {/* Options Sidebar */}
       <section className="fixed z-50 left-4 top-20 p-2 rounded max-h-[782px] boxShadow">
-        <PanelColumnHeading>Stroke</PanelColumnHeading>
-        <div className="flex items-center p-0 py-1 gap-2">
-          {STATIC_STROKE_COLORS.map((color) => (
-            <button
-              className={`base w-[22px] h-[22px] rounded relative`}
-              style={{ backgroundColor: color }}
+        <div className="mb-3">
+          <PanelColumnHeading>Stroke</PanelColumnHeading>
+          <div className="flex items-center p-0 py-1 gap-2">
+            {STATIC_STROKE_COLORS.map((color, index) => (
+              <button
+                key={index}
+                className={`base w-[22px] h-[22px] rounded relative`}
+                style={{ backgroundColor: color }}
+              >
+                <div
+                  className={`absolute top-[-2px] left-[-2px] right-[-2px] bottom-[-2px] rounded hidden`}
+                  style={{
+                    boxShadow: "0 0 0 1px #4a47b1",
+                  }}
+                ></div>
+              </button>
+            ))}
+            <label
+              htmlFor="stroke-color-picker"
+              className="base cursor-pointer w-[26px] h-[26px] rounded bg-black"
             >
-              <div
-                className={`absolute top-[-2px] left-[-2px] right-[-2px] bottom-[-2px] rounded hidden`}
-                style={{
-                  boxShadow: "0 0 0 1px #4a47b1",
-                }}
-              ></div>
-            </button>
-          ))}
-          <label
-            htmlFor="stroke-color-picker"
-            className="base cursor-pointer w-[26px] h-[26px] rounded bg-black"
-          >
-            <input className="hidden" id="stroke-color-picker" type="color" />
-          </label>
+              <input className="hidden" id="stroke-color-picker" type="color" />
+            </label>
+          </div>
+        </div>
+
+        <div className="mb-3">
+          <PanelColumnHeading>Background</PanelColumnHeading>
+          <div className="flex items-center p-0 py-1 gap-2">
+            {STATIC_BACKGROUND_COLORS.map((color, index) => (
+              <button
+                key={index}
+                className={`base w-[22px] h-[22px] rounded relative`}
+                style={{ backgroundColor: color }}
+              >
+                <div
+                  className={`absolute top-[-2px] left-[-2px] right-[-2px] bottom-[-2px] rounded hidden`}
+                  style={{
+                    boxShadow: "0 0 0 1px #4a47b1",
+                  }}
+                ></div>
+              </button>
+            ))}
+            <label
+              htmlFor="stroke-color-picker"
+              className="base cursor-pointer w-[26px] h-[26px] rounded bg-black"
+            >
+              <input className="hidden" id="stroke-color-picker" type="color" />
+            </label>
+          </div>
         </div>
       </section>
     </>
