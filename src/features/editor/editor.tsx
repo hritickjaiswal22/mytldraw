@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Dispatcher from "@/features/dispatcher";
 import Receiver from "@/features/receiver";
+import PanelColumnHeading from "@/components/panelColumnHeading";
 
 import { fabric } from "fabric";
 import { useEffect, useRef, useState } from "react";
@@ -34,6 +35,14 @@ import imageCompression from "browser-image-compression";
 import { Label } from "@/components/ui/label";
 
 const PRIMARYPURPLE = "#5b57d1";
+
+const STATIC_STROKE_COLORS = [
+  "#1e1e1e",
+  "#e03131",
+  "#2f9e44",
+  "#1971c2",
+  "#f08c00",
+];
 
 function Editor() {
   const [fabricInst, setFabricInst] = useState<fabric.Canvas | null>(null);
@@ -128,7 +137,7 @@ function Editor() {
               <Menu width={16} height={16} />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56 translate-x-4 border-0 shadow-none border-none">
+          <DropdownMenuContent className="w-56 translate-x-4 border-0 border-none boxShadow">
             <DropdownMenuGroup>
               <DropdownMenuItem className="flex gap-3 font-normal cursor-pointer hover:bg-[#f1f0ff] text-xs">
                 <Image width={16} height={16} />
@@ -226,6 +235,30 @@ function Editor() {
           </Dispatcher>
         </Receiver>
       </main>
+      <section className="fixed z-50 left-4 top-20 p-2 rounded max-h-[782px] boxShadow">
+        <PanelColumnHeading>Stroke</PanelColumnHeading>
+        <div className="flex items-center p-0 py-1 gap-2">
+          {STATIC_STROKE_COLORS.map((color) => (
+            <button
+              className={`base w-[22px] h-[22px] rounded relative`}
+              style={{ backgroundColor: color }}
+            >
+              <div
+                className={`absolute top-[-2px] left-[-2px] right-[-2px] bottom-[-2px] rounded hidden`}
+                style={{
+                  boxShadow: "0 0 0 1px #4a47b1",
+                }}
+              ></div>
+            </button>
+          ))}
+          <label
+            htmlFor="stroke-color-picker"
+            className="base cursor-pointer w-[26px] h-[26px] rounded bg-black"
+          >
+            <input className="hidden" id="stroke-color-picker" type="color" />
+          </label>
+        </div>
+      </section>
     </>
   );
 }
