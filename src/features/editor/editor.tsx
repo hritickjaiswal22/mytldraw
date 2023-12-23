@@ -195,7 +195,7 @@ function Editor() {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <div className="pointer-events-none flex items-center gap-1 p-1 rounded bg-white">
+        <div className="pointer-events-none flex items-center gap-1 p-1 rounded bg-white boxShadow">
           <RadioGroup
             onClickHandler={optionHandler}
             options={[
