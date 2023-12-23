@@ -26,7 +26,7 @@ function StyledRadioGroup({
         <div
           key={id}
           className={`w-[36px] h-[36px] rounded-[10px] flex justify-center items-center hover:bg-[#f1f0ff] cursor-pointer ${
-            drawOption === i ? "bg-[#bebce5]" : "bg-white"
+            drawOption === i ? "bg-[#e0dfff]" : "bg-white"
           }`}
           onClick={() => onClickHandler(i)}
         >
