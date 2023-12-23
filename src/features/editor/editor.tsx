@@ -135,6 +135,24 @@ function Editor() {
         socket.emit("moving", json);
       });
     }
+
+    return () => {
+      fabricInst?.off("object:moving");
+    };
+  }, [fabricInst]);
+
+  useEffect(() => {
+    if (fabricInst) {
+      fabricInst.on("object:scaling", (e: fabric.IEvent<MouseEvent>) => {
+        const json = e.target?.toJSON(["id"]);
+
+        socket.emit("scaling", json);
+      });
+    }
+
+    return () => {
+      fabricInst?.off("object:scaling");
+    };
   }, [fabricInst]);
 
   useEffect(() => {
@@ -149,6 +167,29 @@ function Editor() {
           object.set({
             left: json.left,
             top: json.top,
+          });
+
+          object.setCoords();
+          fabricInst.renderAll();
+        }
+      });
+    }
+  }, [fabricInst]);
+
+  useEffect(() => {
+    if (fabricInst) {
+      socket.on("scaling", (json) => {
+        const id = json.id;
+        const object = fabricInst._objects.find(
+          (obj) => (obj as any).id === id
+        );
+
+        if (object) {
+          object.set({
+            left: json.left,
+            top: json.top,
+            scaleX: json.scaleX,
+            scaleY: json.scaleY,
           });
 
           object.setCoords();
