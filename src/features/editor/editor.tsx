@@ -16,8 +16,21 @@ import {
 
 import { fabric } from "fabric";
 import { useEffect, useRef, useState } from "react";
-import { Circle, Menu, Image, Trash2 } from "react-feather";
+import {
+  Menu,
+  Image,
+  Trash2,
+  MousePointer,
+  Square,
+  Triangle,
+  Circle,
+  ArrowRight,
+  Minus,
+  Edit2,
+  Type,
+} from "react-feather";
 import imageCompression from "browser-image-compression";
+import { Label } from "@/components/ui/label";
 
 const PRIMARYPURPLE = "#5b57d1";
 
@@ -152,8 +165,8 @@ function Editor() {
     }
   }, [fabricInst, drawOption]);
 
-  function testHandler(arg) {
-    setDrawOption(arg);
+  function optionHandler(option: number) {
+    setDrawOption(option);
   }
 
   return (
@@ -182,57 +195,73 @@ function Editor() {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <RadioGroup
-          onClickHandler={testHandler}
-          options={[
-            {
-              id: "1",
-              content: <Circle width={10} height={10} />,
-              value: "1",
-            },
-            {
-              id: "2",
-              content: <Circle width={10} height={10} />,
-              value: "2",
-            },
-            {
-              id: "3",
-              content: <Circle width={10} height={10} />,
-              value: "3",
-            },
-            {
-              id: "4",
-              content: <Circle width={10} height={10} />,
-              value: "4",
-            },
-            {
-              id: "5",
-              content: <Circle width={10} height={10} />,
-              value: "5",
-            },
-            {
-              id: "6",
-              content: <Circle width={10} height={10} />,
-              value: "6",
-            },
-            {
-              id: "7",
-              content: <Circle width={10} height={10} />,
-              value: "7",
-            },
-            {
-              id: "8",
-              content: <Circle width={10} height={10} />,
-              value: "8",
-            },
-          ]}
-        />
-        <input
-          className="pointer-events-auto"
-          onChange={onImageUpload}
-          type="file"
-          accept="image/png, image/gif, image/jpeg"
-        />
+        <div className="pointer-events-none flex items-center gap-1 p-1 rounded bg-white">
+          <RadioGroup
+            onClickHandler={optionHandler}
+            options={[
+              {
+                id: "1",
+                content: <MousePointer width={16} height={16} />,
+                value: "1",
+              },
+              {
+                id: "2",
+                content: <Square width={16} height={16} />,
+                value: "2",
+              },
+              {
+                id: "3",
+                content: <Triangle width={16} height={16} />,
+                value: "3",
+              },
+              {
+                id: "4",
+                content: <Circle width={16} height={16} />,
+                value: "4",
+              },
+              {
+                id: "5",
+                content: <ArrowRight width={16} height={16} />,
+                value: "5",
+              },
+              {
+                id: "6",
+                content: <Minus width={16} height={16} />,
+                value: "6",
+              },
+              {
+                id: "7",
+                content: <Edit2 width={16} height={16} />,
+                value: "7",
+              },
+              {
+                id: "8",
+                content: <Type width={16} height={16} />,
+                value: "8",
+              },
+            ]}
+            drawOption={drawOption}
+          />
+          <div className="pointer-events-auto">
+            <input
+              className="hidden"
+              onChange={onImageUpload}
+              type="file"
+              accept="image/png, image/gif, image/jpeg"
+              id="image-upload"
+            />
+            <Label
+              htmlFor="image-upload"
+              className={`w-[36px] h-[36px] rounded-[10px] flex justify-center items-center bg-white hover:bg-[#f1f0ff] cursor-pointer ${
+                drawOption === DrawOptions.IMAGE ? "bg-[#bebce5]" : "bg-white"
+              }`}
+            >
+              <Image width={16} height={16} />
+            </Label>
+          </div>
+        </div>
+
+        <div></div>
       </NonInteractiveHeader>
       <main>
         <Drawer

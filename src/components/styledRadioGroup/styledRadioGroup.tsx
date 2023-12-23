@@ -7,25 +7,26 @@ interface RadioType {
   id: string;
   value: string;
   content: ReactNode;
-  isActive?: boolean;
 }
 
 interface StyledRadioGroupPropTypes {
   options: Array<RadioType>;
-  onClickHandler: () => void;
+  onClickHandler: (index: number) => void;
+  drawOption: number;
 }
 
 function StyledRadioGroup({
   options,
   onClickHandler,
+  drawOption,
 }: StyledRadioGroupPropTypes) {
   return (
     <RadioGroup className="pointer-events-auto flex justify-between items-center gap-1">
-      {options.map(({ content, value, id, isActive }, i) => (
+      {options.map(({ content, value, id }, i) => (
         <div
           key={id}
-          className={`w-[36px] h-[36px] rounded-[10px] flex justify-center items-center bg-[#ececf4] hover:bg-[#f1f0ff] cursor-pointer ${
-            isActive ? "bg-[#bebce5]" : ""
+          className={`w-[36px] h-[36px] rounded-[10px] flex justify-center items-center hover:bg-[#f1f0ff] cursor-pointer ${
+            drawOption === i ? "bg-[#bebce5]" : "bg-white"
           }`}
           onClick={() => onClickHandler(i)}
         >
