@@ -15,6 +15,12 @@ import {
 import Dispatcher from "@/features/dispatcher";
 import Receiver from "@/features/receiver";
 import PanelColumnHeading from "@/components/panelColumnHeading";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 import { fabric } from "fabric";
 import { useEffect, useRef, useState } from "react";
@@ -34,24 +40,13 @@ import {
 } from "react-feather";
 import imageCompression from "browser-image-compression";
 import { Label } from "@/components/ui/label";
+import {
+  STATIC_BACKGROUND_COLORS,
+  STATIC_STROKE_COLORS,
+  TooltipDelayDuration,
+} from "@/utils/miscellaneous";
 
 const PRIMARYPURPLE = "#5b57d1";
-
-const STATIC_STROKE_COLORS = [
-  "#1e1e1e",
-  "#e03131",
-  "#2f9e44",
-  "#1971c2",
-  "#f08c00",
-];
-
-const STATIC_BACKGROUND_COLORS = [
-  "transparent",
-  "#ffc9c9",
-  "#b2f2bb",
-  "#a5d8ff",
-  "#ffec99",
-];
 
 function Editor() {
   const [fabricInst, setFabricInst] = useState<fabric.Canvas | null>(null);
@@ -173,62 +168,81 @@ function Editor() {
                 id: "1",
                 content: <MousePointer width={16} height={16} />,
                 value: "1",
+                tooltipText: "Selection",
               },
               {
                 id: "2",
                 content: <Square width={16} height={16} />,
                 value: "2",
+                tooltipText: "Rectangle",
               },
               {
                 id: "3",
                 content: <Triangle width={16} height={16} />,
                 value: "3",
+                tooltipText: "Triangle",
               },
               {
                 id: "4",
                 content: <Circle width={16} height={16} />,
                 value: "4",
+                tooltipText: "Circle",
               },
               {
                 id: "5",
                 content: <ArrowRight width={16} height={16} />,
                 value: "5",
+                tooltipText: "Arrow",
               },
               {
                 id: "6",
                 content: <Minus width={16} height={16} />,
                 value: "6",
+                tooltipText: "Line",
               },
               {
                 id: "7",
                 content: <Edit2 width={16} height={16} />,
                 value: "7",
+                tooltipText: "Draw",
               },
               {
                 id: "8",
                 content: <Type width={16} height={16} />,
                 value: "8",
+                tooltipText: "Text",
               },
             ]}
             drawOption={drawOption}
           />
-          <div className="pointer-events-auto">
-            <input
-              className="hidden"
-              onChange={onImageUpload}
-              type="file"
-              accept="image/png, image/gif, image/jpeg"
-              id="image-upload"
-            />
-            <Label
-              htmlFor="image-upload"
-              className={`base bg-white hover:bg-[#f1f0ff] cursor-pointer ${
-                drawOption === DrawOptions.IMAGE ? "bg-[#bebce5]" : "bg-white"
-              }`}
-            >
-              <Image width={16} height={16} />
-            </Label>
-          </div>
+          <TooltipProvider delayDuration={TooltipDelayDuration}>
+            <Tooltip>
+              <TooltipTrigger>
+                <div className="pointer-events-auto">
+                  <input
+                    className="hidden"
+                    onChange={onImageUpload}
+                    type="file"
+                    accept="image/png, image/gif, image/jpeg"
+                    id="image-upload"
+                  />
+                  <Label
+                    htmlFor="image-upload"
+                    className={`base bg-white hover:bg-[#f1f0ff] cursor-pointer ${
+                      drawOption === DrawOptions.IMAGE
+                        ? "bg-[#bebce5]"
+                        : "bg-white"
+                    }`}
+                  >
+                    <Image width={16} height={16} />
+                  </Label>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Insert image</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
 
         <div></div>
@@ -258,18 +272,27 @@ function Editor() {
           <PanelColumnHeading>Stroke</PanelColumnHeading>
           <div className="flex items-center p-0 py-1 gap-2">
             {STATIC_STROKE_COLORS.map((color, index) => (
-              <button
-                key={index}
-                className={`base w-[22px] h-[22px] rounded relative`}
-                style={{ backgroundColor: color }}
-              >
-                <div
-                  className={`absolute top-[-2px] left-[-2px] right-[-2px] bottom-[-2px] rounded hidden`}
-                  style={{
-                    boxShadow: "0 0 0 1px #4a47b1",
-                  }}
-                ></div>
-              </button>
+              <TooltipProvider key={index}>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <button
+                      key={index}
+                      className={`base w-[22px] h-[22px] rounded relative`}
+                      style={{ backgroundColor: color }}
+                    >
+                      <div
+                        className={`absolute top-[-2px] left-[-2px] right-[-2px] bottom-[-2px] rounded hidden`}
+                        style={{
+                          boxShadow: "0 0 0 1px #4a47b1",
+                        }}
+                      ></div>
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{color}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             ))}
             <label
               htmlFor="stroke-color-picker"
@@ -284,18 +307,27 @@ function Editor() {
           <PanelColumnHeading>Background</PanelColumnHeading>
           <div className="flex items-center p-0 py-1 gap-2">
             {STATIC_BACKGROUND_COLORS.map((color, index) => (
-              <button
-                key={index}
-                className={`base w-[22px] h-[22px] rounded relative`}
-                style={{ backgroundColor: color }}
-              >
-                <div
-                  className={`absolute top-[-2px] left-[-2px] right-[-2px] bottom-[-2px] rounded hidden`}
-                  style={{
-                    boxShadow: "0 0 0 1px #4a47b1",
-                  }}
-                ></div>
-              </button>
+              <TooltipProvider key={index}>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <button
+                      key={index}
+                      className={`base w-[22px] h-[22px] rounded relative`}
+                      style={{ backgroundColor: color }}
+                    >
+                      <div
+                        className={`absolute top-[-2px] left-[-2px] right-[-2px] bottom-[-2px] rounded hidden`}
+                        style={{
+                          boxShadow: "0 0 0 1px #4a47b1",
+                        }}
+                      ></div>
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{color}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             ))}
             <label
               htmlFor="stroke-color-picker"
@@ -315,16 +347,19 @@ function Editor() {
                 id: "stroke-width-1",
                 content: <Bold width={16} height={16} />,
                 value: "stroke-width-1",
+                tooltipText: "Thin",
               },
               {
                 id: "stroke-width-2",
                 content: <Bold width={16} height={16} />,
                 value: "stroke-width-2",
+                tooltipText: "Bold",
               },
               {
                 id: "stroke-width-3",
                 content: <Bold width={16} height={16} />,
                 value: "stroke-width-3",
+                tooltipText: "Extra bold",
               },
             ]}
             drawOption={0}
