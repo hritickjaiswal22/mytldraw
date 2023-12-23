@@ -30,6 +30,7 @@ import {
   Minus,
   Edit2,
   Type,
+  Bold,
 } from "react-feather";
 import imageCompression from "browser-image-compression";
 import { Label } from "@/components/ui/label";
@@ -131,6 +132,10 @@ function Editor() {
 
   function optionHandler(option: number) {
     setDrawOption(option);
+  }
+
+  function strokeWidthChangeHandler(option: number) {
+    console.log(option);
   }
 
   return (
@@ -299,6 +304,31 @@ function Editor() {
               <input className="hidden" id="stroke-color-picker" type="color" />
             </label>
           </div>
+        </div>
+
+        <div className="mb-3">
+          <PanelColumnHeading>Stroke width</PanelColumnHeading>
+          <RadioGroup
+            onClickHandler={strokeWidthChangeHandler}
+            options={[
+              {
+                id: "stroke-width-1",
+                content: <Bold width={16} height={16} />,
+                value: "stroke-width-1",
+              },
+              {
+                id: "stroke-width-2",
+                content: <Bold width={16} height={16} />,
+                value: "stroke-width-2",
+              },
+              {
+                id: "stroke-width-3",
+                content: <Bold width={16} height={16} />,
+                value: "stroke-width-3",
+              },
+            ]}
+            drawOption={0}
+          />
         </div>
       </section>
     </>

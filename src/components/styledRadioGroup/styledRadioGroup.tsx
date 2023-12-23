@@ -21,7 +21,7 @@ function StyledRadioGroup({
   drawOption,
 }: StyledRadioGroupPropTypes) {
   return (
-    <RadioGroup className="pointer-events-auto flex justify-between items-center gap-1">
+    <RadioGroup className="pointer-events-auto flex items-center gap-1">
       {options.map(({ content, value, id }, i) => (
         <div
           key={id}
