@@ -145,9 +145,8 @@ function Drawer({
       angle: -45,
       width: 20,
       height: 20,
-      id: "arrow_triangle",
-      uuid: line.uuid,
     });
+    Object.assign(triangle, { id: "arrow_triangle", uuid: line.uuid });
     arrowTriangle.current = triangle;
     arrowDeltaX.current = deltaX;
     arrowDeltaY.current = deltaY;
@@ -246,13 +245,16 @@ function Drawer({
 
   function arrowMouseUpHandler() {
     const group = new fabric.Group(
-      [fabricInst?.getActiveObject(), arrowTriangle.current],
+      [(fabricInst as any)?.getActiveObject(), arrowTriangle.current],
       {
         lockScalingFlip: true,
       }
     );
     Object.assign(group, { id: `${generateUUID()}-arrow` });
-    fabricInst?.remove(fabricInst?.getActiveObject(), arrowTriangle.current); // removing old object
+    fabricInst?.remove(
+      (fabricInst as any)?.getActiveObject(),
+      (arrowTriangle as any).current
+    ); // removing old object
     fabricInst?.add(group);
     fabricInst?.setActiveObject(group);
     arrowDeltaX.current = 0;
@@ -261,7 +263,7 @@ function Drawer({
   }
 
   function resizeLine({ e }: fabric.IEvent<MouseEvent>) {
-    const line: fabric.Line = fabricInst?.getActiveObject();
+    const line: any = fabricInst?.getActiveObject();
 
     if (line) {
       line.set({
