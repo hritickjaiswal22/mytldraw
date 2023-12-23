@@ -74,3 +74,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .base {
+    @apply w-[36px] h-[36px] rounded-[10px] flex justify-center items-center;
+  }
+}

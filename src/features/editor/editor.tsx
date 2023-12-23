@@ -252,7 +252,7 @@ function Editor() {
             />
             <Label
               htmlFor="image-upload"
-              className={`w-[36px] h-[36px] rounded-[10px] flex justify-center items-center bg-white hover:bg-[#f1f0ff] cursor-pointer ${
+              className={`base bg-white hover:bg-[#f1f0ff] cursor-pointer ${
                 drawOption === DrawOptions.IMAGE ? "bg-[#bebce5]" : "bg-white"
               }`}
             >

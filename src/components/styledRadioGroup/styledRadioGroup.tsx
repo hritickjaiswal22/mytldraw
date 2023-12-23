@@ -25,7 +25,7 @@ function StyledRadioGroup({
       {options.map(({ content, value, id }, i) => (
         <div
           key={id}
-          className={`w-[36px] h-[36px] rounded-[10px] flex justify-center items-center hover:bg-[#f1f0ff] cursor-pointer ${
+          className={`base hover:bg-[#f1f0ff] cursor-pointer ${
             drawOption === i ? "bg-[#e0dfff]" : "bg-white"
           }`}
           onClick={() => onClickHandler(i)}
