@@ -92,6 +92,21 @@ function Receiver({ children, fabricInst }: ReceiverPropTypes) {
     }
   }, [fabricInst]);
 
+  useEffect(() => {
+    if (fabricInst) {
+      socket.on("removed", (json) => {
+        const id = json.id;
+        const object = fabricInst._objects.find(
+          (obj) => (obj as any).id === id
+        );
+
+        if (object) {
+          fabricInst.remove(object);
+        }
+      });
+    }
+  }, [fabricInst]);
+
   return <>{children}</>;
 }
 

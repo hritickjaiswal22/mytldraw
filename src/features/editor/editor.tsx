@@ -37,6 +37,7 @@ import {
   Edit2,
   Type,
   Bold,
+  Trash,
 } from "react-feather";
 import imageCompression from "browser-image-compression";
 import { Label } from "@/components/ui/label";
@@ -81,6 +82,16 @@ function Editor() {
       } catch (error) {
         fabricInst.defaultCursor = "default";
         console.log(error);
+      }
+    }
+  }
+
+  function deleteSelecedObject() {
+    if (fabricInst) {
+      const activeObject = fabricInst?.getActiveObject();
+
+      if (activeObject) {
+        fabricInst.remove(activeObject);
       }
     }
   }
@@ -364,6 +375,27 @@ function Editor() {
             ]}
             drawOption={0}
           />
+        </div>
+
+        <div className="mb-3">
+          <PanelColumnHeading>Actions</PanelColumnHeading>
+          <div className="flex items-center p-0 py-1 gap-2">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <button
+                    onClick={deleteSelecedObject}
+                    className={`base w-[22px] h-[22px] rounded`}
+                  >
+                    <Trash width={16} height={16} />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Delete</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         </div>
       </section>
     </>

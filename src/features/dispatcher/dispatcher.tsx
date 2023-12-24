@@ -56,6 +56,20 @@ function Dispatcher({ children, fabricInst }: DispatcherPropTypes) {
     };
   }, [fabricInst]);
 
+  useEffect(() => {
+    if (fabricInst) {
+      fabricInst.on("object:removed", (e: fabric.IEvent<MouseEvent>) => {
+        const json = e.target?.toJSON(["id"]);
+
+        socket.emit("removed", json);
+      });
+    }
+
+    return () => {
+      fabricInst?.off("object:removed");
+    };
+  }, [fabricInst]);
+
   const renderChildren = () => {
     return React.Children.map(children, (child) => {
       return React.cloneElement(child, {
