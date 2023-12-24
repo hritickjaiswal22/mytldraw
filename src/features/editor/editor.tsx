@@ -278,7 +278,7 @@ function Editor() {
       </main>
 
       {/* Options Sidebar */}
-      <section className="fixed z-50 left-4 top-20 p-2 rounded max-h-[782px] boxShadow">
+      <section className="fixed z-50 bg-white left-4 top-20 p-2 rounded max-h-[782px] boxShadow">
         <div className="mb-3">
           <PanelColumnHeading>Stroke</PanelColumnHeading>
           <div className="flex items-center p-0 py-1 gap-2">
@@ -353,6 +353,7 @@ function Editor() {
           <PanelColumnHeading>Stroke width</PanelColumnHeading>
           <RadioGroup
             onClickHandler={strokeWidthChangeHandler}
+            bgColor="bg-[#f1f0ff]"
             options={[
               {
                 id: "stroke-width-1",

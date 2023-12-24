@@ -21,12 +21,14 @@ interface StyledRadioGroupPropTypes {
   options: Array<RadioType>;
   onClickHandler: (index: number) => void;
   drawOption: number;
+  bgColor?: string;
 }
 
 function StyledRadioGroup({
   options,
   onClickHandler,
   drawOption,
+  bgColor = "bg-white",
 }: StyledRadioGroupPropTypes) {
   return (
     <RadioGroup className="pointer-events-auto flex items-center gap-1">
@@ -37,7 +39,7 @@ function StyledRadioGroup({
               <div
                 key={id}
                 className={`base hover:bg-[#f1f0ff] cursor-pointer ${
-                  drawOption === i ? "bg-[#e0dfff]" : "bg-white"
+                  drawOption === i ? "bg-[#e0dfff]" : bgColor
                 }`}
                 onClick={() => onClickHandler(i)}
               >
