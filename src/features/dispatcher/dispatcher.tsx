@@ -1,6 +1,7 @@
 import { socket } from "@/socket";
 
 import React, { ReactNode, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
 interface DispatcherPropTypes {
   fabricInst: fabric.Canvas | null;
@@ -8,10 +9,12 @@ interface DispatcherPropTypes {
 }
 
 function Dispatcher({ children, fabricInst }: DispatcherPropTypes) {
-  function objectAddHandler() {
-    const obj = fabricInst?.getActiveObject();
+  const { roomId } = useParams();
 
-    socket.emit("objet:added", obj?.toJSON(["id"]));
+  function objectAddHandler() {
+    const json = fabricInst?.getActiveObject()?.toJSON(["id"]);
+
+    socket.emit("objet:added", { roomId, json });
   }
 
   useEffect(() => {
@@ -19,7 +22,7 @@ function Dispatcher({ children, fabricInst }: DispatcherPropTypes) {
       fabricInst.on("object:moving", (e: fabric.IEvent<MouseEvent>) => {
         const json = e.target?.toJSON(["id"]);
 
-        socket.emit("moving", json);
+        socket.emit("moving", { roomId, json });
       });
     }
 
@@ -33,7 +36,7 @@ function Dispatcher({ children, fabricInst }: DispatcherPropTypes) {
       fabricInst.on("object:scaling", (e: fabric.IEvent<MouseEvent>) => {
         const json = e.target?.toJSON(["id"]);
 
-        socket.emit("scaling", json);
+        socket.emit("scaling", { roomId, json });
       });
     }
 
@@ -47,7 +50,7 @@ function Dispatcher({ children, fabricInst }: DispatcherPropTypes) {
       fabricInst.on("object:rotating", (e: fabric.IEvent<MouseEvent>) => {
         const json = e.target?.toJSON(["id"]);
 
-        socket.emit("rotating", json);
+        socket.emit("rotating", { roomId, json });
       });
     }
 
@@ -61,7 +64,7 @@ function Dispatcher({ children, fabricInst }: DispatcherPropTypes) {
       fabricInst.on("object:removed", (e: fabric.IEvent<MouseEvent>) => {
         const json = e.target?.toJSON(["id"]);
 
-        socket.emit("removed", json);
+        socket.emit("removed", { roomId, json });
       });
     }
 
