@@ -132,6 +132,12 @@ function Editor() {
 
     if (location.state && location.state?.username) initConnection();
     else navigate("/");
+
+    return () => {
+      socket.off(ACTIONS.NEWUSERJOINED);
+      socket.off(ACTIONS.DISCONNECTED);
+      socket.disconnect();
+    };
   }, []);
 
   useEffect(() => {

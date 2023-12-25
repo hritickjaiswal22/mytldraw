@@ -25,6 +25,10 @@ function Receiver({ children, fabricInst }: ReceiverPropTypes) {
         );
       });
     }
+
+    return () => {
+      socket.off(ACTIONS["OBJECT:ADDED"]);
+    };
   }, [fabricInst]);
 
   useEffect(() => {
@@ -46,6 +50,10 @@ function Receiver({ children, fabricInst }: ReceiverPropTypes) {
         }
       });
     }
+
+    return () => {
+      socket.off(ACTIONS["OBJECT:MOVING"]);
+    };
   }, [fabricInst]);
 
   useEffect(() => {
@@ -69,6 +77,10 @@ function Receiver({ children, fabricInst }: ReceiverPropTypes) {
         }
       });
     }
+
+    return () => {
+      socket.off(ACTIONS["OBJECT:SCALING"]);
+    };
   }, [fabricInst]);
 
   useEffect(() => {
@@ -91,6 +103,10 @@ function Receiver({ children, fabricInst }: ReceiverPropTypes) {
         }
       });
     }
+
+    return () => {
+      socket.off(ACTIONS["OBJECT:ROTATING"]);
+    };
   }, [fabricInst]);
 
   useEffect(() => {
@@ -106,6 +122,10 @@ function Receiver({ children, fabricInst }: ReceiverPropTypes) {
         }
       });
     }
+
+    return () => {
+      socket.off(ACTIONS["OBJECT:REMOVED"]);
+    };
   }, [fabricInst]);
 
   return <>{children}</>;
