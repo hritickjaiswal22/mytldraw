@@ -2,6 +2,7 @@ import { socket } from "@/socket";
 
 import { ReactNode, useEffect } from "react";
 import { fabric } from "fabric";
+import { ACTIONS } from "@/utils/actions";
 
 interface ReceiverPropTypes {
   fabricInst: fabric.Canvas | null;
@@ -11,7 +12,7 @@ interface ReceiverPropTypes {
 function Receiver({ children, fabricInst }: ReceiverPropTypes) {
   useEffect(() => {
     if (fabricInst) {
-      socket.on("objet:added", (str) => {
+      socket.on(ACTIONS["OBJECT:ADDED"], (str) => {
         fabric.util.enlivenObjects(
           [str],
           (objs: any) => {
@@ -28,7 +29,7 @@ function Receiver({ children, fabricInst }: ReceiverPropTypes) {
 
   useEffect(() => {
     if (fabricInst) {
-      socket.on("moving", (json) => {
+      socket.on(ACTIONS["OBJECT:MOVING"], (json) => {
         const id = json.id;
         const object = fabricInst._objects.find(
           (obj) => (obj as any).id === id
@@ -49,7 +50,7 @@ function Receiver({ children, fabricInst }: ReceiverPropTypes) {
 
   useEffect(() => {
     if (fabricInst) {
-      socket.on("scaling", (json) => {
+      socket.on(ACTIONS["OBJECT:SCALING"], (json) => {
         const id = json.id;
         const object = fabricInst._objects.find(
           (obj) => (obj as any).id === id
@@ -72,7 +73,7 @@ function Receiver({ children, fabricInst }: ReceiverPropTypes) {
 
   useEffect(() => {
     if (fabricInst) {
-      socket.on("rotating", (json) => {
+      socket.on(ACTIONS["OBJECT:ROTATING"], (json) => {
         const id = json.id;
         const object = fabricInst._objects.find(
           (obj) => (obj as any).id === id
@@ -94,7 +95,7 @@ function Receiver({ children, fabricInst }: ReceiverPropTypes) {
 
   useEffect(() => {
     if (fabricInst) {
-      socket.on("removed", (json) => {
+      socket.on(ACTIONS["OBJECT:REMOVED"], (json) => {
         const id = json.id;
         const object = fabricInst._objects.find(
           (obj) => (obj as any).id === id

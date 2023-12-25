@@ -1,4 +1,5 @@
 import { socket } from "@/socket";
+import { ACTIONS } from "@/utils/actions";
 
 import React, { ReactNode, useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -14,7 +15,7 @@ function Dispatcher({ children, fabricInst }: DispatcherPropTypes) {
   function objectAddHandler() {
     const json = fabricInst?.getActiveObject()?.toJSON(["id"]);
 
-    socket.emit("objet:added", { roomId, json });
+    socket.emit(ACTIONS["OBJECT:ADDED"], { roomId, json });
   }
 
   useEffect(() => {
@@ -22,7 +23,7 @@ function Dispatcher({ children, fabricInst }: DispatcherPropTypes) {
       fabricInst.on("object:moving", (e: fabric.IEvent<MouseEvent>) => {
         const json = e.target?.toJSON(["id"]);
 
-        socket.emit("moving", { roomId, json });
+        socket.emit(ACTIONS["OBJECT:MOVING"], { roomId, json });
       });
     }
 
@@ -36,7 +37,7 @@ function Dispatcher({ children, fabricInst }: DispatcherPropTypes) {
       fabricInst.on("object:scaling", (e: fabric.IEvent<MouseEvent>) => {
         const json = e.target?.toJSON(["id"]);
 
-        socket.emit("scaling", { roomId, json });
+        socket.emit(ACTIONS["OBJECT:SCALING"], { roomId, json });
       });
     }
 
@@ -50,7 +51,7 @@ function Dispatcher({ children, fabricInst }: DispatcherPropTypes) {
       fabricInst.on("object:rotating", (e: fabric.IEvent<MouseEvent>) => {
         const json = e.target?.toJSON(["id"]);
 
-        socket.emit("rotating", { roomId, json });
+        socket.emit(ACTIONS["OBJECT:ROTATING"], { roomId, json });
       });
     }
 
@@ -64,7 +65,7 @@ function Dispatcher({ children, fabricInst }: DispatcherPropTypes) {
       fabricInst.on("object:removed", (e: fabric.IEvent<MouseEvent>) => {
         const json = e.target?.toJSON(["id"]);
 
-        socket.emit("removed", { roomId, json });
+        socket.emit(ACTIONS["OBJECT:REMOVED"], { roomId, json });
       });
     }
 
@@ -75,7 +76,7 @@ function Dispatcher({ children, fabricInst }: DispatcherPropTypes) {
 
   const renderChildren = () => {
     return React.Children.map(children, (child) => {
-      return React.cloneElement(child, {
+      return React.cloneElement(child as any, {
         objectAddHandler: objectAddHandler,
       });
     });
