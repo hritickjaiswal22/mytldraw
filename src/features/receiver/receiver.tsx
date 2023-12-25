@@ -128,6 +128,30 @@ function Receiver({ children, fabricInst }: ReceiverPropTypes) {
     };
   }, [fabricInst]);
 
+  useEffect(() => {
+    if (fabricInst) {
+      socket.on(ACTIONS["TEXT:CHANGED"], (json) => {
+        const id = json.id;
+        const object = fabricInst._objects.find(
+          (obj) => (obj as any).id === id
+        );
+
+        if (object) {
+          (object as fabric.IText).set({
+            text: json.text,
+          });
+
+          object.setCoords();
+          fabricInst.renderAll();
+        }
+      });
+    }
+
+    return () => {
+      socket.off(ACTIONS["TEXT:CHANGED"]);
+    };
+  }, [fabricInst]);
+
   return <>{children}</>;
 }
 

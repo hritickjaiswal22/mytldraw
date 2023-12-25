@@ -74,6 +74,20 @@ function Dispatcher({ children, fabricInst }: DispatcherPropTypes) {
     };
   }, [fabricInst]);
 
+  useEffect(() => {
+    if (fabricInst) {
+      fabricInst.on("text:changed", (e: any) => {
+        const json = e.target?.toJSON(["id"]);
+
+        socket.emit(ACTIONS["TEXT:CHANGED"], { roomId, json });
+      });
+    }
+
+    return () => {
+      fabricInst?.off("text:changed");
+    };
+  }, [fabricInst]);
+
   const renderChildren = () => {
     return React.Children.map(children, (child) => {
       return React.cloneElement(child as any, {
