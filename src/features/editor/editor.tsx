@@ -116,8 +116,17 @@ function Editor() {
         username: location.state?.username,
       });
 
-      socket.on(ACTIONS.NEWUSERJOINED, ({ clients }) => {
+      socket.on(ACTIONS.NEWUSERJOINED, ({ clients, username }) => {
+        console.log(`User ${username} joined`);
+
         setActiveUsers(clients);
+      });
+
+      socket.on(ACTIONS.DISCONNECTED, ({ username, socketId }) => {
+        console.log(`User ${username} left`);
+        setActiveUsers((prev) =>
+          prev.filter((activeUser) => activeUser.socketId !== socketId)
+        );
       });
     }
 
