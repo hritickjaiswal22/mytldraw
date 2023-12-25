@@ -52,6 +52,11 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const PRIMARYPURPLE = "#5b57d1";
 
+interface ActiveUserType {
+  username: string;
+  socketId: string;
+}
+
 function Editor() {
   const { roomId } = useParams();
   const location = useLocation();
@@ -60,6 +65,7 @@ function Editor() {
   const [fabricInst, setFabricInst] = useState<fabric.Canvas | null>(null);
   const canvasRef = useRef(null);
   const { windowHeight, windowWidth } = useWindowResize();
+  const [activeUsers, setActiveUsers] = useState<Array<ActiveUserType>>([]);
 
   const [drawOption, setDrawOption] = useState(0);
   const [imageBase64Url, setImageBase64Url] = useState<string | null>(null);
@@ -109,9 +115,11 @@ function Editor() {
         roomId,
         username: location.state?.username,
       });
-    }
 
-    console.log(location.state);
+      socket.on(ACTIONS.NEWUSERJOINED, ({ clients }) => {
+        setActiveUsers(clients);
+      });
+    }
 
     if (location.state && location.state?.username) initConnection();
     else navigate("/");
