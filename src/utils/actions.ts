@@ -1,0 +1,8 @@
+const ACTIONS = {
+  JOIN: "JOIN",
+  JOINED: "JOINED",
+  DISCONNECTED: "DISCONNECTED",
+  LEAVE: "LEAVE",
+};
+
+export { ACTIONS };

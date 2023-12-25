@@ -9,7 +9,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/:code" element={<Editor />} />
+        <Route path="/:roomId" element={<Editor />} />
       </Routes>
     </Router>
   );

@@ -21,6 +21,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { socket } from "@/socket";
+import { ACTIONS } from "@/utils/actions";
+import { Label } from "@/components/ui/label";
+import {
+  STATIC_BACKGROUND_COLORS,
+  STATIC_STROKE_COLORS,
+  TooltipDelayDuration,
+} from "@/utils/miscellaneous";
 
 import { fabric } from "fabric";
 import { useEffect, useRef, useState } from "react";
@@ -40,16 +48,15 @@ import {
   Trash,
 } from "react-feather";
 import imageCompression from "browser-image-compression";
-import { Label } from "@/components/ui/label";
-import {
-  STATIC_BACKGROUND_COLORS,
-  STATIC_STROKE_COLORS,
-  TooltipDelayDuration,
-} from "@/utils/miscellaneous";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const PRIMARYPURPLE = "#5b57d1";
 
 function Editor() {
+  const { roomId } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [fabricInst, setFabricInst] = useState<fabric.Canvas | null>(null);
   const canvasRef = useRef(null);
   const { windowHeight, windowWidth } = useWindowResize();
@@ -95,6 +102,20 @@ function Editor() {
       }
     }
   }
+
+  useEffect(() => {
+    function initConnection() {
+      socket.emit(ACTIONS.JOIN, {
+        roomId,
+        username: location.state?.username,
+      });
+    }
+
+    console.log(location.state);
+
+    if (location.state && location.state?.username) initConnection();
+    else navigate("/");
+  }, []);
 
   useEffect(() => {
     const temp = new fabric.Canvas(canvasRef.current, {
