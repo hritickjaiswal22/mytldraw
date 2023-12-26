@@ -1,9 +1,10 @@
 import { DrawOptions } from "@/utils/drawOptions";
 import { ObjectBaseOptions, BaseTextOptions } from "@/utils/baseObjectOptions";
 import { generateUUID } from "@/utils/generateUUID";
+import { ObjectPropertiesContext } from "@/contexts/objectProperties";
 
 import { fabric } from "fabric";
-import { ReactNode, useEffect, useRef } from "react";
+import { ReactNode, useContext, useEffect, useRef } from "react";
 
 interface DrawerPropTypes {
   fabricInst: fabric.Canvas | null;
@@ -52,6 +53,7 @@ function Drawer({
   const arrowTriangle = useRef<null | fabric.Triangle>(null);
   const arrowDeltaX = useRef(0);
   const arrowDeltaY = useRef(0);
+  const objectProperties = useContext(ObjectPropertiesContext);
 
   // Initialize
   function initializeObject({ e }: fabric.IEvent<MouseEvent>) {
@@ -67,6 +69,7 @@ function Drawer({
           top: e.y,
           width: 0,
           height: 0,
+          strokeWidth: objectProperties.strokeWidth,
         });
         Object.assign(obj, { id: `${generateUUID()}-rectangle` });
         break;
@@ -78,6 +81,7 @@ function Drawer({
           top: e.y,
           width: 0,
           height: 0,
+          strokeWidth: objectProperties.strokeWidth,
         });
         Object.assign(obj, { id: `${generateUUID()}-triangle` });
         break;
@@ -90,6 +94,7 @@ function Drawer({
           radius: 0,
           originX: "center",
           originY: "center",
+          strokeWidth: objectProperties.strokeWidth,
         });
         Object.assign(obj, { id: `${generateUUID()}-circle` });
         break;
@@ -97,6 +102,7 @@ function Drawer({
       case DrawOptions.LINE:
         obj = new fabric.Line([e.x, e.y, e.x, e.y], {
           ...ObjectBaseOptions,
+          strokeWidth: objectProperties.strokeWidth,
         });
         Object.assign(obj, { id: `${generateUUID()}-line` });
         break;
@@ -127,6 +133,7 @@ function Drawer({
       ...ObjectBaseOptions,
       originX: "center",
       originY: "center",
+      strokeWidth: objectProperties.strokeWidth,
       // type: "arrow",
     });
 
@@ -360,7 +367,7 @@ function Drawer({
       fabricInst?.off("mouse:move");
       fabricInst?.off("mouse:up");
     };
-  }, [fabricInst, drawOption, imageBase64Url]);
+  }, [fabricInst, drawOption, imageBase64Url, objectProperties]);
 
   return <>{children}</>;
 }

@@ -29,6 +29,7 @@ import {
   STATIC_STROKE_COLORS,
   TooltipDelayDuration,
 } from "@/utils/miscellaneous";
+import { ObjectPropertiesContext } from "@/contexts/objectProperties";
 
 import { fabric } from "fabric";
 import { useEffect, useRef, useState } from "react";
@@ -69,6 +70,10 @@ function Editor() {
 
   const [drawOption, setDrawOption] = useState(0);
   const [imageBase64Url, setImageBase64Url] = useState<string | null>(null);
+
+  const [objectProperties, setObjectProperties] = useState({
+    strokeWidth: 2,
+  });
 
   async function onImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     setImageBase64Url(null);
@@ -186,7 +191,27 @@ function Editor() {
   }
 
   function strokeWidthChangeHandler(option: number) {
-    console.log(option);
+    setObjectProperties((prev) => {
+      return {
+        ...prev,
+        strokeWidth: option,
+      };
+    });
+
+    const activeObject = fabricInst?.getActiveObject();
+
+    if (activeObject) {
+      socket.emit(ACTIONS["OBJECT:CHANGED"], {
+        roomId,
+        objectId: (activeObject as any).id,
+        payload: option,
+        action: ACTIONS["STOKEWIDTH:CHANGED"],
+      });
+      activeObject.set({
+        strokeWidth: option,
+      });
+      fabricInst?.renderAll();
+    }
   }
 
   return (
@@ -306,20 +331,22 @@ function Editor() {
 
       {/* Main Canvas */}
       <main>
-        <Receiver fabricInst={fabricInst}>
-          {/* Dispatcher must be the direct parent of Drawer as it is passing down
-          objectAddHandler as props to Drawer */}
-          <Dispatcher fabricInst={fabricInst}>
-            <Drawer
-              drawOption={drawOption}
-              fabricInst={fabricInst}
-              imageBase64Url={imageBase64Url}
-              setImageBase64Url={setImageBase64Url}
-            >
-              <canvas ref={canvasRef}></canvas>
-            </Drawer>
-          </Dispatcher>
-        </Receiver>
+        <ObjectPropertiesContext.Provider value={objectProperties}>
+          <Receiver fabricInst={fabricInst}>
+            {/* Dispatcher must be the direct parent of Drawer as it is passing down
+            objectAddHandler as props to Drawer */}
+            <Dispatcher fabricInst={fabricInst}>
+              <Drawer
+                drawOption={drawOption}
+                fabricInst={fabricInst}
+                imageBase64Url={imageBase64Url}
+                setImageBase64Url={setImageBase64Url}
+              >
+                <canvas ref={canvasRef}></canvas>
+              </Drawer>
+            </Dispatcher>
+          </Receiver>
+        </ObjectPropertiesContext.Provider>
       </main>
 
       {/* Options Sidebar */}
@@ -419,7 +446,7 @@ function Editor() {
                 tooltipText: "Extra bold",
               },
             ]}
-            drawOption={0}
+            drawOption={objectProperties.strokeWidth}
           />
         </div>
 

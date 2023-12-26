@@ -152,6 +152,36 @@ function Receiver({ children, fabricInst }: ReceiverPropTypes) {
     };
   }, [fabricInst]);
 
+  useEffect(() => {
+    if (fabricInst) {
+      socket.on(ACTIONS["OBJECT:CHANGED"], ({ objectId, payload, action }) => {
+        if (objectId) {
+          const object = fabricInst._objects.find(
+            (obj) => (obj as any).id === objectId
+          );
+
+          if (object) {
+            switch (action) {
+              case ACTIONS["STOKEWIDTH:CHANGED"]:
+                object.set({
+                  strokeWidth: payload,
+                });
+                fabricInst.renderAll();
+                break;
+
+              default:
+                break;
+            }
+          }
+        }
+      });
+    }
+
+    return () => {
+      socket.off(ACTIONS["OBJECT:CHANGED"]);
+    };
+  }, [fabricInst]);
+
   return <>{children}</>;
 }
 
