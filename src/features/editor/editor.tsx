@@ -152,6 +152,7 @@ function Editor() {
     fabric.Object.prototype.transparentCorners = false;
     fabric.Object.prototype.borderColor = PRIMARYPURPLE;
     fabric.Object.prototype.padding = 4;
+    fabric.Object.prototype.strokeUniform = true;
 
     temp.freeDrawingBrush.width = 5;
     temp.freeDrawingBrush.color = "#000";
