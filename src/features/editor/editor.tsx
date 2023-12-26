@@ -196,6 +196,21 @@ function Editor() {
         strokeWidth: option,
       };
     });
+
+    const activeObject = fabricInst?.getActiveObject();
+
+    if (activeObject) {
+      socket.emit(ACTIONS["OBJECT:CHANGED"], {
+        roomId,
+        objectId: (activeObject as any).id,
+        payload: option,
+        action: ACTIONS["STOKEWIDTH:CHANGED"],
+      });
+      activeObject.set({
+        strokeWidth: option,
+      });
+      fabricInst?.renderAll();
+    }
   }
 
   return (
