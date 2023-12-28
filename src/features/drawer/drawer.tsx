@@ -1,6 +1,6 @@
 import { DrawOptions } from "@/utils/drawOptions";
 import { ObjectBaseOptions, BaseTextOptions } from "@/utils/baseObjectOptions";
-import { generateUUID } from "@/utils/generateUUID";
+import { generateUUID } from "@/utils/miscellaneous";
 import { ObjectPropertiesContext } from "@/contexts/objectProperties";
 
 import { fabric } from "fabric";

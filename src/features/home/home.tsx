@@ -1,4 +1,4 @@
-import { generateUUID } from "@/utils/generateUUID";
+import { generateUUID } from "@/utils/miscellaneous";
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
