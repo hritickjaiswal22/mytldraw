@@ -1,8 +1,9 @@
 import { socket } from "@/socket";
+import { ACTIONS } from "@/utils/actions";
+import { setStrokeColor } from "@/utils/setFunctions";
 
 import { ReactNode, useEffect } from "react";
 import { fabric } from "fabric";
-import { ACTIONS } from "@/utils/actions";
 
 interface ReceiverPropTypes {
   fabricInst: fabric.Canvas | null;
@@ -166,6 +167,11 @@ function Receiver({ children, fabricInst }: ReceiverPropTypes) {
                 object.set({
                   strokeWidth: payload,
                 });
+                fabricInst.renderAll();
+                break;
+
+              case ACTIONS["STOKE:CHANGED"]:
+                setStrokeColor(object, payload);
                 fabricInst.renderAll();
                 break;
 

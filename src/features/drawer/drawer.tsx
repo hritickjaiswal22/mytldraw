@@ -70,6 +70,7 @@ function Drawer({
           width: 0,
           height: 0,
           strokeWidth: objectProperties.strokeWidth,
+          stroke: objectProperties.stroke,
         });
         Object.assign(obj, { id: `${generateUUID()}-rectangle` });
         break;
@@ -82,6 +83,7 @@ function Drawer({
           width: 0,
           height: 0,
           strokeWidth: objectProperties.strokeWidth,
+          stroke: objectProperties.stroke,
         });
         Object.assign(obj, { id: `${generateUUID()}-triangle` });
         break;
@@ -95,6 +97,7 @@ function Drawer({
           originX: "center",
           originY: "center",
           strokeWidth: objectProperties.strokeWidth,
+          stroke: objectProperties.stroke,
         });
         Object.assign(obj, { id: `${generateUUID()}-circle` });
         break;
@@ -103,6 +106,7 @@ function Drawer({
         obj = new fabric.Line([e.x, e.y, e.x, e.y], {
           ...ObjectBaseOptions,
           strokeWidth: objectProperties.strokeWidth,
+          stroke: objectProperties.stroke,
         });
         Object.assign(obj, { id: `${generateUUID()}-line` });
         break;
@@ -112,6 +116,7 @@ function Drawer({
           ...BaseTextOptions,
           left: e.x,
           top: e.y,
+          fill: objectProperties.stroke,
         });
         Object.assign(obj, { id: `${generateUUID()}-text` });
         break;
@@ -134,6 +139,7 @@ function Drawer({
       originX: "center",
       originY: "center",
       strokeWidth: objectProperties.strokeWidth,
+      stroke: objectProperties.stroke,
       // type: "arrow",
     });
 
@@ -152,6 +158,8 @@ function Drawer({
       angle: -45,
       width: 20,
       height: 20,
+      stroke: objectProperties.stroke,
+      fill: objectProperties.stroke,
     });
     Object.assign(triangle, { id: "arrow_triangle", uuid: line.uuid });
     arrowTriangle.current = triangle;

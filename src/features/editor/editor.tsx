@@ -30,6 +30,7 @@ import {
   TooltipDelayDuration,
 } from "@/utils/miscellaneous";
 import { ObjectPropertiesContext } from "@/contexts/objectProperties";
+import { setStrokeColor } from "@/utils/setFunctions";
 
 import { fabric } from "fabric";
 import { useEffect, useRef, useState } from "react";
@@ -73,6 +74,7 @@ function Editor() {
 
   const [objectProperties, setObjectProperties] = useState({
     strokeWidth: 2,
+    stroke: STATIC_STROKE_COLORS[0],
   });
 
   async function onImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -210,6 +212,36 @@ function Editor() {
       activeObject.set({
         strokeWidth: option,
       });
+      fabricInst?.renderAll();
+    }
+  }
+
+  function strokeColorChangeHandler(color: string) {
+    setObjectProperties((prev) => {
+      return {
+        ...prev,
+        stroke: color,
+      };
+    });
+    if (
+      fabricInst &&
+      fabricInst.freeDrawingBrush &&
+      fabricInst.freeDrawingBrush.color
+    )
+      fabricInst!.freeDrawingBrush!.color = color;
+
+    const activeObject = fabricInst?.getActiveObject();
+
+    if (activeObject) {
+      socket.emit(ACTIONS["OBJECT:CHANGED"], {
+        roomId,
+        objectId: (activeObject as any).id,
+        payload: color,
+        action: ACTIONS["STOKE:CHANGED"],
+      });
+
+      setStrokeColor(activeObject, color);
+
       fabricInst?.renderAll();
     }
   }
@@ -362,9 +394,12 @@ function Editor() {
                       key={index}
                       className={`base w-[22px] h-[22px] rounded relative`}
                       style={{ backgroundColor: color }}
+                      onClick={() => strokeColorChangeHandler(color)}
                     >
                       <div
-                        className={`absolute top-[-2px] left-[-2px] right-[-2px] bottom-[-2px] rounded hidden`}
+                        className={`absolute top-[-2px] left-[-2px] right-[-2px] bottom-[-2px] rounded ${
+                          objectProperties.stroke === color ? "block" : "hidden"
+                        }`}
                         style={{
                           boxShadow: "0 0 0 1px #4a47b1",
                         }}
