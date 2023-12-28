@@ -1,6 +1,6 @@
 import { socket } from "@/socket";
 import { ACTIONS } from "@/utils/actions";
-import { setStrokeColor } from "@/utils/setFunctions";
+import { setFillColor, setStrokeColor } from "@/utils/setFunctions";
 
 import { ReactNode, useEffect } from "react";
 import { fabric } from "fabric";
@@ -172,6 +172,11 @@ function Receiver({ children, fabricInst }: ReceiverPropTypes) {
 
               case ACTIONS["STOKE:CHANGED"]:
                 setStrokeColor(object, payload);
+                fabricInst.renderAll();
+                break;
+
+              case ACTIONS["FILL:CHANGED"]:
+                setFillColor(object, payload);
                 fabricInst.renderAll();
                 break;
 

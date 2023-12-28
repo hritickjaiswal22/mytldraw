@@ -71,6 +71,7 @@ function Drawer({
           height: 0,
           strokeWidth: objectProperties.strokeWidth,
           stroke: objectProperties.stroke,
+          fill: objectProperties.fill,
         });
         Object.assign(obj, { id: `${generateUUID()}-rectangle` });
         break;
@@ -84,6 +85,7 @@ function Drawer({
           height: 0,
           strokeWidth: objectProperties.strokeWidth,
           stroke: objectProperties.stroke,
+          fill: objectProperties.fill,
         });
         Object.assign(obj, { id: `${generateUUID()}-triangle` });
         break;
@@ -98,6 +100,7 @@ function Drawer({
           originY: "center",
           strokeWidth: objectProperties.strokeWidth,
           stroke: objectProperties.stroke,
+          fill: objectProperties.fill,
         });
         Object.assign(obj, { id: `${generateUUID()}-circle` });
         break;

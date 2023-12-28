@@ -30,7 +30,7 @@ import {
   TooltipDelayDuration,
 } from "@/utils/miscellaneous";
 import { ObjectPropertiesContext } from "@/contexts/objectProperties";
-import { setStrokeColor } from "@/utils/setFunctions";
+import { setFillColor, setStrokeColor } from "@/utils/setFunctions";
 
 import { fabric } from "fabric";
 import { useEffect, useRef, useState } from "react";
@@ -75,6 +75,7 @@ function Editor() {
   const [objectProperties, setObjectProperties] = useState({
     strokeWidth: 2,
     stroke: STATIC_STROKE_COLORS[0],
+    fill: STATIC_BACKGROUND_COLORS[0],
   });
 
   async function onImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -241,6 +242,30 @@ function Editor() {
       });
 
       setStrokeColor(activeObject, color);
+
+      fabricInst?.renderAll();
+    }
+  }
+
+  function fillChangeHandler(color: string) {
+    setObjectProperties((prev) => {
+      return {
+        ...prev,
+        fill: color,
+      };
+    });
+
+    const activeObject = fabricInst?.getActiveObject();
+
+    if (activeObject) {
+      socket.emit(ACTIONS["OBJECT:CHANGED"], {
+        roomId,
+        objectId: (activeObject as any).id,
+        payload: color,
+        action: ACTIONS["FILL:CHANGED"],
+      });
+
+      setFillColor(activeObject, color);
 
       fabricInst?.renderAll();
     }
@@ -432,9 +457,12 @@ function Editor() {
                       key={index}
                       className={`base w-[22px] h-[22px] rounded relative`}
                       style={{ backgroundColor: color }}
+                      onClick={() => fillChangeHandler(color)}
                     >
                       <div
-                        className={`absolute top-[-2px] left-[-2px] right-[-2px] bottom-[-2px] rounded hidden`}
+                        className={`absolute top-[-2px] left-[-2px] right-[-2px] bottom-[-2px] rounded ${
+                          objectProperties.fill === color ? "block" : "hidden"
+                        }`}
                         style={{
                           boxShadow: "0 0 0 1px #4a47b1",
                         }}
