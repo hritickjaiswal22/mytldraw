@@ -53,7 +53,7 @@ function Drawer({
   const arrowTriangle = useRef<null | fabric.Triangle>(null);
   const arrowDeltaX = useRef(0);
   const arrowDeltaY = useRef(0);
-  const objectProperties = useContext(ObjectPropertiesContext);
+  const { objectProperties } = useContext(ObjectPropertiesContext);
 
   // Initialize
   function initializeObject({ e }: fabric.IEvent<MouseEvent>) {

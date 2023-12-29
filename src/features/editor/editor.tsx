@@ -14,7 +14,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Dispatcher from "@/features/dispatcher";
 import Receiver from "@/features/receiver";
-import PanelColumnHeading from "@/components/panelColumnHeading";
 import {
   Tooltip,
   TooltipContent,
@@ -30,7 +29,7 @@ import {
   TooltipDelayDuration,
 } from "@/utils/miscellaneous";
 import { ObjectPropertiesContext } from "@/contexts/objectProperties";
-import { setFillColor, setStrokeColor } from "@/utils/setFunctions";
+import OptionsSidebar from "@/features/sidebar";
 
 import { fabric } from "fabric";
 import { useEffect, useRef, useState } from "react";
@@ -46,8 +45,6 @@ import {
   Minus,
   Edit2,
   Type,
-  Bold,
-  Trash,
 } from "react-feather";
 import imageCompression from "browser-image-compression";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -103,16 +100,6 @@ function Editor() {
       } catch (error) {
         fabricInst.defaultCursor = "default";
         console.log(error);
-      }
-    }
-  }
-
-  function deleteSelecedObject() {
-    if (fabricInst) {
-      const activeObject = fabricInst?.getActiveObject();
-
-      if (activeObject) {
-        fabricInst.remove(activeObject);
       }
     }
   }
@@ -193,83 +180,10 @@ function Editor() {
     setDrawOption(option);
   }
 
-  function strokeWidthChangeHandler(option: number) {
-    setObjectProperties((prev) => {
-      return {
-        ...prev,
-        strokeWidth: option,
-      };
-    });
-
-    const activeObject = fabricInst?.getActiveObject();
-
-    if (activeObject) {
-      socket.emit(ACTIONS["OBJECT:CHANGED"], {
-        roomId,
-        objectId: (activeObject as any).id,
-        payload: option,
-        action: ACTIONS["STOKEWIDTH:CHANGED"],
-      });
-      activeObject.set({
-        strokeWidth: option,
-      });
-      fabricInst?.renderAll();
-    }
-  }
-
-  function strokeColorChangeHandler(color: string) {
-    setObjectProperties((prev) => {
-      return {
-        ...prev,
-        stroke: color,
-      };
-    });
-    if (
-      fabricInst &&
-      fabricInst.freeDrawingBrush &&
-      fabricInst.freeDrawingBrush.color
-    )
-      fabricInst!.freeDrawingBrush!.color = color;
-
-    const activeObject = fabricInst?.getActiveObject();
-
-    if (activeObject) {
-      socket.emit(ACTIONS["OBJECT:CHANGED"], {
-        roomId,
-        objectId: (activeObject as any).id,
-        payload: color,
-        action: ACTIONS["STOKE:CHANGED"],
-      });
-
-      setStrokeColor(activeObject, color);
-
-      fabricInst?.renderAll();
-    }
-  }
-
-  function fillChangeHandler(color: string) {
-    setObjectProperties((prev) => {
-      return {
-        ...prev,
-        fill: color,
-      };
-    });
-
-    const activeObject = fabricInst?.getActiveObject();
-
-    if (activeObject) {
-      socket.emit(ACTIONS["OBJECT:CHANGED"], {
-        roomId,
-        objectId: (activeObject as any).id,
-        payload: color,
-        action: ACTIONS["FILL:CHANGED"],
-      });
-
-      setFillColor(activeObject, color);
-
-      fabricInst?.renderAll();
-    }
-  }
+  const value = {
+    objectProperties,
+    setObjectProperties,
+  };
 
   return (
     <>
@@ -386,12 +300,12 @@ function Editor() {
         <div></div>
       </NonInteractiveHeader>
 
-      {/* Main Canvas */}
-      <main>
-        <ObjectPropertiesContext.Provider value={objectProperties}>
+      <ObjectPropertiesContext.Provider value={value}>
+        {/* Main Canvas */}
+        <main>
           <Receiver fabricInst={fabricInst}>
             {/* Dispatcher must be the direct parent of Drawer as it is passing down
-            objectAddHandler as props to Drawer */}
+              objectAddHandler as props to Drawer */}
             <Dispatcher fabricInst={fabricInst}>
               <Drawer
                 drawOption={drawOption}
@@ -403,137 +317,11 @@ function Editor() {
               </Drawer>
             </Dispatcher>
           </Receiver>
-        </ObjectPropertiesContext.Provider>
-      </main>
+        </main>
 
-      {/* Options Sidebar */}
-      <section className="fixed z-50 bg-white left-4 top-20 p-2 rounded max-h-[782px] boxShadow">
-        <div className="mb-3">
-          <PanelColumnHeading>Stroke</PanelColumnHeading>
-          <div className="flex items-center p-0 py-1 gap-2">
-            {STATIC_STROKE_COLORS.map((color, index) => (
-              <TooltipProvider key={index}>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <button
-                      key={index}
-                      className={`base w-[22px] h-[22px] rounded relative`}
-                      style={{ backgroundColor: color }}
-                      onClick={() => strokeColorChangeHandler(color)}
-                    >
-                      <div
-                        className={`absolute top-[-2px] left-[-2px] right-[-2px] bottom-[-2px] rounded ${
-                          objectProperties.stroke === color ? "block" : "hidden"
-                        }`}
-                        style={{
-                          boxShadow: "0 0 0 1px #4a47b1",
-                        }}
-                      ></div>
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{color}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            ))}
-            <label
-              htmlFor="stroke-color-picker"
-              className="base cursor-pointer w-[26px] h-[26px] rounded bg-black"
-            >
-              <input className="hidden" id="stroke-color-picker" type="color" />
-            </label>
-          </div>
-        </div>
-
-        <div className="mb-3">
-          <PanelColumnHeading>Background</PanelColumnHeading>
-          <div className="flex items-center p-0 py-1 gap-2">
-            {STATIC_BACKGROUND_COLORS.map((color, index) => (
-              <TooltipProvider key={index}>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <button
-                      key={index}
-                      className={`base w-[22px] h-[22px] rounded relative`}
-                      style={{ backgroundColor: color }}
-                      onClick={() => fillChangeHandler(color)}
-                    >
-                      <div
-                        className={`absolute top-[-2px] left-[-2px] right-[-2px] bottom-[-2px] rounded ${
-                          objectProperties.fill === color ? "block" : "hidden"
-                        }`}
-                        style={{
-                          boxShadow: "0 0 0 1px #4a47b1",
-                        }}
-                      ></div>
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{color}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            ))}
-            <label
-              htmlFor="stroke-color-picker"
-              className="base cursor-pointer w-[26px] h-[26px] rounded bg-black"
-            >
-              <input className="hidden" id="stroke-color-picker" type="color" />
-            </label>
-          </div>
-        </div>
-
-        <div className="mb-3">
-          <PanelColumnHeading>Stroke width</PanelColumnHeading>
-          <RadioGroup
-            onClickHandler={strokeWidthChangeHandler}
-            bgColor="bg-[#f1f0ff]"
-            options={[
-              {
-                id: "stroke-width-1",
-                content: <Bold width={16} height={16} />,
-                value: "stroke-width-1",
-                tooltipText: "Thin",
-              },
-              {
-                id: "stroke-width-2",
-                content: <Bold width={16} height={16} />,
-                value: "stroke-width-2",
-                tooltipText: "Bold",
-              },
-              {
-                id: "stroke-width-3",
-                content: <Bold width={16} height={16} />,
-                value: "stroke-width-3",
-                tooltipText: "Extra bold",
-              },
-            ]}
-            drawOption={objectProperties.strokeWidth}
-          />
-        </div>
-
-        <div className="mb-3">
-          <PanelColumnHeading>Actions</PanelColumnHeading>
-          <div className="flex items-center p-0 py-1 gap-2">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <button
-                    onClick={deleteSelecedObject}
-                    className={`base w-[22px] h-[22px] rounded`}
-                  >
-                    <Trash width={16} height={16} />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Delete</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
-        </div>
-      </section>
+        {/* Options Sidebar */}
+        {fabricInst && <OptionsSidebar fabricInst={fabricInst} />}
+      </ObjectPropertiesContext.Provider>
     </>
   );
 }
