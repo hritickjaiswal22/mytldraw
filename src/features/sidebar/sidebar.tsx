@@ -2,12 +2,17 @@ import PanelColumnHeading from "@/components/panelColumnHeading";
 import {
   STATIC_BACKGROUND_COLORS,
   STATIC_STROKE_COLORS,
+  getStrokeStyleOption,
 } from "@/utils/miscellaneous";
 import RadioGroup from "@/components/styledRadioGroup";
 import { ObjectPropertiesContext } from "@/contexts/objectProperties";
 import { ACTIONS } from "@/utils/actions";
 import { socket } from "@/socket";
-import { setFillColor, setStrokeColor } from "@/utils/setFunctions";
+import {
+  setFillColor,
+  setStrokeColor,
+  setStrokeStyle,
+} from "@/utils/setFunctions";
 
 import {
   Tooltip,
@@ -15,7 +20,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Bold, Trash2 } from "react-feather";
+import { Bold, Trash2, MoreHorizontal, Minus } from "react-feather";
 import { useContext } from "react";
 import { fabric } from "fabric";
 import { useParams } from "react-router-dom";
@@ -104,6 +109,28 @@ function Sidebar({ fabricInst }: SidebarPropTypes) {
 
       setStrokeColor(activeObject, color);
 
+      fabricInst?.renderAll();
+    }
+  }
+
+  function strokeStyleChangeHandler(option: number) {
+    setObjectProperties((prev) => {
+      return {
+        ...prev,
+        strokeDashArray: getStrokeStyleOption(option),
+      };
+    });
+
+    const activeObject = fabricInst?.getActiveObject();
+
+    if (activeObject) {
+      socket.emit(ACTIONS["OBJECT:CHANGED"], {
+        roomId,
+        objectId: (activeObject as any).id,
+        payload: getStrokeStyleOption(option),
+        action: ACTIONS["STROKESTYLE:CHANGED"],
+      });
+      setStrokeStyle(activeObject, getStrokeStyleOption(option));
       fabricInst?.renderAll();
     }
   }
@@ -222,6 +249,29 @@ function Sidebar({ fabricInst }: SidebarPropTypes) {
             },
           ]}
           drawOption={objectProperties.strokeWidth}
+        />
+      </div>
+
+      <div className="mb-3">
+        <PanelColumnHeading>Stroke Style</PanelColumnHeading>
+        <RadioGroup
+          onClickHandler={strokeStyleChangeHandler}
+          bgColor="bg-[#f1f0ff]"
+          options={[
+            {
+              id: "stroke-style-1",
+              content: <Minus width={16} height={16} />,
+              value: "stroke-style-1",
+              tooltipText: "Solid",
+            },
+            {
+              id: "stroke-style-2",
+              content: <MoreHorizontal width={16} height={16} />,
+              value: "stroke-style-2",
+              tooltipText: "Dashed",
+            },
+          ]}
+          drawOption={objectProperties.strokeDashArray ? 1 : 0}
         />
       </div>
 

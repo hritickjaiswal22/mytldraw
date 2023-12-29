@@ -14,6 +14,11 @@ const STATIC_BACKGROUND_COLORS = [
   "#ffec99",
 ];
 
+enum STROKE_STYLE_OPTIONS {
+  SOLID,
+  DASHED,
+}
+
 const TooltipDelayDuration = 400;
 
 function generateUUID() {
@@ -32,9 +37,16 @@ function generateUUID() {
   return uuid;
 }
 
+function getStrokeStyleOption(option: number) {
+  if (option === STROKE_STYLE_OPTIONS.SOLID) return undefined;
+  if (option === STROKE_STYLE_OPTIONS.DASHED) return [4, 2];
+}
+
 export {
   STATIC_STROKE_COLORS,
   STATIC_BACKGROUND_COLORS,
   TooltipDelayDuration,
   generateUUID,
+  STROKE_STYLE_OPTIONS,
+  getStrokeStyleOption,
 };

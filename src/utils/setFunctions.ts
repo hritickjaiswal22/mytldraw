@@ -50,4 +50,23 @@ function setFillColor(obj: fabric.Object, color: string) {
     });
 }
 
-export { setStrokeColor, setFillColor };
+function setStrokeStyle(obj: fabric.Object, style: undefined | number[]) {
+  if (obj.type === "image" || obj.type === "i-text") return;
+
+  if ((obj as any)?.id) {
+    const arr = (obj as any)?.id.split("-");
+
+    if (Array.isArray(arr) && arr.length && arr[arr.length - 1] === "arrow") {
+      (obj as fabric.Group)._objects[0].set({
+        strokeDashArray: style,
+      });
+      return;
+    }
+  }
+
+  obj.set({
+    strokeDashArray: style,
+  });
+}
+
+export { setStrokeColor, setFillColor, setStrokeStyle };

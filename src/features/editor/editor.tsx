@@ -73,6 +73,7 @@ function Editor() {
     strokeWidth: 2,
     stroke: STATIC_STROKE_COLORS[0],
     fill: STATIC_BACKGROUND_COLORS[0],
+    strokeDashArray: undefined,
   });
 
   async function onImageUpload(e: React.ChangeEvent<HTMLInputElement>) {

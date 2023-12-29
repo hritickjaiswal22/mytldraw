@@ -72,6 +72,7 @@ function Drawer({
           strokeWidth: objectProperties.strokeWidth,
           stroke: objectProperties.stroke,
           fill: objectProperties.fill,
+          strokeDashArray: objectProperties.strokeDashArray,
         });
         Object.assign(obj, { id: `${generateUUID()}-rectangle` });
         break;
@@ -86,6 +87,7 @@ function Drawer({
           strokeWidth: objectProperties.strokeWidth,
           stroke: objectProperties.stroke,
           fill: objectProperties.fill,
+          strokeDashArray: objectProperties.strokeDashArray,
         });
         Object.assign(obj, { id: `${generateUUID()}-triangle` });
         break;
@@ -101,6 +103,7 @@ function Drawer({
           strokeWidth: objectProperties.strokeWidth,
           stroke: objectProperties.stroke,
           fill: objectProperties.fill,
+          strokeDashArray: objectProperties.strokeDashArray,
         });
         Object.assign(obj, { id: `${generateUUID()}-circle` });
         break;
@@ -110,6 +113,7 @@ function Drawer({
           ...ObjectBaseOptions,
           strokeWidth: objectProperties.strokeWidth,
           stroke: objectProperties.stroke,
+          strokeDashArray: objectProperties.strokeDashArray,
         });
         Object.assign(obj, { id: `${generateUUID()}-line` });
         break;
@@ -143,6 +147,7 @@ function Drawer({
       originY: "center",
       strokeWidth: objectProperties.strokeWidth,
       stroke: objectProperties.stroke,
+      strokeDashArray: objectProperties.strokeDashArray,
       // type: "arrow",
     });
 
