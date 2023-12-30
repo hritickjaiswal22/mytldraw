@@ -200,6 +200,21 @@ function Receiver({ children, fabricInst }: ReceiverPropTypes) {
                 fabricInst.renderAll();
                 break;
 
+              case ACTIONS.SENDBACKWARD:
+                fabricInst.sendBackwards(object);
+                fabricInst.renderAll();
+                break;
+
+              case ACTIONS.BRINGTOFRONT:
+                fabricInst.bringToFront(object);
+                fabricInst.renderAll();
+                break;
+
+              case ACTIONS.BRINGFORWARD:
+                fabricInst.bringForward(object);
+                fabricInst.renderAll();
+                break;
+
               default:
                 break;
             }

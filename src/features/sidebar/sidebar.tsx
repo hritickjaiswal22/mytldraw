@@ -23,6 +23,9 @@ import Trash from "@/assets/icons/Delete.svg?react";
 import Dashed from "@/assets/icons/Dashed.svg?react";
 import Solid from "@/assets/icons/Solid.svg?react";
 import SendToBack from "@/assets/icons/SendToBack.svg?react";
+import SendBackward from "@/assets/icons/SendBackward.svg?react";
+import BringToFront from "@/assets/icons/BringToFront.svg?react";
+import BringForward from "@/assets/icons/BringForward.svg?react";
 
 import {
   Tooltip,
@@ -187,6 +190,63 @@ function Sidebar({ fabricInst }: SidebarPropTypes) {
     }
   }
 
+  function sendBackwards() {
+    if (fabricInst) {
+      const activeObject = fabricInst?.getActiveObject();
+
+      if (activeObject) {
+        socket.emit(ACTIONS["OBJECT:CHANGED"], {
+          roomId,
+          objectId: (activeObject as any).id,
+          payload: "",
+          action: ACTIONS.SENDBACKWARD,
+        });
+
+        fabricInst.sendToBack(activeObject);
+
+        fabricInst?.renderAll();
+      }
+    }
+  }
+
+  function bringToFront() {
+    if (fabricInst) {
+      const activeObject = fabricInst?.getActiveObject();
+
+      if (activeObject) {
+        socket.emit(ACTIONS["OBJECT:CHANGED"], {
+          roomId,
+          objectId: (activeObject as any).id,
+          payload: "",
+          action: ACTIONS.BRINGTOFRONT,
+        });
+
+        fabricInst.bringToFront(activeObject);
+
+        fabricInst?.renderAll();
+      }
+    }
+  }
+
+  function bringForward() {
+    if (fabricInst) {
+      const activeObject = fabricInst?.getActiveObject();
+
+      if (activeObject) {
+        socket.emit(ACTIONS["OBJECT:CHANGED"], {
+          roomId,
+          objectId: (activeObject as any).id,
+          payload: "",
+          action: ACTIONS.BRINGFORWARD,
+        });
+
+        fabricInst.bringForward(activeObject);
+
+        fabricInst?.renderAll();
+      }
+    }
+  }
+
   function deleteSelecedObject() {
     if (fabricInst) {
       const activeObject = fabricInst?.getActiveObject();
@@ -341,22 +401,75 @@ function Sidebar({ fabricInst }: SidebarPropTypes) {
 
       <div className="mb-3">
         <PanelColumnHeading>Layers</PanelColumnHeading>
-        <div className="flex items-center p-0 py-1 gap-2">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <button
-                  onClick={sendToBackHandler}
-                  className={`base w-[32px] h-[32px] bg-[#f1f0ff]`}
-                >
-                  <SendToBack width={16} height={16} />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>Send to back</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+        <div className="flex items-center gap-1">
+          <div className="flex items-center p-0 py-1 gap-2">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <button
+                    onClick={sendToBackHandler}
+                    className={`base w-[32px] h-[32px] bg-[#f1f0ff]`}
+                  >
+                    <SendToBack width={16} height={16} />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Send to back</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+          <div className="flex items-center p-0 py-1 gap-2">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <button
+                    onClick={sendBackwards}
+                    className={`base w-[32px] h-[32px] bg-[#f1f0ff]`}
+                  >
+                    <SendBackward width={16} height={16} />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Send backwards</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+          <div className="flex items-center p-0 py-1 gap-2">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <button
+                    onClick={bringToFront}
+                    className={`base w-[32px] h-[32px] bg-[#f1f0ff]`}
+                  >
+                    <BringToFront width={16} height={16} />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Bring to front</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
+          <div className="flex items-center p-0 py-1 gap-2">
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <button
+                    onClick={bringForward}
+                    className={`base w-[32px] h-[32px] bg-[#f1f0ff]`}
+                  >
+                    <BringForward width={16} height={16} />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Bring forward</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         </div>
       </div>
 
