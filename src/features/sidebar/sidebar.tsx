@@ -338,7 +338,7 @@ function Sidebar({ fabricInst }: SidebarPropTypes) {
               <TooltipTrigger>
                 <button
                   onClick={sendToBackHandler}
-                  className={`base w-[36px] h-[36px] rounded bg-[#f1f0ff]`}
+                  className={`base w-[32px] h-[32px] bg-[#f1f0ff]`}
                 >
                   <SendToBack width={16} height={16} />
                 </button>
@@ -359,7 +359,7 @@ function Sidebar({ fabricInst }: SidebarPropTypes) {
               <TooltipTrigger>
                 <button
                   onClick={deleteSelecedObject}
-                  className={`base w-[36px] h-[36px] rounded bg-[#f1f0ff]`}
+                  className={`base w-[32px] h-[32px]  bg-[#f1f0ff]`}
                 >
                   <Trash width={16} height={16} />
                 </button>

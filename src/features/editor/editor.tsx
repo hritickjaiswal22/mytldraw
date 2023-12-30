@@ -196,7 +196,7 @@ function Editor() {
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
-              className="pointer-events-auto w-[36px] h-[36px] rounded-[10px] p-[10px] flex justify-center items-center bg-[#ececf4] hover:bg-[#f1f0ff]"
+              className="pointer-events-auto w-[32px] h-[32px] rounded-[10px] p-[10px] flex justify-center items-center bg-[#ececf4] hover:bg-[#f1f0ff]"
               variant="outline"
             >
               <Menu width={16} height={16} />

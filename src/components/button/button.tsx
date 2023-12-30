@@ -10,7 +10,7 @@ interface ButtonPropTypes {
 function Button({ children, className = "gray" }: ButtonPropTypes) {
   return (
     <button
-      className={`w-[36px] h-[36px] rounded-[10px] p-[10px] flex justify-center items-center ${className}`}
+      className={`w-[32px] h-[32px] rounded-[10px] p-[10px] flex justify-center items-center ${className}`}
     >
       {children}
     </button>

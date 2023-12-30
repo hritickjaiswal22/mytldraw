@@ -77,7 +77,7 @@
 
 @layer components {
   .base {
-    @apply w-[36px] h-[36px] rounded-[10px] flex justify-center items-center;
+    @apply w-[32px] h-[32px] rounded-[8px] flex justify-center items-center;
   }
 
   .boxShadow {
