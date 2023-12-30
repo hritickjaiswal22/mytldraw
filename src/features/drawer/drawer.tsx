@@ -2,7 +2,6 @@ import { DrawOptions } from "@/utils/drawOptions";
 import { ObjectBaseOptions, BaseTextOptions } from "@/utils/baseObjectOptions";
 import { generateUUID } from "@/utils/miscellaneous";
 import { ObjectPropertiesContext } from "@/contexts/objectProperties";
-import { TextPropertiesContext } from "@/contexts/textProperties";
 
 import { fabric } from "fabric";
 import { ReactNode, useContext, useEffect, useRef } from "react";
@@ -55,7 +54,6 @@ function Drawer({
   const arrowDeltaX = useRef(0);
   const arrowDeltaY = useRef(0);
   const { objectProperties } = useContext(ObjectPropertiesContext);
-  const { textProperties } = useContext(TextPropertiesContext);
 
   // Initialize
   function initializeObject({ e }: fabric.IEvent<MouseEvent>) {
@@ -127,7 +125,6 @@ function Drawer({
       case DrawOptions.TEXT:
         obj = new fabric.IText("Edit Text", {
           ...BaseTextOptions,
-          ...textProperties,
           left: e.x,
           top: e.y,
           fill: objectProperties.stroke,
@@ -394,13 +391,7 @@ function Drawer({
       fabricInst?.off("mouse:move");
       fabricInst?.off("mouse:up");
     };
-  }, [
-    fabricInst,
-    drawOption,
-    imageBase64Url,
-    objectProperties,
-    textProperties,
-  ]);
+  }, [fabricInst, drawOption, imageBase64Url, objectProperties]);
 
   return <>{children}</>;
 }
