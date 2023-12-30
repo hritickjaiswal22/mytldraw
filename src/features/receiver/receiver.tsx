@@ -195,6 +195,11 @@ function Receiver({ children, fabricInst }: ReceiverPropTypes) {
                 fabricInst.renderAll();
                 break;
 
+              case ACTIONS.SENDTOBACK:
+                fabricInst.sendToBack(object);
+                fabricInst.renderAll();
+                break;
+
               default:
                 break;
             }

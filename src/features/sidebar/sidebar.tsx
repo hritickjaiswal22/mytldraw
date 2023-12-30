@@ -173,7 +173,16 @@ function Sidebar({ fabricInst }: SidebarPropTypes) {
       const activeObject = fabricInst?.getActiveObject();
 
       if (activeObject) {
+        socket.emit(ACTIONS["OBJECT:CHANGED"], {
+          roomId,
+          objectId: (activeObject as any).id,
+          payload: "",
+          action: ACTIONS.SENDTOBACK,
+        });
+
         fabricInst.sendToBack(activeObject);
+
+        fabricInst?.renderAll();
       }
     }
   }
