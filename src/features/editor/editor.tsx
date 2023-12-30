@@ -1,3 +1,5 @@
+/// <reference types="vite-plugin-svgr/client" />
+
 import useWindowResize from "@/hooks/useWindowResize";
 import NonInteractiveHeader from "@/layouts/header";
 import RadioGroup from "@/components/styledRadioGroup";
@@ -30,22 +32,20 @@ import {
 } from "@/utils/miscellaneous";
 import { ObjectPropertiesContext } from "@/contexts/objectProperties";
 import OptionsSidebar from "@/features/sidebar";
+import Menu from "@/assets/icons/Hamburger.svg?react";
+import Image from "@/assets/icons/Image.svg?react";
+import Trash from "@/assets/icons/Delete.svg?react";
+import MousePointer from "@/assets/icons/Pointer.svg?react";
+import Square from "@/assets/icons/Rect.svg?react";
+import Triangle from "@/assets/icons/Triangle.svg?react";
+import Circle from "@/assets/icons/Circle.svg?react";
+import Arrow from "@/assets/icons/Arrow.svg?react";
+import Line from "@/assets/icons/Line.svg?react";
+import Pen from "@/assets/icons/Pen.svg?react";
+import Text from "@/assets/icons/Text.svg?react";
 
 import { fabric } from "fabric";
 import { useEffect, useRef, useState } from "react";
-import {
-  Menu,
-  Image,
-  Trash2,
-  MousePointer,
-  Square,
-  Triangle,
-  Circle,
-  ArrowRight,
-  Minus,
-  Edit2,
-  Type,
-} from "react-feather";
 import imageCompression from "browser-image-compression";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 
@@ -209,7 +209,7 @@ function Editor() {
                 Export image
               </DropdownMenuItem>
               <DropdownMenuItem className="flex gap-3 font-normal cursor-pointer hover:bg-[#f1f0ff] text-xs">
-                <Trash2 width={16} height={16} />
+                <Trash width={16} height={16} />
                 Reset the canvas
               </DropdownMenuItem>
             </DropdownMenuGroup>
@@ -246,25 +246,25 @@ function Editor() {
               },
               {
                 id: "5",
-                content: <ArrowRight width={16} height={16} />,
+                content: <Arrow width={16} height={16} />,
                 value: "5",
                 tooltipText: "Arrow",
               },
               {
                 id: "6",
-                content: <Minus width={16} height={16} />,
+                content: <Line width={16} height={16} />,
                 value: "6",
                 tooltipText: "Line",
               },
               {
                 id: "7",
-                content: <Edit2 width={16} height={16} />,
+                content: <Pen width={16} height={16} />,
                 value: "7",
                 tooltipText: "Draw",
               },
               {
                 id: "8",
-                content: <Type width={16} height={16} />,
+                content: <Text width={16} height={16} />,
                 value: "8",
                 tooltipText: "Text",
               },

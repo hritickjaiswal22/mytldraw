@@ -1,3 +1,5 @@
+/// <reference types="vite-plugin-svgr/client" />
+
 import PanelColumnHeading from "@/components/panelColumnHeading";
 import {
   STATIC_BACKGROUND_COLORS,
@@ -14,6 +16,13 @@ import {
   setStrokeColor,
   setStrokeStyle,
 } from "@/utils/setFunctions";
+import Thin from "@/assets/icons/Thin.svg?react";
+import Bold from "@/assets/icons/Bold.svg?react";
+import ExtraBold from "@/assets/icons/ExtraBold.svg?react";
+import Trash from "@/assets/icons/Delete.svg?react";
+import Dashed from "@/assets/icons/Dashed.svg?react";
+import Solid from "@/assets/icons/Solid.svg?react";
+import SendToBack from "@/assets/icons/SendToBack.svg?react";
 
 import {
   Tooltip,
@@ -21,7 +30,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Bold, Trash2, MoreHorizontal, Minus, SkipBack } from "react-feather";
 import { useContext } from "react";
 import { fabric } from "fabric";
 import { useParams } from "react-router-dom";
@@ -266,7 +274,7 @@ function Sidebar({ fabricInst }: SidebarPropTypes) {
           options={[
             {
               id: "stroke-width-1",
-              content: <Bold width={16} height={16} />,
+              content: <Thin width={16} height={16} />,
               value: "stroke-width-1",
               tooltipText: "Thin",
             },
@@ -278,7 +286,7 @@ function Sidebar({ fabricInst }: SidebarPropTypes) {
             },
             {
               id: "stroke-width-3",
-              content: <Bold width={16} height={16} />,
+              content: <ExtraBold width={16} height={16} />,
               value: "stroke-width-3",
               tooltipText: "Extra bold",
             },
@@ -295,13 +303,13 @@ function Sidebar({ fabricInst }: SidebarPropTypes) {
           options={[
             {
               id: "stroke-style-1",
-              content: <Minus width={16} height={16} />,
+              content: <Solid width={16} height={16} />,
               value: "stroke-style-1",
               tooltipText: "Solid",
             },
             {
               id: "stroke-style-2",
-              content: <MoreHorizontal width={16} height={16} />,
+              content: <Dashed width={16} height={16} />,
               value: "stroke-style-2",
               tooltipText: "Dashed",
             },
@@ -332,7 +340,7 @@ function Sidebar({ fabricInst }: SidebarPropTypes) {
                   onClick={sendToBackHandler}
                   className={`base w-[36px] h-[36px] rounded bg-[#f1f0ff]`}
                 >
-                  <SkipBack width={16} height={16} />
+                  <SendToBack width={16} height={16} />
                 </button>
               </TooltipTrigger>
               <TooltipContent>
@@ -353,7 +361,7 @@ function Sidebar({ fabricInst }: SidebarPropTypes) {
                   onClick={deleteSelecedObject}
                   className={`base w-[36px] h-[36px] rounded bg-[#f1f0ff]`}
                 >
-                  <Trash2 width={16} height={16} />
+                  <Trash width={16} height={16} />
                 </button>
               </TooltipTrigger>
               <TooltipContent>
