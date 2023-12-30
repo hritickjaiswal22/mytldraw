@@ -154,6 +154,8 @@ function Editor() {
     temp.freeDrawingBrush.width = 5;
     temp.freeDrawingBrush.color = "#000";
 
+    temp.preserveObjectStacking = true;
+
     // To load "Virgil" font without installing fontFaceObserver
     const dummyText = new fabric.Text("", {
       ...BaseTextOptions,

@@ -21,7 +21,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { Bold, Trash2, MoreHorizontal, Minus } from "react-feather";
+import { Bold, Trash2, MoreHorizontal, Minus, SkipBack } from "react-feather";
 import { useContext } from "react";
 import { fabric } from "fabric";
 import { useParams } from "react-router-dom";
@@ -157,6 +157,16 @@ function Sidebar({ fabricInst }: SidebarPropTypes) {
       setOpacity(activeObject, Number(e.target.value));
 
       fabricInst?.renderAll();
+    }
+  }
+
+  function sendToBackHandler() {
+    if (fabricInst) {
+      const activeObject = fabricInst?.getActiveObject();
+
+      if (activeObject) {
+        fabricInst.sendToBack(activeObject);
+      }
     }
   }
 
@@ -313,6 +323,27 @@ function Sidebar({ fabricInst }: SidebarPropTypes) {
       </div>
 
       <div className="mb-3">
+        <PanelColumnHeading>Layers</PanelColumnHeading>
+        <div className="flex items-center p-0 py-1 gap-2">
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <button
+                  onClick={sendToBackHandler}
+                  className={`base w-[36px] h-[36px] rounded bg-[#f1f0ff]`}
+                >
+                  <SkipBack width={16} height={16} />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Send to back</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+      </div>
+
+      <div className="mb-3">
         <PanelColumnHeading>Actions</PanelColumnHeading>
         <div className="flex items-center p-0 py-1 gap-2">
           <TooltipProvider>
@@ -320,7 +351,7 @@ function Sidebar({ fabricInst }: SidebarPropTypes) {
               <TooltipTrigger>
                 <button
                   onClick={deleteSelecedObject}
-                  className={`base w-[22px] h-[22px] rounded`}
+                  className={`base w-[36px] h-[36px] rounded bg-[#f1f0ff]`}
                 >
                   <Trash2 width={16} height={16} />
                 </button>
