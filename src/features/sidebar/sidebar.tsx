@@ -4,10 +4,13 @@ import PanelColumnHeading from "@/components/panelColumnHeading";
 import {
   STATIC_BACKGROUND_COLORS,
   STATIC_STROKE_COLORS,
+  getFontSize,
+  getFontSizeIndex,
   getStrokeStyleOption,
 } from "@/utils/miscellaneous";
 import RadioGroup from "@/components/styledRadioGroup";
 import { ObjectPropertiesContext } from "@/contexts/objectProperties";
+import { TextPropertiesContext } from "@/contexts/textProperties";
 import { ACTIONS } from "@/utils/actions";
 import { socket } from "@/socket";
 import {
@@ -26,6 +29,10 @@ import SendToBack from "@/assets/icons/SendToBack.svg?react";
 import SendBackward from "@/assets/icons/SendBackward.svg?react";
 import BringToFront from "@/assets/icons/BringToFront.svg?react";
 import BringForward from "@/assets/icons/BringForward.svg?react";
+import Small from "@/assets/icons/SmallFont.svg?react";
+import Medium from "@/assets/icons/MediumFont.svg?react";
+import Large from "@/assets/icons/Large.svg?react";
+import ExtraLarge from "@/assets/icons/ExtraLarge.svg?react";
 
 import {
   Tooltip,
@@ -44,6 +51,9 @@ interface SidebarPropTypes {
 function Sidebar({ fabricInst }: SidebarPropTypes) {
   const { objectProperties, setObjectProperties } = useContext(
     ObjectPropertiesContext
+  );
+  const { textProperties, setTextProperties } = useContext(
+    TextPropertiesContext
   );
   const { roomId } = useParams();
 
@@ -257,6 +267,28 @@ function Sidebar({ fabricInst }: SidebarPropTypes) {
     }
   }
 
+  function textSizeChangeHandler(option: number) {
+    setTextProperties({
+      fontSize: getFontSize(option),
+    });
+
+    const activeObject = fabricInst.getActiveObject();
+
+    if (activeObject && activeObject.type === "i-text") {
+      socket.emit(ACTIONS["OBJECT:CHANGED"], {
+        roomId,
+        objectId: (activeObject as any).id,
+        payload: getFontSize(option),
+        action: ACTIONS["FONTSIZE:CHANGED"],
+      });
+
+      (activeObject as fabric.IText).set({
+        fontSize: getFontSize(option),
+      });
+      fabricInst.renderAll();
+    }
+  }
+
   return (
     <section className="fixed z-50 bg-white left-4 top-20 p-2 rounded max-h-[782px] boxShadow">
       <div className="mb-3">
@@ -396,6 +428,41 @@ function Sidebar({ fabricInst }: SidebarPropTypes) {
           name="opacity"
           min="0"
           max="1"
+        />
+      </div>
+
+      <div className="mb-3">
+        <PanelColumnHeading>Font size</PanelColumnHeading>
+        <RadioGroup
+          onClickHandler={textSizeChangeHandler}
+          bgColor="bg-[#f1f0ff]"
+          options={[
+            {
+              id: "font-size-1",
+              content: <Small width={16} height={16} />,
+              value: "font-size-1",
+              tooltipText: "Small",
+            },
+            {
+              id: "font-size-2",
+              content: <Medium width={16} height={16} />,
+              value: "font-size-2",
+              tooltipText: "Medium",
+            },
+            {
+              id: "font-size-3",
+              content: <Large width={16} height={16} />,
+              value: "font-size-3",
+              tooltipText: "Large",
+            },
+            {
+              id: "font-size-4",
+              content: <ExtraLarge width={16} height={16} />,
+              value: "font-size-4",
+              tooltipText: "Extra large",
+            },
+          ]}
+          drawOption={getFontSizeIndex(textProperties.fontSize)}
         />
       </div>
 

@@ -215,6 +215,13 @@ function Receiver({ children, fabricInst }: ReceiverPropTypes) {
                 fabricInst.renderAll();
                 break;
 
+              case ACTIONS["FONTSIZE:CHANGED"]:
+                (object as fabric.IText).set({
+                  fontSize: payload,
+                });
+                fabricInst.renderAll();
+                break;
+
               default:
                 break;
             }
