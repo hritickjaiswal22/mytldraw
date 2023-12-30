@@ -31,6 +31,7 @@ import {
   TooltipDelayDuration,
 } from "@/utils/miscellaneous";
 import { ObjectPropertiesContext } from "@/contexts/objectProperties";
+import { TextPropertiesContext } from "@/contexts/textProperties";
 import OptionsSidebar from "@/features/sidebar";
 import Menu from "@/assets/icons/Hamburger.svg?react";
 import Image from "@/assets/icons/Image.svg?react";
@@ -75,6 +76,9 @@ function Editor() {
     fill: STATIC_BACKGROUND_COLORS[0],
     strokeDashArray: undefined,
     opacity: 1,
+  });
+  const [textProperties, setTextProperties] = useState({
+    fontSize: 40,
   });
 
   async function onImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
@@ -184,7 +188,7 @@ function Editor() {
     setDrawOption(option);
   }
 
-  const value = {
+  const objectPropertiesValue = {
     objectProperties,
     setObjectProperties,
   };
@@ -304,28 +308,34 @@ function Editor() {
         <div></div>
       </NonInteractiveHeader>
 
-      <ObjectPropertiesContext.Provider value={value}>
-        {/* Main Canvas */}
-        <main>
-          <Receiver fabricInst={fabricInst}>
-            {/* Dispatcher must be the direct parent of Drawer as it is passing down
-              objectAddHandler as props to Drawer */}
-            <Dispatcher fabricInst={fabricInst}>
-              <Drawer
-                drawOption={drawOption}
-                fabricInst={fabricInst}
-                imageBase64Url={imageBase64Url}
-                setImageBase64Url={setImageBase64Url}
-              >
-                <canvas ref={canvasRef}></canvas>
-              </Drawer>
-            </Dispatcher>
-          </Receiver>
-        </main>
-
-        {/* Options Sidebar */}
-        {fabricInst && <OptionsSidebar fabricInst={fabricInst} />}
-      </ObjectPropertiesContext.Provider>
+      <TextPropertiesContext.Provider
+        value={{
+          textProperties,
+          setTextProperties,
+        }}
+      >
+        <ObjectPropertiesContext.Provider value={objectPropertiesValue}>
+          {/* Main Canvas */}
+          <main>
+            <Receiver fabricInst={fabricInst}>
+              {/* Dispatcher must be the direct parent of Drawer as it is passing down
+                objectAddHandler as props to Drawer */}
+              <Dispatcher fabricInst={fabricInst}>
+                <Drawer
+                  drawOption={drawOption}
+                  fabricInst={fabricInst}
+                  imageBase64Url={imageBase64Url}
+                  setImageBase64Url={setImageBase64Url}
+                >
+                  <canvas ref={canvasRef}></canvas>
+                </Drawer>
+              </Dispatcher>
+            </Receiver>
+          </main>
+          {/* Options Sidebar */}
+          {fabricInst && <OptionsSidebar fabricInst={fabricInst} />}
+        </ObjectPropertiesContext.Provider>
+      </TextPropertiesContext.Provider>
     </>
   );
 }

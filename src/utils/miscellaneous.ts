@@ -42,6 +42,14 @@ function getStrokeStyleOption(option: number) {
   if (option === STROKE_STYLE_OPTIONS.DASHED) return [4, 2];
 }
 
+function mapIndexToFontSize(option: number) {
+  if (option === 0) return 20;
+  else if (option === 1) return 40;
+  else if (option === 2) return 50;
+  else if (option === 3) return 60;
+  return 40;
+}
+
 export {
   STATIC_STROKE_COLORS,
   STATIC_BACKGROUND_COLORS,
@@ -49,4 +57,5 @@ export {
   generateUUID,
   STROKE_STYLE_OPTIONS,
   getStrokeStyleOption,
+  mapIndexToFontSize,
 };

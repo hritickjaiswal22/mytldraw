@@ -5,9 +5,11 @@ import {
   STATIC_BACKGROUND_COLORS,
   STATIC_STROKE_COLORS,
   getStrokeStyleOption,
+  mapIndexToFontSize,
 } from "@/utils/miscellaneous";
 import RadioGroup from "@/components/styledRadioGroup";
 import { ObjectPropertiesContext } from "@/contexts/objectProperties";
+import { TextPropertiesContext } from "@/contexts/textProperties";
 import { ACTIONS } from "@/utils/actions";
 import { socket } from "@/socket";
 import {
@@ -26,6 +28,10 @@ import SendToBack from "@/assets/icons/SendToBack.svg?react";
 import SendBackward from "@/assets/icons/SendBackward.svg?react";
 import BringToFront from "@/assets/icons/BringToFront.svg?react";
 import BringForward from "@/assets/icons/BringForward.svg?react";
+import Small from "@/assets/icons/SmallFont.svg?react";
+import Medium from "@/assets/icons/MediumFont.svg?react";
+import Large from "@/assets/icons/Large.svg?react";
+import ExtraLarge from "@/assets/icons/ExtraLarge.svg?react";
 
 import {
   Tooltip,
@@ -44,6 +50,9 @@ interface SidebarPropTypes {
 function Sidebar({ fabricInst }: SidebarPropTypes) {
   const { objectProperties, setObjectProperties } = useContext(
     ObjectPropertiesContext
+  );
+  const { textProperties, setTextProperties } = useContext(
+    TextPropertiesContext
   );
   const { roomId } = useParams();
 
@@ -145,6 +154,14 @@ function Sidebar({ fabricInst }: SidebarPropTypes) {
       setStrokeStyle(activeObject, getStrokeStyleOption(option));
       fabricInst?.renderAll();
     }
+  }
+
+  function fontSizeChangeHandler(option: number) {
+    const newFontSize = mapIndexToFontSize(option);
+
+    setTextProperties({
+      fontSize: newFontSize,
+    });
   }
 
   function opacityChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
@@ -384,6 +401,41 @@ function Sidebar({ fabricInst }: SidebarPropTypes) {
             },
           ]}
           drawOption={objectProperties.strokeDashArray ? 1 : 0}
+        />
+      </div>
+
+      <div className="mb-3">
+        <PanelColumnHeading>Font size</PanelColumnHeading>
+        <RadioGroup
+          onClickHandler={fontSizeChangeHandler}
+          bgColor="bg-[#f1f0ff]"
+          options={[
+            {
+              id: "font-size-1",
+              content: <Small width={16} height={16} />,
+              value: "font-size-1",
+              tooltipText: "Small",
+            },
+            {
+              id: "font-size-2",
+              content: <Medium width={16} height={16} />,
+              value: "font-size-2",
+              tooltipText: "Medium",
+            },
+            {
+              id: "font-size-3",
+              content: <Large width={16} height={16} />,
+              value: "font-size-3",
+              tooltipText: "Large",
+            },
+            {
+              id: "font-size-4",
+              content: <ExtraLarge width={16} height={16} />,
+              value: "font-size-4",
+              tooltipText: "Extra large",
+            },
+          ]}
+          drawOption={0}
         />
       </div>
 
