@@ -69,4 +69,10 @@ function setStrokeStyle(obj: fabric.Object, style: undefined | number[]) {
   });
 }
 
-export { setStrokeColor, setFillColor, setStrokeStyle };
+function setOpacity(obj: fabric.Object, opacity: number) {
+  obj.set({
+    opacity,
+  });
+}
+
+export { setStrokeColor, setFillColor, setStrokeStyle, setOpacity };

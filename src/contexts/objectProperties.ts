@@ -11,6 +11,7 @@ interface ObjectPropertiesContextType {
     stroke: string;
     fill: string;
     strokeDashArray: undefined | number[];
+    opacity: number;
   };
   setObjectProperties: React.Dispatch<
     React.SetStateAction<{
@@ -18,6 +19,7 @@ interface ObjectPropertiesContextType {
       stroke: string;
       fill: string;
       strokeDashArray: undefined | number[];
+      opacity: number;
     }>
   >;
 }
@@ -28,6 +30,7 @@ const ObjectPropertiesContext = createContext<ObjectPropertiesContextType>({
     stroke: STATIC_STROKE_COLORS[0],
     fill: STATIC_BACKGROUND_COLORS[0],
     strokeDashArray: undefined,
+    opacity: 1,
   },
   setObjectProperties: null,
 });

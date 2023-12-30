@@ -73,6 +73,7 @@ function Drawer({
           stroke: objectProperties.stroke,
           fill: objectProperties.fill,
           strokeDashArray: objectProperties.strokeDashArray,
+          opacity: objectProperties.opacity,
         });
         Object.assign(obj, { id: `${generateUUID()}-rectangle` });
         break;
@@ -88,6 +89,7 @@ function Drawer({
           stroke: objectProperties.stroke,
           fill: objectProperties.fill,
           strokeDashArray: objectProperties.strokeDashArray,
+          opacity: objectProperties.opacity,
         });
         Object.assign(obj, { id: `${generateUUID()}-triangle` });
         break;
@@ -104,6 +106,7 @@ function Drawer({
           stroke: objectProperties.stroke,
           fill: objectProperties.fill,
           strokeDashArray: objectProperties.strokeDashArray,
+          opacity: objectProperties.opacity,
         });
         Object.assign(obj, { id: `${generateUUID()}-circle` });
         break;
@@ -114,6 +117,7 @@ function Drawer({
           strokeWidth: objectProperties.strokeWidth,
           stroke: objectProperties.stroke,
           strokeDashArray: objectProperties.strokeDashArray,
+          opacity: objectProperties.opacity,
         });
         Object.assign(obj, { id: `${generateUUID()}-line` });
         break;
@@ -124,6 +128,7 @@ function Drawer({
           left: e.x,
           top: e.y,
           fill: objectProperties.stroke,
+          opacity: objectProperties.opacity,
         });
         Object.assign(obj, { id: `${generateUUID()}-text` });
         break;
@@ -148,6 +153,7 @@ function Drawer({
       strokeWidth: objectProperties.strokeWidth,
       stroke: objectProperties.stroke,
       strokeDashArray: objectProperties.strokeDashArray,
+      opacity: objectProperties.opacity,
       // type: "arrow",
     });
 
@@ -168,6 +174,7 @@ function Drawer({
       height: 20,
       stroke: objectProperties.stroke,
       fill: objectProperties.stroke,
+      opacity: objectProperties.opacity,
     });
     Object.assign(triangle, { id: "arrow_triangle", uuid: line.uuid });
     arrowTriangle.current = triangle;
@@ -189,6 +196,7 @@ function Drawer({
           angle: 0,
           left: e.x,
           top: e.y,
+          opacity: objectProperties.opacity,
         });
         Object.assign(image, { id: `${generateUUID()}-image` });
 

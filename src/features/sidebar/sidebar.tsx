@@ -10,6 +10,7 @@ import { ACTIONS } from "@/utils/actions";
 import { socket } from "@/socket";
 import {
   setFillColor,
+  setOpacity,
   setStrokeColor,
   setStrokeStyle,
 } from "@/utils/setFunctions";
@@ -131,6 +132,30 @@ function Sidebar({ fabricInst }: SidebarPropTypes) {
         action: ACTIONS["STROKESTYLE:CHANGED"],
       });
       setStrokeStyle(activeObject, getStrokeStyleOption(option));
+      fabricInst?.renderAll();
+    }
+  }
+
+  function opacityChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
+    setObjectProperties((prev) => {
+      return {
+        ...prev,
+        opacity: Number(e.target.value),
+      };
+    });
+
+    const activeObject = fabricInst?.getActiveObject();
+
+    if (activeObject) {
+      socket.emit(ACTIONS["OBJECT:CHANGED"], {
+        roomId,
+        objectId: (activeObject as any).id,
+        payload: Number(e.target.value),
+        action: ACTIONS["OPACITY:CHANGED"],
+      });
+
+      setOpacity(activeObject, Number(e.target.value));
+
       fabricInst?.renderAll();
     }
   }
@@ -272,6 +297,18 @@ function Sidebar({ fabricInst }: SidebarPropTypes) {
             },
           ]}
           drawOption={objectProperties.strokeDashArray ? 1 : 0}
+        />
+      </div>
+
+      <div className="mb-3">
+        <PanelColumnHeading>Opacity</PanelColumnHeading>
+        <input
+          step={0.05}
+          onChange={opacityChangeHandler}
+          type="range"
+          name="opacity"
+          min="0"
+          max="1"
         />
       </div>
 

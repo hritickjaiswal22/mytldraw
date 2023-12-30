@@ -2,6 +2,7 @@ import { socket } from "@/socket";
 import { ACTIONS } from "@/utils/actions";
 import {
   setFillColor,
+  setOpacity,
   setStrokeColor,
   setStrokeStyle,
 } from "@/utils/setFunctions";
@@ -186,6 +187,11 @@ function Receiver({ children, fabricInst }: ReceiverPropTypes) {
 
               case ACTIONS["STROKESTYLE:CHANGED"]:
                 setStrokeStyle(object, payload);
+                fabricInst.renderAll();
+                break;
+
+              case ACTIONS["OPACITY:CHANGED"]:
+                setOpacity(object, payload);
                 fabricInst.renderAll();
                 break;
 
