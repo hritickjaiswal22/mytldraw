@@ -326,13 +326,12 @@ function Editor() {
         <ObjectPropertiesContext.Provider value={objectPropertiesContextValue}>
           {/* Main Canvas */}
           <main>
-            <Receiver fabricInst={fabricInst}>
+            <Receiver>
               {/* Dispatcher must be the direct parent of Drawer as it is passing down
                 objectAddHandler as props to Drawer */}
-              <Dispatcher fabricInst={fabricInst}>
+              <Dispatcher>
                 <Drawer
                   drawOption={drawOption}
-                  fabricInst={fabricInst}
                   imageBase64Url={imageBase64Url}
                   setImageBase64Url={setImageBase64Url}
                 >
@@ -342,7 +341,7 @@ function Editor() {
             </Receiver>
           </main>
           {/* Options Sidebar */}
-          {fabricInst && <OptionsSidebar fabricInst={fabricInst} />}
+          {fabricInst && <OptionsSidebar />}
         </ObjectPropertiesContext.Provider>
       </TextPropertiesContext.Provider>
     </FabricCanvasContext.Provider>

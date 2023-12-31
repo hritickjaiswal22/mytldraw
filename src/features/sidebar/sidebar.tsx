@@ -1,5 +1,6 @@
 // Contexts
 import { ObjectPropertiesContext } from "@/contexts/objectProperties";
+import { FabricCanvasContext } from "@/contexts/fabricCanvasContext";
 
 // Controllers
 import StrokeControls from "./strokeControls";
@@ -14,14 +15,10 @@ import { setOpacity } from "@/utils/setFunctions";
 import PanelColumnHeading from "@/components/panelColumnHeading";
 
 import { useContext } from "react";
-import { fabric } from "fabric";
 import { useParams } from "react-router-dom";
 
-interface SidebarPropTypes {
-  fabricInst: fabric.Canvas;
-}
-
-function Sidebar({ fabricInst }: SidebarPropTypes) {
+function Sidebar() {
+  const { fabricInst } = useContext(FabricCanvasContext);
   const { setObjectProperties } = useContext(ObjectPropertiesContext);
   const { roomId } = useParams();
 

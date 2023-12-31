@@ -3,12 +3,12 @@ import { ObjectBaseOptions, BaseTextOptions } from "@/utils/baseObjectOptions";
 import { generateUUID } from "@/utils/miscellaneous";
 import { ObjectPropertiesContext } from "@/contexts/objectProperties";
 import { TextPropertiesContext } from "@/contexts/textProperties";
+import { FabricCanvasContext } from "@/contexts/fabricCanvasContext";
 
 import { fabric } from "fabric";
 import { ReactNode, useContext, useEffect, useRef } from "react";
 
 interface DrawerPropTypes {
-  fabricInst: fabric.Canvas | null;
   drawOption: DrawOptions;
   children: ReactNode;
   objectAddHandler: () => void;
@@ -42,7 +42,6 @@ const _FabricCalcArrowAngle = function (
 
 function Drawer({
   drawOption,
-  fabricInst,
   children,
   objectAddHandler,
   imageBase64Url,
@@ -54,6 +53,8 @@ function Drawer({
   const arrowTriangle = useRef<null | fabric.Triangle>(null);
   const arrowDeltaX = useRef(0);
   const arrowDeltaY = useRef(0);
+
+  const { fabricInst } = useContext(FabricCanvasContext);
   const { objectProperties } = useContext(ObjectPropertiesContext);
   const { textProperties } = useContext(TextPropertiesContext);
 
