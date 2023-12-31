@@ -19,6 +19,13 @@ enum STROKE_STYLE_OPTIONS {
   DASHED,
 }
 
+enum FONT_SIZE_OPTIONS {
+  SMALL,
+  MEDIUM,
+  LARGE,
+  EXTRALARGE,
+}
+
 const TooltipDelayDuration = 400;
 
 function generateUUID() {
@@ -42,6 +49,54 @@ function getStrokeStyleOption(option: number) {
   if (option === STROKE_STYLE_OPTIONS.DASHED) return [4, 2];
 }
 
+function getFontSize(option: number) {
+  switch (option) {
+    case FONT_SIZE_OPTIONS.SMALL:
+      return 25;
+      break;
+
+    case FONT_SIZE_OPTIONS.MEDIUM:
+      return 40;
+      break;
+
+    case FONT_SIZE_OPTIONS.LARGE:
+      return 50;
+      break;
+
+    case FONT_SIZE_OPTIONS.EXTRALARGE:
+      return 60;
+      break;
+
+    default:
+      return 40;
+      break;
+  }
+}
+
+function getFontSizeIndex(option: number) {
+  switch (option) {
+    case 25:
+      return FONT_SIZE_OPTIONS.SMALL;
+      break;
+
+    case 40:
+      return FONT_SIZE_OPTIONS.MEDIUM;
+      break;
+
+    case 50:
+      return FONT_SIZE_OPTIONS.LARGE;
+      break;
+
+    case 60:
+      return FONT_SIZE_OPTIONS.EXTRALARGE;
+      break;
+
+    default:
+      return FONT_SIZE_OPTIONS.MEDIUM;
+      break;
+  }
+}
+
 export {
   STATIC_STROKE_COLORS,
   STATIC_BACKGROUND_COLORS,
@@ -49,4 +104,7 @@ export {
   generateUUID,
   STROKE_STYLE_OPTIONS,
   getStrokeStyleOption,
+  FONT_SIZE_OPTIONS,
+  getFontSize,
+  getFontSizeIndex,
 };

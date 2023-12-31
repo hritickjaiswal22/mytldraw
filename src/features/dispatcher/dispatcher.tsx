@@ -1,15 +1,16 @@
 import { socket } from "@/socket";
 import { ACTIONS } from "@/utils/actions";
+import { FabricCanvasContext } from "@/contexts/fabricCanvasContext";
 
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode, useContext, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 interface DispatcherPropTypes {
-  fabricInst: fabric.Canvas | null;
   children: ReactNode;
 }
 
-function Dispatcher({ children, fabricInst }: DispatcherPropTypes) {
+function Dispatcher({ children }: DispatcherPropTypes) {
+  const { fabricInst } = useContext(FabricCanvasContext);
   const { roomId } = useParams();
 
   function objectAddHandler() {

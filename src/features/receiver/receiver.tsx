@@ -6,16 +6,18 @@ import {
   setStrokeColor,
   setStrokeStyle,
 } from "@/utils/setFunctions";
+import { FabricCanvasContext } from "@/contexts/fabricCanvasContext";
 
-import { ReactNode, useEffect } from "react";
+import { ReactNode, useContext, useEffect } from "react";
 import { fabric } from "fabric";
 
 interface ReceiverPropTypes {
-  fabricInst: fabric.Canvas | null;
   children: ReactNode;
 }
 
-function Receiver({ children, fabricInst }: ReceiverPropTypes) {
+function Receiver({ children }: ReceiverPropTypes) {
+  const { fabricInst } = useContext(FabricCanvasContext);
+
   useEffect(() => {
     if (fabricInst) {
       socket.on(ACTIONS["OBJECT:ADDED"], (str) => {
@@ -212,6 +214,13 @@ function Receiver({ children, fabricInst }: ReceiverPropTypes) {
 
               case ACTIONS.BRINGFORWARD:
                 fabricInst.bringForward(object);
+                fabricInst.renderAll();
+                break;
+
+              case ACTIONS["FONTSIZE:CHANGED"]:
+                (object as fabric.IText).set({
+                  fontSize: payload,
+                });
                 fabricInst.renderAll();
                 break;
 
