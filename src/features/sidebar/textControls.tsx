@@ -1,3 +1,5 @@
+/// <reference types="vite-plugin-svgr/client" />
+
 import { getFontSize } from "@/utils/miscellaneous";
 import { getFontSizeIndex } from "@/utils/miscellaneous";
 // Contexts

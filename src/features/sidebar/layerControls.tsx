@@ -1,3 +1,5 @@
+/// <reference types="vite-plugin-svgr/client" />
+
 import PanelColumnHeading from "@/components/panelColumnHeading";
 import {
   Tooltip,

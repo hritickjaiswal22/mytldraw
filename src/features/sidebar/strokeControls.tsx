@@ -1,3 +1,5 @@
+/// <reference types="vite-plugin-svgr/client" />
+
 import { ObjectPropertiesContext } from "@/contexts/objectProperties";
 import { FabricCanvasContext } from "@/contexts/fabricCanvasContext";
 import { socket } from "@/socket";

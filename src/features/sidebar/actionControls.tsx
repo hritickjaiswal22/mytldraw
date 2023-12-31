@@ -1,3 +1,5 @@
+/// <reference types="vite-plugin-svgr/client" />
+
 import { FabricCanvasContext } from "@/contexts/fabricCanvasContext";
 
 import {
