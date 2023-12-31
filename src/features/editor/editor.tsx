@@ -58,6 +58,8 @@ function Editor() {
     fontSize: getFontSize(FONT_SIZE_OPTIONS.MEDIUM),
   });
 
+  const [keepCurrentDrawOption, setKeepCurrentDrawOption] = useState(false);
+
   async function onImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     setImageBase64Url(null);
     const imageFile = (e as any).target.files[0];
@@ -186,6 +188,8 @@ function Editor() {
         drawOption={drawOption}
         onImageUpload={onImageUpload}
         optionHandler={optionHandler}
+        keepCurrentDrawOption={keepCurrentDrawOption}
+        setKeepCurrentDrawOption={setKeepCurrentDrawOption}
       />
 
       <TextPropertiesContext.Provider value={textPropertiesContextValue}>
@@ -198,8 +202,10 @@ function Editor() {
               <Dispatcher>
                 <Drawer
                   drawOption={drawOption}
+                  setDrawOption={setDrawOption}
                   imageBase64Url={imageBase64Url}
                   setImageBase64Url={setImageBase64Url}
+                  keepCurrentDrawOption={keepCurrentDrawOption}
                 >
                   <canvas ref={canvasRef}></canvas>
                 </Drawer>

@@ -10,10 +10,12 @@ import { ReactNode, useContext, useEffect, useRef } from "react";
 
 interface DrawerPropTypes {
   drawOption: DrawOptions;
+  setDrawOption: React.Dispatch<React.SetStateAction<number>>;
   children: ReactNode;
   objectAddHandler: () => void;
   imageBase64Url: string | null;
   setImageBase64Url: React.Dispatch<React.SetStateAction<string | null>>;
+  keepCurrentDrawOption: boolean;
 }
 
 const _FabricCalcArrowAngle = function (
@@ -46,6 +48,8 @@ function Drawer({
   objectAddHandler,
   imageBase64Url,
   setImageBase64Url,
+  keepCurrentDrawOption,
+  setDrawOption,
 }: DrawerPropTypes) {
   const top = useRef(0);
   const left = useRef(0);
@@ -384,6 +388,9 @@ function Drawer({
 
           isMouseDown.current = false;
           fabricInst.selection = true;
+
+          if (!keepCurrentDrawOption) setDrawOption(0);
+
           objectAddHandler();
         }
       });
@@ -401,6 +408,7 @@ function Drawer({
     imageBase64Url,
     objectProperties,
     textProperties,
+    keepCurrentDrawOption,
   ]);
 
   return <>{children}</>;

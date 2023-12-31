@@ -31,15 +31,27 @@ import Arrow from "@/assets/icons/Arrow.svg?react";
 import Line from "@/assets/icons/Line.svg?react";
 import Pen from "@/assets/icons/Pen.svg?react";
 import Text from "@/assets/icons/Text.svg?react";
+import Lock from "@/assets/icons/Lock.svg?react";
+
 import { DrawOptions } from "@/utils/drawOptions";
 
 interface HeaderPropTypes {
   optionHandler: (option: number) => void;
   drawOption: number;
   onImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  keepCurrentDrawOption: boolean;
+  setKeepCurrentDrawOption: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function Header({ drawOption, onImageUpload, optionHandler }: HeaderPropTypes) {
+function Header({
+  drawOption,
+  onImageUpload,
+  optionHandler,
+  keepCurrentDrawOption,
+  setKeepCurrentDrawOption,
+}: HeaderPropTypes) {
+  console.log(keepCurrentDrawOption);
+
   return (
     <NonInteractiveHeader>
       <DropdownMenu>
@@ -66,6 +78,28 @@ function Header({ drawOption, onImageUpload, optionHandler }: HeaderPropTypes) {
       </DropdownMenu>
 
       <div className="pointer-events-none flex items-center gap-1 p-1 rounded bg-white boxShadow">
+        <TooltipProvider delayDuration={TooltipDelayDuration}>
+          <Tooltip>
+            <TooltipTrigger
+              onClick={() => setKeepCurrentDrawOption((prev) => !prev)}
+            >
+              <div
+                className={`pointer-events-auto base bg-white hover:bg-[#f1f0ff] cursor-pointer`}
+                style={{
+                  backgroundColor: keepCurrentDrawOption ? "#e0dfff" : "#fff",
+                }}
+              >
+                <Lock width={16} height={16} />
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Keep selected tool active after drawing</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+
+        <div className="w-[1px] h-6 bg-gray-200 my-0 mx-1"></div>
+
         <RadioGroup
           onClickHandler={optionHandler}
           options={[
