@@ -32,8 +32,10 @@ import {
   TooltipDelayDuration,
   getFontSize,
 } from "@/utils/miscellaneous";
+// Contexts
 import { ObjectPropertiesContext } from "@/contexts/objectProperties";
 import { TextPropertiesContext } from "@/contexts/textProperties";
+import { FabricCanvasContext } from "@/contexts/fabricCanvasContext";
 import OptionsSidebar from "@/features/sidebar";
 import Menu from "@/assets/icons/Hamburger.svg?react";
 import Image from "@/assets/icons/Image.svg?react";
@@ -190,6 +192,7 @@ function Editor() {
     setDrawOption(option);
   }
 
+  // Contexts Value
   const objectPropertiesContextValue = {
     objectProperties,
     setObjectProperties,
@@ -200,8 +203,12 @@ function Editor() {
     setTextProperties,
   };
 
+  const fabricCanvasContextValue = {
+    fabricInst,
+  };
+
   return (
-    <>
+    <FabricCanvasContext.Provider value={fabricCanvasContextValue}>
       {/* Header */}
       <NonInteractiveHeader>
         <DropdownMenu>
@@ -338,7 +345,7 @@ function Editor() {
           {fabricInst && <OptionsSidebar fabricInst={fabricInst} />}
         </ObjectPropertiesContext.Provider>
       </TextPropertiesContext.Provider>
-    </>
+    </FabricCanvasContext.Provider>
   );
 }
 

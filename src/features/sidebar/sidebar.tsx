@@ -1,16 +1,17 @@
-import { getFontSize, getStrokeStyleOption } from "@/utils/miscellaneous";
+// Contexts
 import { ObjectPropertiesContext } from "@/contexts/objectProperties";
-import { TextPropertiesContext } from "@/contexts/textProperties";
+
+// Controllers
+import StrokeControls from "./strokeControls";
+import FillControls from "./fillControls";
+import LayerControls from "./layerControls";
+import TextControls from "./textControls";
+import ActionControls from "./actionControls";
+
 import { ACTIONS } from "@/utils/actions";
 import { socket } from "@/socket";
-import {
-  setFillColor,
-  setOpacity,
-  setStrokeColor,
-  setStrokeStyle,
-} from "@/utils/setFunctions";
-
-import SidebarComponent from "@/components/sidebar";
+import { setOpacity } from "@/utils/setFunctions";
+import PanelColumnHeading from "@/components/panelColumnHeading";
 
 import { useContext } from "react";
 import { fabric } from "fabric";
@@ -22,108 +23,7 @@ interface SidebarPropTypes {
 
 function Sidebar({ fabricInst }: SidebarPropTypes) {
   const { setObjectProperties } = useContext(ObjectPropertiesContext);
-  const { setTextProperties } = useContext(TextPropertiesContext);
   const { roomId } = useParams();
-
-  function fillChangeHandler(color: string) {
-    setObjectProperties((prev) => {
-      return {
-        ...prev,
-        fill: color,
-      };
-    });
-
-    const activeObject = fabricInst?.getActiveObject();
-
-    if (activeObject) {
-      socket.emit(ACTIONS["OBJECT:CHANGED"], {
-        roomId,
-        objectId: (activeObject as any).id,
-        payload: color,
-        action: ACTIONS["FILL:CHANGED"],
-      });
-
-      setFillColor(activeObject, color);
-
-      fabricInst?.renderAll();
-    }
-  }
-
-  function strokeWidthChangeHandler(option: number) {
-    setObjectProperties((prev) => {
-      return {
-        ...prev,
-        strokeWidth: option,
-      };
-    });
-
-    const activeObject = fabricInst?.getActiveObject();
-
-    if (activeObject) {
-      socket.emit(ACTIONS["OBJECT:CHANGED"], {
-        roomId,
-        objectId: (activeObject as any).id,
-        payload: option,
-        action: ACTIONS["STOKEWIDTH:CHANGED"],
-      });
-      activeObject.set({
-        strokeWidth: option,
-      });
-      fabricInst?.renderAll();
-    }
-  }
-
-  function strokeColorChangeHandler(color: string) {
-    setObjectProperties((prev) => {
-      return {
-        ...prev,
-        stroke: color,
-      };
-    });
-    if (
-      fabricInst &&
-      fabricInst.freeDrawingBrush &&
-      fabricInst.freeDrawingBrush.color
-    )
-      fabricInst!.freeDrawingBrush!.color = color;
-
-    const activeObject = fabricInst?.getActiveObject();
-
-    if (activeObject) {
-      socket.emit(ACTIONS["OBJECT:CHANGED"], {
-        roomId,
-        objectId: (activeObject as any).id,
-        payload: color,
-        action: ACTIONS["STOKE:CHANGED"],
-      });
-
-      setStrokeColor(activeObject, color);
-
-      fabricInst?.renderAll();
-    }
-  }
-
-  function strokeStyleChangeHandler(option: number) {
-    setObjectProperties((prev) => {
-      return {
-        ...prev,
-        strokeDashArray: getStrokeStyleOption(option),
-      };
-    });
-
-    const activeObject = fabricInst?.getActiveObject();
-
-    if (activeObject) {
-      socket.emit(ACTIONS["OBJECT:CHANGED"], {
-        roomId,
-        objectId: (activeObject as any).id,
-        payload: getStrokeStyleOption(option),
-        action: ACTIONS["STROKESTYLE:CHANGED"],
-      });
-      setStrokeStyle(activeObject, getStrokeStyleOption(option));
-      fabricInst?.renderAll();
-    }
-  }
 
   function opacityChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
     setObjectProperties((prev) => {
@@ -149,128 +49,25 @@ function Sidebar({ fabricInst }: SidebarPropTypes) {
     }
   }
 
-  function sendToBackHandler() {
-    if (fabricInst) {
-      const activeObject = fabricInst?.getActiveObject();
-
-      if (activeObject) {
-        socket.emit(ACTIONS["OBJECT:CHANGED"], {
-          roomId,
-          objectId: (activeObject as any).id,
-          payload: "",
-          action: ACTIONS.SENDTOBACK,
-        });
-
-        fabricInst.sendToBack(activeObject);
-
-        fabricInst?.renderAll();
-      }
-    }
-  }
-
-  function sendBackwards() {
-    if (fabricInst) {
-      const activeObject = fabricInst?.getActiveObject();
-
-      if (activeObject) {
-        socket.emit(ACTIONS["OBJECT:CHANGED"], {
-          roomId,
-          objectId: (activeObject as any).id,
-          payload: "",
-          action: ACTIONS.SENDBACKWARD,
-        });
-
-        fabricInst.sendToBack(activeObject);
-
-        fabricInst?.renderAll();
-      }
-    }
-  }
-
-  function bringToFront() {
-    if (fabricInst) {
-      const activeObject = fabricInst?.getActiveObject();
-
-      if (activeObject) {
-        socket.emit(ACTIONS["OBJECT:CHANGED"], {
-          roomId,
-          objectId: (activeObject as any).id,
-          payload: "",
-          action: ACTIONS.BRINGTOFRONT,
-        });
-
-        fabricInst.bringToFront(activeObject);
-
-        fabricInst?.renderAll();
-      }
-    }
-  }
-
-  function bringForward() {
-    if (fabricInst) {
-      const activeObject = fabricInst?.getActiveObject();
-
-      if (activeObject) {
-        socket.emit(ACTIONS["OBJECT:CHANGED"], {
-          roomId,
-          objectId: (activeObject as any).id,
-          payload: "",
-          action: ACTIONS.BRINGFORWARD,
-        });
-
-        fabricInst.bringForward(activeObject);
-
-        fabricInst?.renderAll();
-      }
-    }
-  }
-
-  function deleteSelecedObject() {
-    if (fabricInst) {
-      const activeObject = fabricInst?.getActiveObject();
-
-      if (activeObject) {
-        fabricInst.remove(activeObject);
-      }
-    }
-  }
-
-  function textSizeChangeHandler(option: number) {
-    setTextProperties({
-      fontSize: getFontSize(option),
-    });
-
-    const activeObject = fabricInst.getActiveObject();
-
-    if (activeObject && activeObject.type === "i-text") {
-      socket.emit(ACTIONS["OBJECT:CHANGED"], {
-        roomId,
-        objectId: (activeObject as any).id,
-        payload: getFontSize(option),
-        action: ACTIONS["FONTSIZE:CHANGED"],
-      });
-
-      (activeObject as fabric.IText).set({
-        fontSize: getFontSize(option),
-      });
-      fabricInst.renderAll();
-    }
-  }
-
   return (
-    <SidebarComponent
-      fillChangeHandler={fillChangeHandler}
-      strokeWidthChangeHandler={strokeWidthChangeHandler}
-      strokeColorChangeHandler={strokeColorChangeHandler}
-      strokeStyleChangeHandler={strokeStyleChangeHandler}
-      opacityChangeHandler={opacityChangeHandler}
-      sendToBackHandler={sendToBackHandler}
-      sendBackwards={sendBackwards}
-      bringToFront={bringToFront}
-      bringForward={bringForward}
-      deleteSelecedObject={deleteSelecedObject}
-      textSizeChangeHandler={textSizeChangeHandler}
-    />
+    <section className="fixed z-50 bg-white left-4 top-20 p-2 rounded max-h-[782px] boxShadow">
+      <FillControls />
+      <StrokeControls />
+      <TextControls />
+      <div className="mb-3">
+        <PanelColumnHeading>Opacity</PanelColumnHeading>
+        <input
+          step={0.05}
+          onChange={opacityChangeHandler}
+          type="range"
+          name="opacity"
+          min="0"
+          max="1"
+        />
+      </div>
+      <LayerControls />
+      <ActionControls />
+    </section>
   );
 }
 
