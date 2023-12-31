@@ -50,8 +50,6 @@ function Header({
   keepCurrentDrawOption,
   setKeepCurrentDrawOption,
 }: HeaderPropTypes) {
-  console.log(keepCurrentDrawOption);
-
   return (
     <NonInteractiveHeader>
       <DropdownMenu>
