@@ -18,6 +18,7 @@ import {
 import RadioGroup from "@/components/styledRadioGroup";
 import { TooltipDelayDuration } from "@/utils/miscellaneous";
 import { Label } from "@/components/ui/label";
+import Snapper from "@/features/snapper";
 
 // Assets
 import Menu from "@/assets/icons/Hamburger.svg?react";
@@ -32,8 +33,11 @@ import Line from "@/assets/icons/Line.svg?react";
 import Pen from "@/assets/icons/Pen.svg?react";
 import Text from "@/assets/icons/Text.svg?react";
 import Lock from "@/assets/icons/Lock.svg?react";
+import Snap from "@/assets/icons/columns.svg?react";
 
 import { DrawOptions } from "@/utils/drawOptions";
+
+import { useState } from "react";
 
 interface HeaderPropTypes {
   optionHandler: (option: number) => void;
@@ -50,140 +54,159 @@ function Header({
   keepCurrentDrawOption,
   setKeepCurrentDrawOption,
 }: HeaderPropTypes) {
+  const [snap, setSnap] = useState(false);
+
   return (
-    <NonInteractiveHeader>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            className="pointer-events-auto w-[32px] h-[32px] rounded-[10px] p-[10px] flex justify-center items-center bg-[#ececf4] hover:bg-[#f1f0ff]"
-            variant="outline"
-          >
-            <Menu width={16} height={16} />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-56 translate-x-4 border-0 border-none boxShadow">
-          <DropdownMenuGroup>
-            <DropdownMenuItem className="flex gap-3 font-normal cursor-pointer hover:bg-[#f1f0ff] text-xs">
-              <Image width={16} height={16} />
-              Export image
-            </DropdownMenuItem>
-            <DropdownMenuItem className="flex gap-3 font-normal cursor-pointer hover:bg-[#f1f0ff] text-xs">
-              <Trash width={16} height={16} />
-              Reset the canvas
-            </DropdownMenuItem>
-          </DropdownMenuGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
-
-      <div className="pointer-events-none flex items-center gap-1 p-1 rounded bg-white boxShadow">
-        <TooltipProvider delayDuration={TooltipDelayDuration}>
-          <Tooltip>
-            <TooltipTrigger
-              onClick={() => setKeepCurrentDrawOption((prev) => !prev)}
+    <>
+      <Snapper snap={snap} />
+      <NonInteractiveHeader>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              className="pointer-events-auto w-[32px] h-[32px] rounded-[10px] p-[10px] flex justify-center items-center bg-[#ececf4] hover:bg-[#f1f0ff]"
+              variant="outline"
             >
-              <div
-                className={`pointer-events-auto base bg-white hover:bg-[#f1f0ff] cursor-pointer`}
-                style={{
-                  backgroundColor: keepCurrentDrawOption ? "#e0dfff" : "#fff",
-                }}
+              <Menu width={16} height={16} />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56 translate-x-4 border-0 border-none boxShadow">
+            <DropdownMenuGroup>
+              <DropdownMenuItem className="flex gap-3 font-normal cursor-pointer hover:bg-[#f1f0ff] text-xs">
+                <Image width={16} height={16} />
+                Export image
+              </DropdownMenuItem>
+              <DropdownMenuItem className="flex gap-3 font-normal cursor-pointer hover:bg-[#f1f0ff] text-xs">
+                <Trash width={16} height={16} />
+                Reset the canvas
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <div className="pointer-events-none flex items-center gap-1 p-1 rounded bg-white boxShadow">
+          <TooltipProvider delayDuration={TooltipDelayDuration}>
+            <Tooltip>
+              <TooltipTrigger
+                onClick={() => setKeepCurrentDrawOption((prev) => !prev)}
               >
-                <Lock width={16} height={16} />
-              </div>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Keep selected tool active after drawing</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-
-        <div className="w-[1px] h-6 bg-gray-200 my-0 mx-1"></div>
-
-        <RadioGroup
-          onClickHandler={optionHandler}
-          options={[
-            {
-              id: "1",
-              content: <MousePointer width={16} height={16} />,
-              value: "1",
-              tooltipText: "Selection",
-            },
-            {
-              id: "2",
-              content: <Square width={16} height={16} />,
-              value: "2",
-              tooltipText: "Rectangle",
-            },
-            {
-              id: "3",
-              content: <Triangle width={16} height={16} />,
-              value: "3",
-              tooltipText: "Triangle",
-            },
-            {
-              id: "4",
-              content: <Circle width={16} height={16} />,
-              value: "4",
-              tooltipText: "Circle",
-            },
-            {
-              id: "5",
-              content: <Arrow width={16} height={16} />,
-              value: "5",
-              tooltipText: "Arrow",
-            },
-            {
-              id: "6",
-              content: <Line width={16} height={16} />,
-              value: "6",
-              tooltipText: "Line",
-            },
-            {
-              id: "7",
-              content: <Pen width={16} height={16} />,
-              value: "7",
-              tooltipText: "Draw",
-            },
-            {
-              id: "8",
-              content: <Text width={16} height={16} />,
-              value: "8",
-              tooltipText: "Text",
-            },
-          ]}
-          drawOption={drawOption}
-        />
-        <TooltipProvider delayDuration={TooltipDelayDuration}>
-          <Tooltip>
-            <TooltipTrigger>
-              <div className="pointer-events-auto">
-                <input
-                  className="hidden"
-                  onChange={onImageUpload}
-                  type="file"
-                  accept="image/png, image/gif, image/jpeg"
-                  id="image-upload"
-                />
-                <Label
-                  htmlFor="image-upload"
-                  className={`base bg-white hover:bg-[#f1f0ff] cursor-pointer ${
-                    drawOption === DrawOptions.IMAGE
-                      ? "bg-[#bebce5]"
-                      : "bg-white"
-                  }`}
+                <div
+                  className={`pointer-events-auto base bg-white hover:bg-[#f1f0ff] cursor-pointer`}
+                  style={{
+                    backgroundColor: keepCurrentDrawOption ? "#e0dfff" : "#fff",
+                  }}
                 >
-                  <Image width={16} height={16} />
-                </Label>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Insert image</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </div>
-
-      <div></div>
-    </NonInteractiveHeader>
+                  <Lock width={16} height={16} />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Keep selected tool active after drawing</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <div className="w-[1px] h-6 bg-gray-200 my-0 mx-1"></div>
+          <RadioGroup
+            onClickHandler={optionHandler}
+            options={[
+              {
+                id: "1",
+                content: <MousePointer width={16} height={16} />,
+                value: "1",
+                tooltipText: "Selection",
+              },
+              {
+                id: "2",
+                content: <Square width={16} height={16} />,
+                value: "2",
+                tooltipText: "Rectangle",
+              },
+              {
+                id: "3",
+                content: <Triangle width={16} height={16} />,
+                value: "3",
+                tooltipText: "Triangle",
+              },
+              {
+                id: "4",
+                content: <Circle width={16} height={16} />,
+                value: "4",
+                tooltipText: "Circle",
+              },
+              {
+                id: "5",
+                content: <Arrow width={16} height={16} />,
+                value: "5",
+                tooltipText: "Arrow",
+              },
+              {
+                id: "6",
+                content: <Line width={16} height={16} />,
+                value: "6",
+                tooltipText: "Line",
+              },
+              {
+                id: "7",
+                content: <Pen width={16} height={16} />,
+                value: "7",
+                tooltipText: "Draw",
+              },
+              {
+                id: "8",
+                content: <Text width={16} height={16} />,
+                value: "8",
+                tooltipText: "Text",
+              },
+            ]}
+            drawOption={drawOption}
+          />
+          <TooltipProvider delayDuration={TooltipDelayDuration}>
+            <Tooltip>
+              <TooltipTrigger>
+                <div className="pointer-events-auto">
+                  <input
+                    className="hidden"
+                    onChange={onImageUpload}
+                    type="file"
+                    accept="image/png, image/gif, image/jpeg"
+                    id="image-upload"
+                  />
+                  <Label
+                    htmlFor="image-upload"
+                    className={`base bg-white hover:bg-[#f1f0ff] cursor-pointer ${
+                      drawOption === DrawOptions.IMAGE
+                        ? "bg-[#bebce5]"
+                        : "bg-white"
+                    }`}
+                  >
+                    <Image width={16} height={16} />
+                  </Label>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Insert image</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+          <div className="w-[1px] h-6 bg-gray-200 my-0 mx-1"></div>
+          <TooltipProvider delayDuration={TooltipDelayDuration}>
+            <Tooltip>
+              <TooltipTrigger onClick={() => setSnap((prev) => !prev)}>
+                <div
+                  className="pointer-events-auto base bg-white hover:bg-[#f1f0ff] cursor-pointer"
+                  style={{
+                    backgroundColor: snap ? "#e0dfff" : "#fff",
+                  }}
+                >
+                  <Snap width={16} height={16} />
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Toggle snap</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
+        <div></div>
+      </NonInteractiveHeader>
+    </>
   );
 }
 

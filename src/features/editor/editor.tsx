@@ -148,12 +148,52 @@ function Editor() {
     temp.renderAll();
     temp.remove(dummyText);
 
+    // Adding snap lines
+    const verticalSnapLine = new fabric.Rect({
+      stroke: "#fa5555",
+      strokeWidth: 1,
+      opacity: 0.5,
+      width: 1,
+      height: window.innerHeight,
+      padding: 0,
+      selectable: false,
+      visible: false,
+    });
+    Object.assign(verticalSnapLine, { id: "vertical-snap-line" });
+    temp.add(verticalSnapLine);
+
+    const horizontalSnapLine = new fabric.Rect({
+      stroke: "#fa5555",
+      fill: "#fa5555",
+      strokeWidth: 1,
+      opacity: 0.5,
+      width: window.innerWidth,
+      height: 1,
+      padding: 0,
+      selectable: false,
+      visible: false,
+    });
+    Object.assign(horizontalSnapLine, { id: "horizontal-snap-line" });
+    temp.add(horizontalSnapLine);
+
     setFabricInst(temp);
   }, []);
 
   useEffect(() => {
     fabricInst?.setWidth(windowWidth);
     fabricInst?.setHeight(windowHeight);
+
+    fabricInst?._objects.forEach((obj) => {
+      if ((obj as any).id === "horizontal-snap-line")
+        obj.set({
+          width: windowWidth,
+        });
+
+      if ((obj as any).id === "vertical-snap-line")
+        obj.set({
+          height: windowHeight,
+        });
+    });
   }, [windowHeight, windowWidth]);
 
   useEffect(() => {
