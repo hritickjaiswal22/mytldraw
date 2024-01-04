@@ -5,10 +5,12 @@ import { createContext } from "react";
 interface TextPropertiesContextType {
   textProperties: {
     fontSize: number;
+    fontFamily: string;
   };
   setTextProperties: React.Dispatch<
     React.SetStateAction<{
       fontSize: number;
+      fontFamily: string;
     }>
   >;
 }
@@ -16,6 +18,7 @@ interface TextPropertiesContextType {
 const TextPropertiesContext = createContext<TextPropertiesContextType>({
   textProperties: {
     fontSize: getFontSize(FONT_SIZE_OPTIONS.MEDIUM),
+    fontFamily: "Virgil",
   },
   setTextProperties: null,
 });

@@ -11,6 +11,9 @@ import Small from "@/assets/icons/SmallFont.svg?react";
 import Medium from "@/assets/icons/MediumFont.svg?react";
 import Large from "@/assets/icons/Large.svg?react";
 import ExtraLarge from "@/assets/icons/ExtraLarge.svg?react";
+import Pen from "@/assets/icons/Pen.svg?react";
+import Normal from "@/assets/icons/NormalFont.svg?react";
+import Code from "@/assets/icons/Code.svg?react";
 
 import PanelColumnHeading from "@/components/panelColumnHeading";
 import RadioGroup from "@/components/styledRadioGroup";
@@ -21,6 +24,46 @@ import { ACTIONS } from "@/utils/actions";
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
 
+function mapIndexToFontFamily(index: number) {
+  switch (index) {
+    case 0:
+      return "Virgil";
+      break;
+
+    case 1:
+      return "Times New Roman";
+      break;
+
+    case 2:
+      return "system-ui";
+      break;
+
+    default:
+      return "Times New Roman";
+      break;
+  }
+}
+
+function mapFontFamilyToIndex(family: string) {
+  switch (family) {
+    case "Virgil":
+      return 0;
+      break;
+
+    case "Times New Roman":
+      return 1;
+      break;
+
+    case "system-ui":
+      return 2;
+      break;
+
+    default:
+      return 1;
+      break;
+  }
+}
+
 function TextControls() {
   const { setTextProperties, textProperties } = useContext(
     TextPropertiesContext
@@ -29,8 +72,11 @@ function TextControls() {
   const { roomId } = useParams();
 
   function textSizeChangeHandler(option: number) {
-    setTextProperties({
-      fontSize: getFontSize(option),
+    setTextProperties((prev) => {
+      return {
+        ...prev,
+        fontSize: getFontSize(option),
+      };
     });
 
     const activeObject = fabricInst?.getActiveObject();
@@ -45,6 +91,24 @@ function TextControls() {
 
       (activeObject as fabric.IText).set({
         fontSize: getFontSize(option),
+      });
+      fabricInst?.renderAll();
+    }
+  }
+
+  function fontFamilyChangeHandler(option: number) {
+    setTextProperties((prev) => {
+      return {
+        ...prev,
+        fontFamily: mapIndexToFontFamily(option),
+      };
+    });
+
+    const activeObject = fabricInst?.getActiveObject();
+
+    if (activeObject && activeObject.type === "i-text") {
+      (activeObject as fabric.IText).set({
+        fontFamily: mapIndexToFontFamily(option),
       });
       fabricInst?.renderAll();
     }
@@ -84,6 +148,34 @@ function TextControls() {
             },
           ]}
           drawOption={getFontSizeIndex(textProperties.fontSize)}
+        />
+      </div>
+      <div className="mb-3">
+        <PanelColumnHeading>Font Family</PanelColumnHeading>
+        <RadioGroup
+          onClickHandler={fontFamilyChangeHandler}
+          bgColor="bg-[#f1f0ff]"
+          options={[
+            {
+              id: "font-family-1",
+              content: <Pen width={16} height={16} />,
+              value: "font-family-1",
+              tooltipText: "Hand drawn",
+            },
+            {
+              id: "font-family-2",
+              content: <Normal width={16} height={16} />,
+              value: "font-family-2",
+              tooltipText: "Normal",
+            },
+            {
+              id: "font-family-3",
+              content: <Code width={16} height={16} />,
+              value: "font-family-3",
+              tooltipText: "Code",
+            },
+          ]}
+          drawOption={mapFontFamilyToIndex(textProperties.fontFamily)}
         />
       </div>
     </>
