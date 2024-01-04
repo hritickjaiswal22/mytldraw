@@ -59,7 +59,7 @@ function mapFontFamilyToIndex(family: string) {
       break;
 
     default:
-      return 1;
+      return 0;
       break;
   }
 }
@@ -107,6 +107,13 @@ function TextControls() {
     const activeObject = fabricInst?.getActiveObject();
 
     if (activeObject && activeObject.type === "i-text") {
+      socket.emit(ACTIONS["OBJECT:CHANGED"], {
+        roomId,
+        objectId: (activeObject as any).id,
+        payload: mapIndexToFontFamily(option),
+        action: ACTIONS["FONTFAMILY:CHANGED"],
+      });
+
       (activeObject as fabric.IText).set({
         fontFamily: mapIndexToFontFamily(option),
       });

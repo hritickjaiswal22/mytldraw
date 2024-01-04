@@ -224,6 +224,13 @@ function Receiver({ children }: ReceiverPropTypes) {
                 fabricInst.renderAll();
                 break;
 
+              case ACTIONS["FONTFAMILY:CHANGED"]:
+                (object as fabric.IText).set({
+                  fontFamily: payload,
+                });
+                fabricInst.renderAll();
+                break;
+
               default:
                 break;
             }
