@@ -1,4 +1,4 @@
-import { DrawOptions } from "@/utils/drawOptions";
+import { DrawOptions, DrawOptionsText } from "@/utils/drawOptions";
 import { ObjectBaseOptions, BaseTextOptions } from "@/utils/baseObjectOptions";
 import { generateUUID } from "@/utils/miscellaneous";
 import { ObjectPropertiesContext } from "@/contexts/objectProperties";
@@ -82,7 +82,9 @@ function Drawer({
           strokeDashArray: objectProperties.strokeDashArray,
           opacity: objectProperties.opacity,
         });
-        Object.assign(obj, { id: `${generateUUID()}-rectangle` });
+        Object.assign(obj, {
+          id: `${generateUUID()}-${DrawOptionsText.rectangle}`,
+        });
         break;
 
       case DrawOptions.TRIANGLE:
@@ -98,7 +100,9 @@ function Drawer({
           strokeDashArray: objectProperties.strokeDashArray,
           opacity: objectProperties.opacity,
         });
-        Object.assign(obj, { id: `${generateUUID()}-triangle` });
+        Object.assign(obj, {
+          id: `${generateUUID()}-${DrawOptionsText.triangle}`,
+        });
         break;
 
       case DrawOptions.CIRCLE:
@@ -115,7 +119,9 @@ function Drawer({
           strokeDashArray: objectProperties.strokeDashArray,
           opacity: objectProperties.opacity,
         });
-        Object.assign(obj, { id: `${generateUUID()}-circle` });
+        Object.assign(obj, {
+          id: `${generateUUID()}-${DrawOptionsText.circle}`,
+        });
         break;
 
       case DrawOptions.LINE:
@@ -126,7 +132,7 @@ function Drawer({
           strokeDashArray: objectProperties.strokeDashArray,
           opacity: objectProperties.opacity,
         });
-        Object.assign(obj, { id: `${generateUUID()}-line` });
+        Object.assign(obj, { id: `${generateUUID()}-${DrawOptionsText.line}` });
         break;
 
       case DrawOptions.TEXT:
@@ -138,7 +144,7 @@ function Drawer({
           fill: objectProperties.stroke,
           opacity: objectProperties.opacity,
         });
-        Object.assign(obj, { id: `${generateUUID()}-text` });
+        Object.assign(obj, { id: `${generateUUID()}-${DrawOptionsText.text}` });
         break;
 
       default:
@@ -206,7 +212,9 @@ function Drawer({
           top: e.y,
           opacity: objectProperties.opacity,
         });
-        Object.assign(image, { id: `${generateUUID()}-image` });
+        Object.assign(image, {
+          id: `${generateUUID()}-${DrawOptionsText.image}`,
+        });
 
         fabricInst?.add(image);
         fabricInst?.setActiveObject(image);
@@ -289,7 +297,7 @@ function Drawer({
         lockScalingFlip: true,
       }
     );
-    Object.assign(group, { id: `${generateUUID()}-arrow` });
+    Object.assign(group, { id: `${generateUUID()}-${DrawOptionsText.arrow}` });
     fabricInst?.remove(
       (fabricInst as any)?.getActiveObject(),
       (arrowTriangle as any).current
@@ -381,7 +389,9 @@ function Drawer({
             const pathObj = fabricInst._objects[fabricInst._objects.length - 1];
 
             if (pathObj) {
-              Object.assign(pathObj, { id: `${generateUUID()}-freehand` });
+              Object.assign(pathObj, {
+                id: `${generateUUID()}-${DrawOptionsText.freehand}`,
+              });
               fabricInst.setActiveObject(pathObj);
             }
           }
