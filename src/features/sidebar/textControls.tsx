@@ -1,6 +1,6 @@
 /// <reference types="vite-plugin-svgr/client" />
 
-import { getFontSize } from "@/utils/miscellaneous";
+import { STATIC_TEXT_ALIGN_OPTIONS, getFontSize } from "@/utils/miscellaneous";
 import { getFontSizeIndex } from "@/utils/miscellaneous";
 // Contexts
 import { TextPropertiesContext } from "@/contexts/textProperties";
@@ -14,6 +14,9 @@ import ExtraLarge from "@/assets/icons/ExtraLarge.svg?react";
 import Pen from "@/assets/icons/Pen.svg?react";
 import Normal from "@/assets/icons/NormalFont.svg?react";
 import Code from "@/assets/icons/Code.svg?react";
+import Center from "@/assets/icons/Center.svg?react";
+import Right from "@/assets/icons/Right.svg?react";
+import Left from "@/assets/icons/Left.svg?react";
 
 import PanelColumnHeading from "@/components/panelColumnHeading";
 import RadioGroup from "@/components/styledRadioGroup";
@@ -121,6 +124,31 @@ function TextControls() {
     }
   }
 
+  function textAlignChangeHandler(option: number) {
+    setTextProperties((prev) => {
+      return {
+        ...prev,
+        textAlign: STATIC_TEXT_ALIGN_OPTIONS[option],
+      };
+    });
+
+    const activeObject = fabricInst?.getActiveObject();
+
+    if (activeObject && activeObject.type === "i-text") {
+      socket.emit(ACTIONS["OBJECT:CHANGED"], {
+        roomId,
+        objectId: (activeObject as any).id,
+        payload: STATIC_TEXT_ALIGN_OPTIONS[option],
+        action: ACTIONS["TEXTALIGN:CHANGED"],
+      });
+
+      (activeObject as fabric.IText).set({
+        textAlign: STATIC_TEXT_ALIGN_OPTIONS[option],
+      });
+      fabricInst?.renderAll();
+    }
+  }
+
   return (
     <>
       <div className="mb-3">
@@ -183,6 +211,36 @@ function TextControls() {
             },
           ]}
           drawOption={mapFontFamilyToIndex(textProperties.fontFamily)}
+        />
+      </div>
+      <div className="mb-3">
+        <PanelColumnHeading>Text Align</PanelColumnHeading>
+        <RadioGroup
+          onClickHandler={textAlignChangeHandler}
+          bgColor="bg-[#f1f0ff]"
+          options={[
+            {
+              id: "text-align-1",
+              content: <Left width={16} height={16} />,
+              value: "text-align-1",
+              tooltipText: "Left",
+            },
+            {
+              id: "text-align-2",
+              content: <Center width={16} height={16} />,
+              value: "text-align-2",
+              tooltipText: "Center",
+            },
+            {
+              id: "text-align-3",
+              content: <Right width={16} height={16} />,
+              value: "text-align-3",
+              tooltipText: "Right",
+            },
+          ]}
+          drawOption={STATIC_TEXT_ALIGN_OPTIONS.findIndex(
+            (val) => val === textProperties.textAlign
+          )}
         />
       </div>
     </>

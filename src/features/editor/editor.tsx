@@ -12,6 +12,7 @@ import {
   FONT_SIZE_OPTIONS,
   STATIC_BACKGROUND_COLORS,
   STATIC_STROKE_COLORS,
+  STATIC_TEXT_ALIGN_OPTIONS,
   getFontSize,
 } from "@/utils/miscellaneous";
 // Contexts
@@ -56,6 +57,8 @@ function Editor() {
   });
   const [textProperties, setTextProperties] = useState({
     fontSize: getFontSize(FONT_SIZE_OPTIONS.MEDIUM),
+    fontFamily: "Virgil",
+    textAlign: STATIC_TEXT_ALIGN_OPTIONS[0],
   });
 
   const [keepCurrentDrawOption, setKeepCurrentDrawOption] = useState(false);

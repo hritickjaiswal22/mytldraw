@@ -9,6 +9,7 @@ const ObjectBaseOptions: fabric.IObjectOptions = {
 
 const BaseTextOptions: fabric.ITextOptions = {
   fontFamily: "Virgil",
+  textAlign: "left",
 };
 
 export { ObjectBaseOptions, BaseTextOptions };

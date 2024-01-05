@@ -231,6 +231,13 @@ function Receiver({ children }: ReceiverPropTypes) {
                 fabricInst.renderAll();
                 break;
 
+              case ACTIONS["TEXTALIGN:CHANGED"]:
+                (object as fabric.IText).set({
+                  textAlign: payload,
+                });
+                fabricInst.renderAll();
+                break;
+
               default:
                 break;
             }

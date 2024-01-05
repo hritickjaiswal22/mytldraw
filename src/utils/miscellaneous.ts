@@ -14,6 +14,8 @@ const STATIC_BACKGROUND_COLORS = [
   "#ffec99",
 ];
 
+const STATIC_TEXT_ALIGN_OPTIONS = ["left", "center", "right"];
+
 enum STROKE_STYLE_OPTIONS {
   SOLID,
   DASHED,
@@ -107,4 +109,5 @@ export {
   FONT_SIZE_OPTIONS,
   getFontSize,
   getFontSizeIndex,
+  STATIC_TEXT_ALIGN_OPTIONS,
 };
