@@ -99,6 +99,13 @@ function getFontSizeIndex(option: number) {
   }
 }
 
+function downloadImageFromBase64(href: string) {
+  const a = document.createElement("a"); //Create <a>
+  a.href = href; //Image Base64 Goes here
+  a.download = "Image.png"; //File name Here
+  a.click(); //Downloaded file
+}
+
 export {
   STATIC_STROKE_COLORS,
   STATIC_BACKGROUND_COLORS,
@@ -109,5 +116,6 @@ export {
   FONT_SIZE_OPTIONS,
   getFontSize,
   getFontSizeIndex,
+  downloadImageFromBase64,
   STATIC_TEXT_ALIGN_OPTIONS,
 };

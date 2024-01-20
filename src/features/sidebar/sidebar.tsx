@@ -8,6 +8,7 @@ import FillControls from "./fillControls";
 import LayerControls from "./layerControls";
 import TextControls from "./textControls";
 import ActionControls from "./actionControls";
+import ImageOptions from "./imageOptions";
 
 import { ACTIONS } from "@/utils/actions";
 import { socket } from "@/socket";
@@ -41,6 +42,12 @@ function showStrokeControl(drawType: string) {
 
 function showTextControl(drawType: string) {
   if (drawType && drawType === DrawOptionsText.text) return true;
+
+  return false;
+}
+
+function showImageOptions(drawType: string) {
+  if (drawType && drawType === DrawOptionsText.image) return true;
 
   return false;
 }
@@ -118,6 +125,7 @@ function Sidebar() {
       {showStrokeControl(drawType) ? <StrokeControls /> : ""}
       {showFillControl(drawType) ? <FillControls /> : ""}
       {showTextControl(drawType) ? <TextControls /> : ""}
+      {showImageOptions(drawType) ? <ImageOptions /> : null}
 
       {/* Always render  */}
       <div className="mb-3">

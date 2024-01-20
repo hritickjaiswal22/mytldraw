@@ -86,7 +86,7 @@ function ActionControls() {
                 </button>
               </TooltipTrigger>
               <TooltipContent>
-                <p>Delete</p>
+                <p>Duplicate</p>
               </TooltipContent>
             </Tooltip>
           </TooltipProvider>
