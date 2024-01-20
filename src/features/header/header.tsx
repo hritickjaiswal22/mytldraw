@@ -19,6 +19,7 @@ import RadioGroup from "@/components/styledRadioGroup";
 import { TooltipDelayDuration } from "@/utils/miscellaneous";
 import { Label } from "@/components/ui/label";
 import Snapper from "@/features/snapper";
+import { FabricCanvasContext } from "@/contexts/fabricCanvasContext";
 
 // Assets
 import Menu from "@/assets/icons/Hamburger.svg?react";
@@ -37,7 +38,7 @@ import Snap from "@/assets/icons/columns.svg?react";
 
 import { DrawOptions } from "@/utils/drawOptions";
 
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 interface HeaderPropTypes {
   optionHandler: (option: number) => void;
@@ -55,6 +56,13 @@ function Header({
   setKeepCurrentDrawOption,
 }: HeaderPropTypes) {
   const [snap, setSnap] = useState(false);
+  const { fabricInst } = useContext(FabricCanvasContext);
+
+  function resetCanvas() {
+    if (fabricInst) {
+      fabricInst.clear();
+    }
+  }
 
   return (
     <>
@@ -75,7 +83,10 @@ function Header({
                 <Image width={16} height={16} />
                 Export image
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex gap-3 font-normal cursor-pointer hover:bg-[#f1f0ff] text-xs">
+              <DropdownMenuItem
+                onClick={resetCanvas}
+                className="flex gap-3 font-normal cursor-pointer hover:bg-[#f1f0ff] text-xs"
+              >
                 <Trash width={16} height={16} />
                 Reset the canvas
               </DropdownMenuItem>
