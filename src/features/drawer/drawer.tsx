@@ -323,94 +323,102 @@ function Drawer({
     }
   }
 
+  function mouseDownHandler(e: fabric.IEvent<MouseEvent>) {
+    if (fabricInst) {
+      if (fabricInst?.getActiveObject()) {
+        return;
+      }
+
+      isMouseDown.current = true;
+      fabricInst.selection = false;
+
+      if (drawOption === DrawOptions.ARROW) initializeArrow(e);
+      else if (drawOption === DrawOptions.IMAGE) dropImage(e);
+      else initializeObject(e);
+    }
+  }
+
+  function mouseMoveHandler(e: fabric.IEvent<MouseEvent>) {
+    if (isMouseDown.current) {
+      switch (drawOption) {
+        case DrawOptions.RECTANGLE:
+          resizeRect(e);
+          break;
+
+        case DrawOptions.TRIANGLE:
+          resizeTriangle(e);
+          break;
+
+        case DrawOptions.CIRCLE:
+          resizeCircle(e);
+          break;
+
+        case DrawOptions.ARROW:
+          resizeArrow(e);
+          break;
+
+        case DrawOptions.LINE:
+          resizeLine(e);
+          break;
+
+        default:
+          break;
+      }
+    }
+  }
+
+  function mouseUpHandler() {
+    if (isMouseDown.current && fabricInst) {
+      if (drawOption === DrawOptions.CIRCLE) {
+        const circle = fabricInst.getActiveObject();
+        const left = (circle as any)?.left - (circle as any).radius;
+        const top = (circle as any)?.top - (circle as any).radius;
+
+        circle?.set({
+          originX: "left",
+          originY: "top",
+          left,
+          top,
+        });
+      } else if (drawOption === DrawOptions.ARROW) {
+        arrowMouseUpHandler();
+      } else if (drawOption === DrawOptions.FREEHAND) {
+        const pathObj = fabricInst._objects[fabricInst._objects.length - 1];
+
+        if (pathObj) {
+          Object.assign(pathObj, {
+            id: `${generateUUID()}-${DrawOptionsText.freehand}`,
+          });
+          fabricInst.setActiveObject(pathObj);
+        }
+      }
+
+      isMouseDown.current = false;
+      fabricInst.selection = true;
+
+      if (!keepCurrentDrawOption) setDrawOption(0);
+
+      objectAddHandler();
+    }
+  }
+
   useEffect(() => {
     if (fabricInst && drawOption !== DrawOptions.NONE) {
       // MouseDown Event Handler
-      fabricInst.on("mouse:down", (e: fabric.IEvent<MouseEvent>) => {
-        if (fabricInst.getActiveObject()) {
-          return;
-        }
-
-        isMouseDown.current = true;
-        fabricInst.selection = false;
-
-        if (drawOption === DrawOptions.ARROW) initializeArrow(e);
-        else if (drawOption === DrawOptions.IMAGE) dropImage(e);
-        else initializeObject(e);
-      });
+      fabricInst.on("mouse:down", mouseDownHandler);
 
       // MouseMove Event Handler
-      fabricInst.on("mouse:move", (e: fabric.IEvent<MouseEvent>) => {
-        if (isMouseDown.current) {
-          switch (drawOption) {
-            case DrawOptions.RECTANGLE:
-              resizeRect(e);
-              break;
-
-            case DrawOptions.TRIANGLE:
-              resizeTriangle(e);
-              break;
-
-            case DrawOptions.CIRCLE:
-              resizeCircle(e);
-              break;
-
-            case DrawOptions.ARROW:
-              resizeArrow(e);
-              break;
-
-            case DrawOptions.LINE:
-              resizeLine(e);
-              break;
-
-            default:
-              break;
-          }
-        }
-      });
+      fabricInst.on("mouse:move", mouseMoveHandler);
 
       // MouseUp Event Handler
-      fabricInst.on("mouse:up", () => {
-        if (isMouseDown.current) {
-          if (drawOption === DrawOptions.CIRCLE) {
-            const circle = fabricInst.getActiveObject();
-            const left = (circle as any)?.left - (circle as any).radius;
-            const top = (circle as any)?.top - (circle as any).radius;
-
-            circle?.set({
-              originX: "left",
-              originY: "top",
-              left,
-              top,
-            });
-          } else if (drawOption === DrawOptions.ARROW) {
-            arrowMouseUpHandler();
-          } else if (drawOption === DrawOptions.FREEHAND) {
-            const pathObj = fabricInst._objects[fabricInst._objects.length - 1];
-
-            if (pathObj) {
-              Object.assign(pathObj, {
-                id: `${generateUUID()}-${DrawOptionsText.freehand}`,
-              });
-              fabricInst.setActiveObject(pathObj);
-            }
-          }
-
-          isMouseDown.current = false;
-          fabricInst.selection = true;
-
-          if (!keepCurrentDrawOption) setDrawOption(0);
-
-          objectAddHandler();
-        }
-      });
+      fabricInst.on("mouse:up", mouseUpHandler);
     }
 
     return () => {
       // fabricInst?.off();
-      fabricInst?.off("mouse:down");
-      fabricInst?.off("mouse:move");
-      fabricInst?.off("mouse:up");
+      fabricInst?.off("mouse:down", mouseDownHandler as any);
+      fabricInst?.off("mouse:move", mouseMoveHandler as any);
+      fabricInst?.off("mouse:up", mouseUpHandler);
     };
   }, [
     fabricInst,
