@@ -19,6 +19,7 @@ import RadioGroup from "@/components/styledRadioGroup";
 import { TooltipDelayDuration } from "@/utils/miscellaneous";
 import { Label } from "@/components/ui/label";
 import Snapper from "@/features/snapper";
+import Transformer from "@/features/transformer";
 import { FabricCanvasContext } from "@/contexts/fabricCanvasContext";
 
 // Assets
@@ -67,6 +68,7 @@ function Header({
   return (
     <>
       <Snapper snap={snap} />
+      {fabricInst ? <Transformer /> : null}
       <NonInteractiveHeader>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -215,7 +217,9 @@ function Header({
             </Tooltip>
           </TooltipProvider>
         </div>
-        <div></div>
+        <div>
+          <button>Share zoom</button>
+        </div>
       </NonInteractiveHeader>
     </>
   );
