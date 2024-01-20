@@ -19,73 +19,51 @@ function Dispatcher({ children }: DispatcherPropTypes) {
     socket.emit(ACTIONS["OBJECT:ADDED"], { roomId, json });
   }
 
-  useEffect(() => {
-    if (fabricInst) {
-      fabricInst.on("object:moving", (e: fabric.IEvent<MouseEvent>) => {
-        const json = e.target?.toJSON(["id"]);
+  function objectMoveHandler(e: fabric.IEvent<MouseEvent>) {
+    const json = e.target?.toJSON(["id"]);
 
-        socket.emit(ACTIONS["OBJECT:MOVING"], { roomId, json });
-      });
-    }
+    socket.emit(ACTIONS["OBJECT:MOVING"], { roomId, json });
+  }
 
-    return () => {
-      fabricInst?.off("object:moving");
-    };
-  }, [fabricInst]);
+  function objectScaleHandler(e: fabric.IEvent<MouseEvent>) {
+    const json = e.target?.toJSON(["id"]);
 
-  useEffect(() => {
-    if (fabricInst) {
-      fabricInst.on("object:scaling", (e: fabric.IEvent<MouseEvent>) => {
-        const json = e.target?.toJSON(["id"]);
+    socket.emit(ACTIONS["OBJECT:SCALING"], { roomId, json });
+  }
 
-        socket.emit(ACTIONS["OBJECT:SCALING"], { roomId, json });
-      });
-    }
+  function objectRotateHandler(e: fabric.IEvent<MouseEvent>) {
+    const json = e.target?.toJSON(["id"]);
 
-    return () => {
-      fabricInst?.off("object:scaling");
-    };
-  }, [fabricInst]);
+    socket.emit(ACTIONS["OBJECT:ROTATING"], { roomId, json });
+  }
 
-  useEffect(() => {
-    if (fabricInst) {
-      fabricInst.on("object:rotating", (e: fabric.IEvent<MouseEvent>) => {
-        const json = e.target?.toJSON(["id"]);
+  function objectRemoveHandler(e: fabric.IEvent<MouseEvent>) {
+    const json = e.target?.toJSON(["id"]);
 
-        socket.emit(ACTIONS["OBJECT:ROTATING"], { roomId, json });
-      });
-    }
+    socket.emit(ACTIONS["OBJECT:REMOVED"], { roomId, json });
+  }
 
-    return () => {
-      fabricInst?.off("object:rotating");
-    };
-  }, [fabricInst]);
+  function textChangeHandler(e: any) {
+    const json = e.target?.toJSON(["id"]);
+
+    socket.emit(ACTIONS["TEXT:CHANGED"], { roomId, json });
+  }
 
   useEffect(() => {
     if (fabricInst) {
-      fabricInst.on("object:removed", (e: fabric.IEvent<MouseEvent>) => {
-        const json = e.target?.toJSON(["id"]);
-
-        socket.emit(ACTIONS["OBJECT:REMOVED"], { roomId, json });
-      });
+      fabricInst.on("object:moving", objectMoveHandler);
+      fabricInst.on("object:scaling", objectScaleHandler);
+      fabricInst.on("object:rotating", objectRotateHandler);
+      fabricInst.on("object:removed", objectRemoveHandler);
+      fabricInst.on("text:changed", textChangeHandler);
     }
 
     return () => {
-      fabricInst?.off("object:removed");
-    };
-  }, [fabricInst]);
-
-  useEffect(() => {
-    if (fabricInst) {
-      fabricInst.on("text:changed", (e: any) => {
-        const json = e.target?.toJSON(["id"]);
-
-        socket.emit(ACTIONS["TEXT:CHANGED"], { roomId, json });
-      });
-    }
-
-    return () => {
-      fabricInst?.off("text:changed");
+      fabricInst?.off("object:moving", objectMoveHandler as any);
+      fabricInst?.off("object:scaling", objectScaleHandler as any);
+      fabricInst?.off("object:rotating", objectRotateHandler as any);
+      fabricInst?.off("object:removed", objectRemoveHandler as any);
+      fabricInst?.off("text:changed", textChangeHandler);
     };
   }, [fabricInst]);
 
