@@ -77,20 +77,22 @@ function Sidebar() {
     if (e.selected) setDrawType(getDrawType(e));
   }
 
+  function selectionClearHandler() {
+    setShowSidebar(false);
+    setDrawType("");
+  }
+
   useEffect(() => {
     if (fabricInst) {
       fabricInst.on("selection:created", setSidebar);
       fabricInst.on("selection:updated", setSidebar);
-      fabricInst.on("selection:cleared", () => {
-        setShowSidebar(false);
-        setDrawType("");
-      });
+      fabricInst.on("selection:cleared", selectionClearHandler);
     }
 
     return () => {
-      fabricInst?.off("selection:created");
-      fabricInst?.off("selection:updated");
-      fabricInst?.off("selection:cleared");
+      fabricInst?.off("selection:created", setSidebar as any);
+      fabricInst?.off("selection:updated", setSidebar as any);
+      fabricInst?.off("selection:cleared", selectionClearHandler);
     };
   }, []);
 
