@@ -91,8 +91,8 @@ function Drawer({
       case DrawOptions.TRIANGLE:
         obj = new fabric.Triangle({
           ...ObjectBaseOptions,
-          left: e.x,
-          top: e.y,
+          left: pointer?.x,
+          top: pointer?.y,
           width: 0,
           height: 0,
           strokeWidth: objectProperties.strokeWidth,
@@ -248,10 +248,11 @@ function Drawer({
 
   function resizeTriangle({ e }: fabric.IEvent<MouseEvent>) {
     const triangle = fabricInst?.getActiveObject();
+    const pointer = fabricInst?.getPointer(e);
 
     if (triangle) {
-      triangle.set({ width: Math.abs(left.current - e.x) });
-      triangle.set({ height: Math.abs(top.current - e.y) });
+      triangle.set({ width: Math.abs(left.current - pointer?.x) });
+      triangle.set({ height: Math.abs(top.current - pointer?.y) });
 
       triangle.setCoords();
       fabricInst?.renderAll();
