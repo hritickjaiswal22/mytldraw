@@ -109,8 +109,8 @@ function Drawer({
       case DrawOptions.CIRCLE:
         obj = new fabric.Circle({
           ...ObjectBaseOptions,
-          left: e.x,
-          top: e.y,
+          left: pointer?.x,
+          top: pointer?.y,
           radius: 0,
           originX: "center",
           originY: "center",
@@ -261,10 +261,11 @@ function Drawer({
 
   function resizeCircle({ e }: fabric.IEvent<MouseEvent>) {
     const circle = fabricInst?.getActiveObject();
+    const pointer = fabricInst?.getPointer(e);
 
     if (circle) {
-      const a = Math.abs(left.current - e.x);
-      const b = Math.abs(top.current - e.y);
+      const a = Math.abs(left.current - pointer?.x);
+      const b = Math.abs(top.current - pointer?.y);
 
       (circle as fabric.Circle).set({
         radius: Math.sqrt(a * a + b * b) / 2,
