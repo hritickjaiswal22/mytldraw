@@ -64,16 +64,17 @@ function Drawer({
 
   // Initialize
   function initializeObject({ e }: fabric.IEvent<MouseEvent>) {
-    top.current = e.y;
-    left.current = e.x;
+    const pointer = fabricInst?.getPointer(e);
+    top.current = pointer?.y;
+    left.current = pointer?.x;
     let obj = null;
 
     switch (drawOption) {
       case DrawOptions.RECTANGLE:
         obj = new fabric.Rect({
           ...ObjectBaseOptions,
-          left: e.x,
-          top: e.y,
+          left: pointer?.x,
+          top: pointer?.y,
           width: 0,
           height: 0,
           strokeWidth: objectProperties.strokeWidth,
@@ -227,17 +228,18 @@ function Drawer({
   // Resize
   function resizeRect({ e }: fabric.IEvent<MouseEvent>) {
     const rect = fabricInst?.getActiveObject();
+    const pointer = fabricInst?.getPointer(e);
 
     if (rect) {
-      if (left.current > e.x) {
-        rect.set({ left: Math.abs(e.x) });
+      if (left.current > pointer?.x) {
+        rect.set({ left: Math.abs(pointer?.x) });
       }
-      if (top.current > e.y) {
-        rect.set({ top: Math.abs(e.y) });
+      if (top.current > pointer?.y) {
+        rect.set({ top: Math.abs(pointer?.y) });
       }
 
-      rect.set({ width: Math.abs(left.current - e.x) });
-      rect.set({ height: Math.abs(top.current - e.y) });
+      rect.set({ width: Math.abs(left.current - pointer?.x) });
+      rect.set({ height: Math.abs(top.current - pointer?.y) });
 
       rect.setCoords();
       fabricInst?.renderAll();
