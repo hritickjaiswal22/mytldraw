@@ -210,11 +210,13 @@ function Drawer({
     if (imageBase64Url) {
       const imgObj = new Image();
       imgObj.src = imageBase64Url;
+      const pointer = fabricInst?.getPointer(e);
+
       imgObj.onload = () => {
         const image = new fabric.Image(imgObj, {
           angle: 0,
-          left: e.x,
-          top: e.y,
+          left: pointer?.x,
+          top: pointer?.y,
           opacity: objectProperties.opacity,
         });
         Object.assign(image, {
