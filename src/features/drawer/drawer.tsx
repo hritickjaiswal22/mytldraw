@@ -126,13 +126,16 @@ function Drawer({
         break;
 
       case DrawOptions.LINE:
-        obj = new fabric.Line([e.x, e.y, e.x, e.y], {
-          ...ObjectBaseOptions,
-          strokeWidth: objectProperties.strokeWidth,
-          stroke: objectProperties.stroke,
-          strokeDashArray: objectProperties.strokeDashArray,
-          opacity: objectProperties.opacity,
-        });
+        obj = new fabric.Line(
+          [pointer?.x, pointer?.y, pointer?.x, pointer?.y],
+          {
+            ...ObjectBaseOptions,
+            strokeWidth: objectProperties.strokeWidth,
+            stroke: objectProperties.stroke,
+            strokeDashArray: objectProperties.strokeDashArray,
+            opacity: objectProperties.opacity,
+          }
+        );
         Object.assign(obj, { id: `${generateUUID()}-${DrawOptionsText.line}` });
         break;
 
@@ -315,11 +318,12 @@ function Drawer({
 
   function resizeLine({ e }: fabric.IEvent<MouseEvent>) {
     const line: any = fabricInst?.getActiveObject();
+    const pointer = fabricInst?.getPointer(e);
 
     if (line) {
       line.set({
-        x2: e.x,
-        y2: e.y,
+        x2: pointer?.x,
+        y2: pointer?.y,
       });
 
       line.setCoords();
