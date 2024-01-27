@@ -143,8 +143,8 @@ function Drawer({
         obj = new fabric.IText("Edit Text", {
           ...BaseTextOptions,
           ...textProperties,
-          left: e.x,
-          top: e.y,
+          left: pointer?.x,
+          top: pointer?.y,
           fill: objectProperties.stroke,
           opacity: objectProperties.opacity,
         });
