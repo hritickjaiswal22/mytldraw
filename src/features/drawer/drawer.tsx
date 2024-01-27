@@ -163,7 +163,8 @@ function Drawer({
   }
 
   function initializeArrow({ e }: fabric.IEvent<MouseEvent>) {
-    const points = [e.x, e.y, e.x, e.y];
+    const pointer = fabricInst?.getPointer(e);
+    const points = [pointer?.x, pointer?.y, pointer?.x, pointer?.y];
     const line: any = new fabric.Line(points, {
       ...ObjectBaseOptions,
       originX: "center",
@@ -281,15 +282,16 @@ function Drawer({
 
   function resizeArrow({ e }: fabric.IEvent<MouseEvent>) {
     const line: any = fabricInst?.getActiveObject();
+    const pointer = fabricInst?.getPointer(e);
 
     if (line) {
       line.set({
-        x2: e.x,
-        y2: e.y,
+        x2: pointer?.x,
+        y2: pointer?.y,
       });
       arrowTriangle?.current?.set({
-        left: e.x + arrowDeltaX.current,
-        top: e.y + arrowDeltaY.current,
+        left: pointer?.x + arrowDeltaX.current,
+        top: pointer?.y + arrowDeltaY.current,
         angle: _FabricCalcArrowAngle(line.x1, line.y1, line.x2, line.y2),
       });
 
