@@ -35,7 +35,8 @@ function Home() {
   }
 
   return (
-    <article className="min-h-screen bg-[#fffbf0] flex justify-center items-center">
+    <article className="min-h-screen bg-[#fffbf0] flex flex-col justify-center gap-8 items-center">
+      <h1 className="virgil text-6xl">myTldraw</h1>
       <main className="px-6 py-8 bg-[#fff0c9] rounded-3xl max-w-[480px] w-11/12 flex flex-col gap-2 justify-center items-center">
         <h2 className="text-xl font-bold">Join via code!</h2>
 
