@@ -218,7 +218,7 @@ function Header({
           </TooltipProvider>
         </div>
         <div>
-          <button>Share zoom</button>
+          <button></button>
         </div>
       </NonInteractiveHeader>
     </>
