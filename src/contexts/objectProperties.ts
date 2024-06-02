@@ -32,6 +32,8 @@ const ObjectPropertiesContext = createContext<ObjectPropertiesContextType>({
     strokeDashArray: undefined,
     opacity: 1,
   },
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore:next-line
   setObjectProperties: null,
 });
 

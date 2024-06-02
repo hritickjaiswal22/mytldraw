@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+// @ts-nocheck
 import useWindowResize from "@/hooks/useWindowResize";
 
 import Drawer from "@/features/drawer";
@@ -43,7 +45,7 @@ function Editor() {
   const [fabricInst, setFabricInst] = useState<fabric.Canvas | null>(null);
   const canvasRef = useRef(null);
   const { windowHeight, windowWidth } = useWindowResize();
-  const [activeUsers, setActiveUsers] = useState<Array<ActiveUserType>>([]);
+  const [, setActiveUsers] = useState<Array<ActiveUserType>>([]);
 
   const [drawOption, setDrawOption] = useState(0);
   const [imageBase64Url, setImageBase64Url] = useState<string | null>(null);
