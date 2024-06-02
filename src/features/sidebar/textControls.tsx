@@ -30,7 +30,7 @@ import { useParams } from "react-router-dom";
 function mapIndexToFontFamily(index: number) {
   switch (index) {
     case 0:
-      return "Virgil";
+      return "systemFont";
       break;
 
     case 1:
@@ -49,7 +49,7 @@ function mapIndexToFontFamily(index: number) {
 
 function mapFontFamilyToIndex(family: string) {
   switch (family) {
-    case "Virgil":
+    case "systemFont":
       return 0;
       break;
 

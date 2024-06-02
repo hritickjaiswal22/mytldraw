@@ -144,7 +144,7 @@ function Editor() {
 
     temp.preserveObjectStacking = true;
 
-    // To load "Virgil" font without installing fontFaceObserver
+    // To load "systemFont" font without installing fontFaceObserver
     const dummyText = new fabric.Text("", {
       ...BaseTextOptions,
       fontSize: 0,

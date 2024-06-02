@@ -24,7 +24,7 @@ interface TextPropertiesContextType {
 const TextPropertiesContext = createContext<TextPropertiesContextType>({
   textProperties: {
     fontSize: getFontSize(FONT_SIZE_OPTIONS.MEDIUM),
-    fontFamily: "Virgil",
+    fontFamily: "systemFont",
     textAlign: STATIC_TEXT_ALIGN_OPTIONS[0],
   },
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
