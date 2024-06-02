@@ -59,7 +59,7 @@ function Editor() {
   });
   const [textProperties, setTextProperties] = useState({
     fontSize: getFontSize(FONT_SIZE_OPTIONS.MEDIUM),
-    fontFamily: "Virgil",
+    fontFamily: "system-ui",
     textAlign: STATIC_TEXT_ALIGN_OPTIONS[0],
   });
 
