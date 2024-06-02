@@ -1,6 +1,6 @@
 @font-face {
   font-family: virgil;
-  src: url(./src/fonts/Virgil.woff2);
+  src: url(./public/Virgil.woff2);
 }
 
 .virgil {
