@@ -25,12 +25,13 @@ function FillControls() {
   const { roomId } = useParams();
 
   function fillChangeHandler(color: string) {
-    setObjectProperties((prev) => {
-      return {
-        ...prev,
-        fill: color,
-      };
-    });
+    if (setObjectProperties)
+      setObjectProperties((prev) => {
+        return {
+          ...prev,
+          fill: color,
+        };
+      });
 
     const activeObject = fabricInst?.getActiveObject();
 

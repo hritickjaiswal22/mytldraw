@@ -75,12 +75,13 @@ function TextControls() {
   const { roomId } = useParams();
 
   function textSizeChangeHandler(option: number) {
-    setTextProperties((prev) => {
-      return {
-        ...prev,
-        fontSize: getFontSize(option),
-      };
-    });
+    if (setTextProperties)
+      setTextProperties((prev) => {
+        return {
+          ...prev,
+          fontSize: getFontSize(option),
+        };
+      });
 
     const activeObject = fabricInst?.getActiveObject();
 
@@ -100,12 +101,13 @@ function TextControls() {
   }
 
   function fontFamilyChangeHandler(option: number) {
-    setTextProperties((prev) => {
-      return {
-        ...prev,
-        fontFamily: mapIndexToFontFamily(option),
-      };
-    });
+    if (setTextProperties)
+      setTextProperties((prev) => {
+        return {
+          ...prev,
+          fontFamily: mapIndexToFontFamily(option),
+        };
+      });
 
     const activeObject = fabricInst?.getActiveObject();
 
@@ -125,12 +127,13 @@ function TextControls() {
   }
 
   function textAlignChangeHandler(option: number) {
-    setTextProperties((prev) => {
-      return {
-        ...prev,
-        textAlign: STATIC_TEXT_ALIGN_OPTIONS[option],
-      };
-    });
+    if (setTextProperties)
+      setTextProperties((prev) => {
+        return {
+          ...prev,
+          textAlign: STATIC_TEXT_ALIGN_OPTIONS[option],
+        };
+      });
 
     const activeObject = fabricInst?.getActiveObject();
 

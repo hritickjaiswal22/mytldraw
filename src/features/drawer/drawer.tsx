@@ -12,7 +12,7 @@ interface DrawerPropTypes {
   drawOption: DrawOptions;
   setDrawOption: React.Dispatch<React.SetStateAction<number>>;
   children: ReactNode;
-  objectAddHandler: () => void;
+  objectAddHandler?: () => void;
   imageBase64Url: string | null;
   setImageBase64Url: React.Dispatch<React.SetStateAction<string | null>>;
   keepCurrentDrawOption: boolean;

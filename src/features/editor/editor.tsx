@@ -22,6 +22,7 @@ import { FabricCanvasContext } from "@/contexts/fabricCanvasContext";
 
 import OptionsSidebar from "@/features/sidebar";
 import Header from "@/features/header";
+import { ObjectPropertiesTypes } from "@/contexts/objectProperties";
 
 import { fabric } from "fabric";
 import { useEffect, useRef, useState } from "react";
@@ -48,13 +49,14 @@ function Editor() {
   const [drawOption, setDrawOption] = useState(0);
   const [imageBase64Url, setImageBase64Url] = useState<string | null>(null);
 
-  const [objectProperties, setObjectProperties] = useState({
-    strokeWidth: 2,
-    stroke: STATIC_STROKE_COLORS[0],
-    fill: STATIC_BACKGROUND_COLORS[0],
-    strokeDashArray: undefined,
-    opacity: 1,
-  });
+  const [objectProperties, setObjectProperties] =
+    useState<ObjectPropertiesTypes>({
+      strokeWidth: 2,
+      stroke: STATIC_STROKE_COLORS[0],
+      fill: STATIC_BACKGROUND_COLORS[0],
+      strokeDashArray: undefined,
+      opacity: 1,
+    });
   const [textProperties, setTextProperties] = useState({
     fontSize: getFontSize(FONT_SIZE_OPTIONS.MEDIUM),
     fontFamily: "system-ui",

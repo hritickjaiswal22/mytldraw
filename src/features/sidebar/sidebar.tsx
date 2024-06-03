@@ -97,12 +97,13 @@ function Sidebar() {
   }, []);
 
   function opacityChangeHandler(e: React.ChangeEvent<HTMLInputElement>) {
-    setObjectProperties((prev) => {
-      return {
-        ...prev,
-        opacity: Number(e.target.value),
-      };
-    });
+    if (setObjectProperties)
+      setObjectProperties((prev) => {
+        return {
+          ...prev,
+          opacity: Number(e.target.value),
+        };
+      });
 
     const activeObject = fabricInst?.getActiveObject();
 

@@ -12,7 +12,7 @@ interface TextPropertiesContextType {
     fontFamily: string;
     textAlign: string;
   };
-  setTextProperties: React.Dispatch<
+  setTextProperties: null | React.Dispatch<
     React.SetStateAction<{
       fontSize: number;
       fontFamily: string;

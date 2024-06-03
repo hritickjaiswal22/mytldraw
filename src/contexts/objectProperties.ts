@@ -5,22 +5,18 @@ import {
 
 import { createContext } from "react";
 
+interface ObjectPropertiesTypes {
+  strokeWidth: number;
+  stroke: string;
+  fill: string;
+  strokeDashArray: undefined | number[];
+  opacity: number;
+}
+
 interface ObjectPropertiesContextType {
-  objectProperties: {
-    strokeWidth: number;
-    stroke: string;
-    fill: string;
-    strokeDashArray: undefined | number[];
-    opacity: number;
-  };
-  setObjectProperties: React.Dispatch<
-    React.SetStateAction<{
-      strokeWidth: number;
-      stroke: string;
-      fill: string;
-      strokeDashArray: undefined | number[];
-      opacity: number;
-    }>
+  objectProperties: ObjectPropertiesTypes;
+  setObjectProperties: null | React.Dispatch<
+    React.SetStateAction<ObjectPropertiesTypes>
   >;
 }
 
@@ -36,3 +32,5 @@ const ObjectPropertiesContext = createContext<ObjectPropertiesContextType>({
 });
 
 export { ObjectPropertiesContext };
+
+export type { ObjectPropertiesTypes, ObjectPropertiesContextType };

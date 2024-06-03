@@ -33,12 +33,13 @@ function StrokeControls() {
   const { roomId } = useParams();
 
   function strokeWidthChangeHandler(option: number) {
-    setObjectProperties((prev) => {
-      return {
-        ...prev,
-        strokeWidth: option,
-      };
-    });
+    if (setObjectProperties)
+      setObjectProperties((prev) => {
+        return {
+          ...prev,
+          strokeWidth: option,
+        };
+      });
 
     const activeObject = fabricInst?.getActiveObject();
 
@@ -57,12 +58,13 @@ function StrokeControls() {
   }
 
   function strokeColorChangeHandler(color: string) {
-    setObjectProperties((prev) => {
-      return {
-        ...prev,
-        stroke: color,
-      };
-    });
+    if (setObjectProperties)
+      setObjectProperties((prev) => {
+        return {
+          ...prev,
+          stroke: color,
+        };
+      });
     if (
       fabricInst &&
       fabricInst.freeDrawingBrush &&
@@ -87,12 +89,13 @@ function StrokeControls() {
   }
 
   function strokeStyleChangeHandler(option: number) {
-    setObjectProperties((prev) => {
-      return {
-        ...prev,
-        strokeDashArray: getStrokeStyleOption(option),
-      };
-    });
+    if (setObjectProperties)
+      setObjectProperties((prev) => {
+        return {
+          ...prev,
+          strokeDashArray: getStrokeStyleOption(option),
+        };
+      });
 
     const activeObject = fabricInst?.getActiveObject();
 
