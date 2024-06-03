@@ -21,6 +21,13 @@ import { Label } from "@/components/ui/label";
 import Snapper from "@/features/snapper";
 import Transformer from "@/features/transformer";
 import { FabricCanvasContext } from "@/contexts/fabricCanvasContext";
+import { ActiveUserType } from "@/features/editor/editor";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 // Assets
 import Menu from "@/assets/icons/Hamburger.svg?react";
@@ -47,6 +54,7 @@ interface HeaderPropTypes {
   onImageUpload: (e: React.ChangeEvent<HTMLInputElement>) => void;
   keepCurrentDrawOption: boolean;
   setKeepCurrentDrawOption: React.Dispatch<React.SetStateAction<boolean>>;
+  activeUsers: Array<ActiveUserType>;
 }
 
 function Header({
@@ -55,6 +63,7 @@ function Header({
   optionHandler,
   keepCurrentDrawOption,
   setKeepCurrentDrawOption,
+  activeUsers,
 }: HeaderPropTypes) {
   const [snap, setSnap] = useState(false);
   const { fabricInst } = useContext(FabricCanvasContext);
@@ -217,8 +226,21 @@ function Header({
             </Tooltip>
           </TooltipProvider>
         </div>
-        <div>
-          <button></button>
+        <div className="pointer-events-auto flex gap-1">
+          {activeUsers.map(({ socketId, username }) => (
+            <HoverCard key={socketId} openDelay={200}>
+              <HoverCardTrigger>
+                <Avatar className="cursor-pointer">
+                  <AvatarFallback className="bg-yellow-200">
+                    {username[0].toUpperCase() || "U"}
+                  </AvatarFallback>
+                </Avatar>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-25 whitespace-nowrap overflow-hidden text-ellipsis text-center bg-green-400 text-gray-950 p-2">
+                <p className="text-base">{username}</p>
+              </HoverCardContent>
+            </HoverCard>
+          ))}
         </div>
       </NonInteractiveHeader>
     </>

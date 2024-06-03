@@ -27,8 +27,6 @@ const TextPropertiesContext = createContext<TextPropertiesContextType>({
     fontFamily: "systemFont",
     textAlign: STATIC_TEXT_ALIGN_OPTIONS[0],
   },
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore:next-line
   setTextProperties: null,
 });
 

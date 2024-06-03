@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-nocheck
 import useWindowResize from "@/hooks/useWindowResize";
 
 import Drawer from "@/features/drawer";
@@ -32,7 +30,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const PRIMARYPURPLE = "#5b57d1";
 
-interface ActiveUserType {
+export interface ActiveUserType {
   username: string;
   socketId: string;
 }
@@ -45,7 +43,7 @@ function Editor() {
   const [fabricInst, setFabricInst] = useState<fabric.Canvas | null>(null);
   const canvasRef = useRef(null);
   const { windowHeight, windowWidth } = useWindowResize();
-  const [, setActiveUsers] = useState<Array<ActiveUserType>>([]);
+  const [activeUsers, setActiveUsers] = useState<Array<ActiveUserType>>([]);
 
   const [drawOption, setDrawOption] = useState(0);
   const [imageBase64Url, setImageBase64Url] = useState<string | null>(null);
@@ -101,8 +99,10 @@ function Editor() {
         username: location.state?.username,
       });
 
-      socket.on(ACTIONS.NEWUSERJOINED, ({ clients, username }) => {
-        console.log(`User ${username} joined`);
+      socket.on(ACTIONS.NEWUSERJOINED, ({ clients, username, socketId }) => {
+        //
+        console.log(`User ${username} joined with id ${socketId}`);
+        console.log(clients);
 
         setActiveUsers(clients);
       });
@@ -235,6 +235,7 @@ function Editor() {
         optionHandler={optionHandler}
         keepCurrentDrawOption={keepCurrentDrawOption}
         setKeepCurrentDrawOption={setKeepCurrentDrawOption}
+        activeUsers={activeUsers}
       />
 
       <TextPropertiesContext.Provider value={textPropertiesContextValue}>

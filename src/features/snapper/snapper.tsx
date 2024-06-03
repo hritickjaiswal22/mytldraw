@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-nocheck
 import { FabricCanvasContext } from "@/contexts/fabricCanvasContext";
 import { socket } from "@/socket";
 import { ACTIONS } from "@/utils/actions";
