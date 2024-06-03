@@ -32,7 +32,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const PRIMARYPURPLE = "#5b57d1";
 
-interface ActiveUserType {
+export interface ActiveUserType {
   username: string;
   socketId: string;
 }
@@ -45,7 +45,7 @@ function Editor() {
   const [fabricInst, setFabricInst] = useState<fabric.Canvas | null>(null);
   const canvasRef = useRef(null);
   const { windowHeight, windowWidth } = useWindowResize();
-  const [, setActiveUsers] = useState<Array<ActiveUserType>>([]);
+  const [activeUsers, setActiveUsers] = useState<Array<ActiveUserType>>([]);
 
   const [drawOption, setDrawOption] = useState(0);
   const [imageBase64Url, setImageBase64Url] = useState<string | null>(null);
@@ -235,6 +235,7 @@ function Editor() {
         optionHandler={optionHandler}
         keepCurrentDrawOption={keepCurrentDrawOption}
         setKeepCurrentDrawOption={setKeepCurrentDrawOption}
+        activeUsers={activeUsers}
       />
 
       <TextPropertiesContext.Provider value={textPropertiesContextValue}>
