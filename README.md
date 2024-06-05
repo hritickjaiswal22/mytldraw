@@ -1,30 +1,58 @@
-# React + TypeScript + Vite
+# CanvasCrew - Collaborative Canvas App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Welcome to the CanvasCrew - Collaborative Canvas App! This application allows multiple users to draw on a shared canvas in real-time. By sharing a room ID, users can collaborate and create drawings together, making it perfect for brainstorming sessions, collaborative art projects, or just having fun with friends.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Draw Various Shapes**: Easily create rectangles, circles, lines, arrows, and more.
+- **Color Options**: Fill shapes with a variety of colors to enhance your drawings.
+- **Outline Customization**: Change the outline width and color to suit your needs.
+- **Shape Manipulation**: Move and resize shapes with ease.
+- **Zoom In and Out**: Get a closer look or view the bigger picture with zoom functionality.
+- **Real-Time Collaboration**: All changes are instantly reflected for all users in the room.
 
-## Expanding the ESLint configuration
+## Technologies
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **React**: For building the user interface.
+- **Node.js**: For server-side logic.
+- **Socket.IO**: For real-time communication.
+- **Express**: For handling the server framework.
 
-- Configure the top-level `parserOptions` property like this:
+## Getting Started
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+### Prerequisites
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Ensure you have the following installed:
+
+- Node.js
+- npm (Node package manager)
+
+### Installation
+
+1. Clone the repository:
+
+   ```sh
+   git clone https://github.com/hritickjaiswal22/mytldraw.git
+   ```
+
+2. Install dependencies:
+   ```sh
+   npm install
+   ```
+
+### Running the App
+
+1. Start the server:
+
+   ```sh
+   npm run dev
+   ```
+
+2. Open your browser and navigate to:
+   ```
+   http://localhost:5173
+   ```
+
+## Usage
+
+1. **Create or Join a Room**:

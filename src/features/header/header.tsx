@@ -47,6 +47,7 @@ import Snap from "@/assets/icons/columns.svg?react";
 import { DrawOptions } from "@/utils/drawOptions";
 
 import { useState, useContext } from "react";
+import { useParams } from "react-router-dom";
 
 interface HeaderPropTypes {
   optionHandler: (option: number) => void;
@@ -67,10 +68,22 @@ function Header({
 }: HeaderPropTypes) {
   const [snap, setSnap] = useState(false);
   const { fabricInst } = useContext(FabricCanvasContext);
+  const [isCopied, setIsCopied] = useState(false);
+  const { roomId } = useParams();
 
   function resetCanvas() {
     if (fabricInst) {
       fabricInst.clear();
+    }
+  }
+
+  async function copyRoomId() {
+    try {
+      await navigator.clipboard.writeText(roomId || "");
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 500);
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -226,21 +239,29 @@ function Header({
             </Tooltip>
           </TooltipProvider>
         </div>
-        <div className="pointer-events-auto flex gap-1">
-          {activeUsers.map(({ socketId, username }) => (
-            <HoverCard key={socketId} openDelay={200}>
-              <HoverCardTrigger>
-                <Avatar className="cursor-pointer">
-                  <AvatarFallback className="bg-yellow-200">
-                    {username[0].toUpperCase() || "U"}
-                  </AvatarFallback>
-                </Avatar>
-              </HoverCardTrigger>
-              <HoverCardContent className="w-25 whitespace-nowrap overflow-hidden text-ellipsis text-center bg-green-400 text-gray-950 p-2">
-                <p className="text-base">{username}</p>
-              </HoverCardContent>
-            </HoverCard>
-          ))}
+        <div className="flex gap-2 min-w-[90px]">
+          <Button
+            onClick={copyRoomId}
+            className="pointer-events-auto bg-green-400 hover:bg-green-500 text-white"
+          >
+            {isCopied ? "Copied" : "Copy"}
+          </Button>
+          <div className="pointer-events-auto flex gap-1">
+            {activeUsers.map(({ socketId, username }) => (
+              <HoverCard key={socketId} openDelay={200}>
+                <HoverCardTrigger>
+                  <Avatar className="cursor-pointer">
+                    <AvatarFallback className="bg-yellow-200">
+                      {username[0].toUpperCase() || "U"}
+                    </AvatarFallback>
+                  </Avatar>
+                </HoverCardTrigger>
+                <HoverCardContent className="w-25 whitespace-nowrap overflow-hidden text-ellipsis text-center bg-green-400 text-gray-950 p-2">
+                  <p className="text-base">{username}</p>
+                </HoverCardContent>
+              </HoverCard>
+            ))}
+          </div>
         </div>
       </NonInteractiveHeader>
     </>

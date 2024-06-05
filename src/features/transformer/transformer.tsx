@@ -1,4 +1,4 @@
-import { useEffect, useRef, useContext } from "react";
+import React, { useEffect, useRef, useContext } from "react";
 
 import { FabricCanvasContext } from "@/contexts/fabricCanvasContext";
 // import { fabric } from "fabric";
@@ -91,4 +91,4 @@ function Transformer() {
   return <></>;
 }
 
-export default Transformer;
+export default React.memo(Transformer);
